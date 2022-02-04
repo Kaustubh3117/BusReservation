@@ -1,0 +1,111 @@
+.seat-content {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* seat picker */
+.seat-picker {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+}
+.seat-picker > *:not(:last-child) {
+  margin-bottom: 2px;
+}
+.seat-picker__row {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+.seat-picker__row > *:not(:last-child) {
+  margin-right: 2px;
+}
+.seat-picker__row__number {
+  font-weight: normal;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: '#9E9E9E';
+}
+.seat-picker__row--enabled:hover {
+  background-color: '#F5F5F5';
+}
+.seat-picker__row--selected {
+  background-color: "#F5F5F5";
+}
+.seat-picker__row--enabled:hover > .seat-picker__row__number {
+  font-weight: 600;
+}
+.seat-picker__row--selected > .seat-picker__row__number {
+  font-weight: 600;
+}
+
+/* seat css */
+.seat {
+  background-color: lightgrey;
+  /* background-image: url('images/my-image.png'); */
+  height: 40px;
+  width: 40px;
+  color: #9E9E9E;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.seat__number {
+  font-size: 10px;
+}
+.seat--north {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.seat--south {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.seat--east {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.seat--west {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.seat--enabled {
+  cursor: pointer;
+}
+.seat--enabled:hover {
+  background-color: lightsalmon;
+}
+.seat--selected {
+  cursor: pointer;
+  background-color: #4CAF50;
+}
+.seat--reserved {
+  cursor: not-allowed;
+  background-color: red;
+}
+
+.loader {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  background: rgba(240,240,240,0.9);
+  z-index: "2";
+  justify-content: center;
+  align-items: center;
+}
+
+.blank {
+  height: 28px;
+  width: 28px;
+}
