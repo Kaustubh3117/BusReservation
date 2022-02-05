@@ -1,8 +1,10 @@
-import Banner from "./Banner"
+import Banner from "./Banner";
+import { Carousels } from "./assets/Carousels";
  const Home = () => {
     return(
         <>
 <Banner/>
+<Carousels/>
         </>
     )
 }

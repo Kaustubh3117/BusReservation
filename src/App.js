@@ -34,7 +34,7 @@ const App = () => (
                 <Routes>
                     <Route exact path='*' element={<PageNotFound/>} />
                     <Route exact path='/' element={<Home/>} />
-                    <Route exact path='/buslist/:startLocation/:endLocation/:date' element={<AvailableBusses/>} />
+                    <Route exact path='/buslist' element={<AvailableBusses/>} />
                     <Route exact path='/seatchart' element={<SeatChart/>} />
                     <Route exact path='/manageBooking' element={<ManageBooking/>} />
                     
