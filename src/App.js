@@ -1,6 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import "./App.css"
+import "./App.css";
+// prime react
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";   
+import "primeflex/primeflex.min.css"
 
 import Home from './templates/user/Home';
 import {AvailableBusses} from './templates/user/available_busses/AvailableBusses';

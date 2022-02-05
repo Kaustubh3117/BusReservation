@@ -56,3 +56,25 @@ color: white !important;
   .pay-button:hover{
     box-shadow: 2px 5px 15px 2px rgba(0, 0, 0, 0.2);
   }
+
+  /* accounts form login registration css */
+  .form-account .card {
+    min-width: 450px;
+}
+.form-account .card form {
+    margin-top: 2rem;
+}
+.form-account .card .field {
+    margin-bottom: 1.5rem;
+}
+@media screen and (max-width: 960px) {
+    .form-account .card {
+        width: 80%;
+    }
+}
+@media screen and (max-width: 640px) {
+    .form-account .card {
+        width: 100%;
+        min-width: 0;
+    }
+}

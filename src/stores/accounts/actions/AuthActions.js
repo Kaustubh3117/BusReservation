@@ -180,7 +180,8 @@ export const login = (email, password) => async dispatch => {
         dispatch({
             type: LOGIN_FAIL
         })
-        ToastMessage(ERROR, err.message)
+        console.log(err.data)
+        ToastMessage(ERROR, err.response.data.detail)
     }
 };
 
