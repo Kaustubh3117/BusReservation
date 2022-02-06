@@ -11,7 +11,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  width: max-content;
+  width: 100%;
 }
 .seat-picker > *:not(:last-child) {
   margin-bottom: 2px;
@@ -51,8 +51,8 @@
 .seat {
   background-color: lightgrey;
   /* background-image: url('images/my-image.png'); */
-  height: 40px;
-  width: 40px;
+  height: 60px;
+  width: 60px;
   color: #9E9E9E;
   display: flex;
   justify-content: center;
@@ -61,7 +61,7 @@
   margin-left: 5px;
 }
 .seat__number {
-  font-size: 10px;
+  font-size: 15px;
 }
 .seat--north {
   border-top-left-radius: 8px;

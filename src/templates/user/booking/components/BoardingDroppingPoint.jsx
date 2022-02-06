@@ -3,7 +3,7 @@ import { Tabs, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setSeatData } from "../../../../stores/users/actions/SeatAction";
 import { TabView, TabPanel } from "primereact/tabview";
-import { RadioButton } from 'primereact/radiobutton';
+import { RadioButton } from "primereact/radiobutton";
 
 export const BoardingDroppingPoint = (props) => {
   const reduxSeatDataState = useSelector((state) => state.seat_data.seatData);
@@ -17,14 +17,17 @@ export const BoardingDroppingPoint = (props) => {
   return (
     <>
       <div className="card">
-        <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} >
+        <TabView
+          activeIndex={activeIndex}
+          onTabChange={(e) => setActiveIndex(e.index)}
+        >
           <TabPanel header="Boarding Point">
-          {activeIndex === 0
-            ? RadioButtonValues(
-                props.bpDpVals.boardingPointProps,
-                checkIfBpPresent ? "boardingPoint" : null
-              )
-            : null}
+            {activeIndex === 0
+              ? RadioButtonValues(
+                  props.bpDpVals.boardingPointProps,
+                  checkIfBpPresent ? "boardingPoint" : null
+                )
+              : null}
           </TabPanel>
           <TabPanel
             header="Dropping Point"
@@ -37,11 +40,11 @@ export const BoardingDroppingPoint = (props) => {
             }
           >
             {activeIndex === 1
-            ? RadioButtonValues(
-                props.bpDpVals.droppingPointProps,
-                checkIfDpPresent ? "droppingPoint" : null
-              )
-            : null}
+              ? RadioButtonValues(
+                  props.bpDpVals.droppingPointProps,
+                  checkIfDpPresent ? "droppingPoint" : null
+                )
+              : null}
           </TabPanel>
         </TabView>
       </div>
@@ -89,19 +92,23 @@ const RadioButtonValues = (values, type) => {
 
   return (
     <>
-      <div className="boardingDroppingScroll">     
+      <div className="boardingDroppingScroll">
         {values.map((radio, idx) => (
           <>
             <br />
             <div className="field-radiobutton">
-                    <RadioButton inputId="city1" name="radio"
+              <RadioButton
+                inputId="city1"
+                name="radio"
                 id={`radio-${idx}`}
                 checked={
                   type === "boardingPoint"
                     ? boardingPointRadio.value === radio.value
                     : droppingPointRadio.value === radio.value
                   // reduxSeatDataState.point.boardingPointRadio.value!==''? reduxSeatDataState.point.boardingPointRadio.value === radio.value : boardingPointRadio.value === radio.value
-                }  value={radio.value}  onChange={(e) =>
+                }
+                value={radio.value}
+                onChange={(e) =>
                   type === "boardingPoint"
                     ? setBoardingPointRadio((prevState) => {
                         return {
@@ -119,9 +126,10 @@ const RadioButtonValues = (values, type) => {
                           type: "droppingPoint",
                         };
                       })
-                } />
-                    <label htmlFor={`radio-${idx}`}> {radio.name}</label>
-                </div>
+                }
+              />
+              <label htmlFor={`radio-${idx}`}> {radio.name}</label>
+            </div>
           </>
         ))}
       </div>

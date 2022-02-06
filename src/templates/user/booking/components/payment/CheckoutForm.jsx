@@ -1,39 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 
-export const CheckoutForm = () =>{
-        return (
-          <div
-            style={{
-              padding: "3rem",
-            }}
-          >
-            <div
-              style={{
-                maxWidth: "500px",
-                margin: "0 auto",
-              }}
-            >
-              <form
-                style={{
-                  display: "block",
-                  width: "100%",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <button
-                    className="pay-button"
-                  >
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        );
-      
-}
+export const CheckoutForm = () => {
+  
+  return(
+ <>
+  <InputText className="w-full"  />
+    <Button label="Pay" className="w-full mt-2 mb-4" /> 
+    </>
+  )
+};

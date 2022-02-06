@@ -8,7 +8,11 @@ import { SeatTypeData } from "../../common/seat_chart/SeatPicker/SeatTypeData";
 import { SeatBookingModal } from "../booking/SeatBookingModal";
 import { GiSteeringWheel } from "react-icons/gi";
 import { BoardingDroppingPoint } from "../booking/components/BoardingDroppingPoint";
-import { Button } from 'primereact/button';
+import { Button } from "primereact/button";
+import { Card } from "primereact/card";
+import { SeatColorDetails } from "./components/SeatColorDetails";
+import { SeatDetailsConfirmation } from "./components/SeatDetailsConfirmation";
+import { SeatSelectionAndPricing } from "./components/SeatSelectionAndPricing";
 
 class SeatChart extends Component {
   state = {
@@ -19,10 +23,6 @@ class SeatChart extends Component {
     seatNumber: [],
     showBpDpDetails: false,
   };
-
-  //   componentDidMount (){
-  // this.setState({price:100})
-  //   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.props.setSeatData({ ...this.props.seatData, seatData: this.state });
@@ -128,11 +128,15 @@ class SeatChart extends Component {
 
     return (
       <>
-          <div className="grid">
-            <div className="flex justify-content-end">
-              <div style={{ marginTop: "100px" }}>
-                <GiSteeringWheel size={40} className="steeringWheel" />
-                <hr />
+        <div className="grid flex justify-content-center">
+          <div className="col-3">
+            <div style={{ marginTop: "100px" }}>
+              <div className="grid">
+                <div className="col-4"><GiSteeringWheel size={40} className="steeringWheel" /></div>
+                <div className="col-6"><SeatColorDetails/></div>
+              </div>
+             
+              <div className="card" style={{ width: "20rem" }}>
                 <SeatPicker
                   addSeatCallback={this.addSeatCallbackContinousCase}
                   removeSeatCallback={this.removeSeatCallback}
@@ -147,119 +151,73 @@ class SeatChart extends Component {
                 />
               </div>
             </div>
+          </div>
 
-            <div className="col">
-              <div className="seatPriceSection">
-                <div style={{ marginRight: "30%" }}>
-                  <div className="card">
-                    {/* <Card.Body> */}
-                      {this.state.showBpDpDetails === true ? (
-                        <>
-                          <div className="grid">
-                            <div className="col">
-                              {/* take this if code in Boarding dropping component if possible */}
-                              Boarding & Dropping
-                              <br />
-                              From:{" "}
-                              {
-                                this.props.seatData.point.boardingPointRadio
-                                  .name
-                              }
-                              <br />
-                              <span className="dot">.</span>
-                              <br />
-                              <span className="dot">.</span>
-                              <br />
-                              <span className="dot">.</span>
-                              <br />
-                              To:{" "}
-                              {
-                                this.props.seatData.point.droppingPointRadio
-                                  .name
-                              }
-                            </div>
-                            <div className="col">
-                              {/* <Button
-                                variant="link"
-                                className="fRight"
-                                onClick={() =>
-                                  this.setState({ showBpDpDetails: false })
-                                }
-                              >
-                                Change
-                              </Button> */}
-                              <Button label="Change" className="p-button-link fRight"
-                                onClick={() =>
-                                  this.setState({ showBpDpDetails: false })
-                                } />
-                            </div>
-                          </div>
-                          <hr/>
-                        </>
-                      ) : this.state.selectedSeatCount > 0 ? (
-                        <>
-                          <BoardingDroppingPoint bpDpVals={bpDpVals} />
-                          <hr />
-                        </>
-                      ) : null}
-                      <div>
-                        Price: <div className="fRight">100</div>
+          <div className="col-4">
+            <div className="seatPriceSection">
+              <div>
+             
+                {/* pricing and booking */}
+                <div className="card">
+                  {this.state.showBpDpDetails === true ? (
+                    <>
+                      <div className="grid">
+                        <div className="col my-3 mx-3">
+                          <SeatDetailsConfirmation props={this.props}/>
+                        </div>
+                        <div className="col">
+                          <Button
+                            label="Change"
+                            className="p-button-link fRight"
+                            onClick={() =>
+                              this.setState({ showBpDpDetails: false })
+                            }
+                          />
+                        </div>
                       </div>
-                      Selected Seat ({this.state.selectedSeatCount}):
-                      {this.state.seatNumber.reverse().map((seatNo) => {
-                        return (
-                          <>
-                            <div className="fRight">{seatNo},</div>
-                          </>
-                        );
-                      })}
-                      <div>
-                        {" "}
-                        Total Price:{" "}
-                        <div className="fRight">{this.state.price}</div>
-                      </div>
-                      {this.state.showBpDpDetails ? (
-                        <Button
-                        label="Continue →"
-                          onClick={() => this.setState({ modalShow: true })}
-                          style={{ width: "100%" }}
-                          disabled={
-                            this.state.selectedSeatCount > 0 ? false : true
-                          }
-                        />
-                        
-                      ) : (
-                        <Button
-                        label="Continue →"
-                          onClick={() =>
-                            this.setState({ showBpDpDetails: true })
-                          }
-                          style={{ width: "100%" }}
-                          disabled={
-                            this.props.seatData !== null &&
-                            this.props.seatData.point !== undefined &&
-                            this.props.seatData.point.boardingPointRadio
-                              .value !== "" &&
-                            this.props.seatData.point.droppingPointRadio
-                              .value !== ""
-                              ? false
-                              : true
-                          }
-                        />
-                      
-                      
-                      )}
-                    {/* </Card.Body> */}
-                  </div>
+                      <hr />
+                    </>
+                  ) : this.state.selectedSeatCount > 0 ? (
+                    <>
+                      <BoardingDroppingPoint bpDpVals={bpDpVals} />
+                      <hr />
+                    </>
+                  ) : null}
+                 <SeatSelectionAndPricing {...this.state}/>
+                  {this.state.showBpDpDetails ? (
+                    <Button
+                      label="Continue →"
+                      onClick={() => this.setState({ modalShow: true })}
+                      style={{ width: "100%" }}
+                      disabled={this.state.selectedSeatCount > 0 ? false : true}
+                    />
+                  ) : (
+                    <Button
+                      label="Continue →"
+                      onClick={() => this.setState({ showBpDpDetails: true })}
+                      style={{ width: "100%" }}
+                      disabled={
+                        this.props.seatData !== null &&
+                        this.props.seatData.point !== undefined &&
+                        this.props.seatData.point.boardingPointRadio.value !==
+                          "" &&
+                        this.props.seatData.point.droppingPointRadio.value !==
+                          ""
+                          ? false
+                          : true
+                      }
+                    />
+                  )}
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <SeatBookingModal
-            show={this.state.modalShow}
-            onHide={() => this.setState({ modalShow: false })}
-          />
+        <SeatBookingModal
+          show={this.state.modalShow}
+          onHide={() => this.setState({ modalShow: false })}
+        />
       </>
     );
   }

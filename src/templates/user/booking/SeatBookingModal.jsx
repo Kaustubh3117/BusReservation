@@ -6,14 +6,22 @@ import { Button } from "primereact/button";
 
 export const SeatBookingModal = (props) => {
   const [nextModal, setNextModal] = useState(true);
-  const renderFooter = (name) => {
+  const renderFooter = () => {
     return (
       <div>
         <Button
           label="Next →"
-          icon="pi pi-times"
+          // icon="pi pi-times"
           onClick={() => setNextModal(false)}
-          className="p-button-text"
+          className="w-3"
+          hidden={nextModal === false?true:false}
+        />
+          <Button
+          label="← Back"
+          // icon="pi pi-times"
+          onClick={() => setNextModal(true)}
+          className="w-3"
+          hidden={nextModal===false?false:true}
         />
       </div>
     );
@@ -26,7 +34,7 @@ export const SeatBookingModal = (props) => {
         onHide={props.onHide}
         breakpoints={{ "960px": "75vw", "640px": "100vw" }}
         style={{ width: "50vw" }}
-        footer={renderFooter("displayResponsive")}
+        footer={renderFooter()}
       >
         {nextModal === true ? <Passenger /> : <PaymentModal />}
       </Dialog>

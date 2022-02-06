@@ -4,7 +4,7 @@ border-radius: 80px;
 color: white !important;
 }
 .steeringWheel{
-    margin-left: 30px;
+    margin-left: 70px;
     margin-bottom: 30px;
 }
 .seatPriceSection{
@@ -12,7 +12,7 @@ color: white !important;
 }
 
 .boardingDroppingScroll{
-        height: 110px;
+        height: 200px;
         overflow: scroll;
 }
 
@@ -29,9 +29,12 @@ color: white !important;
   height: 10px;
 }
 
+/* seat chart color details */
+
+
 
 /* stripe */
-  .pay-button{
+  /* .pay-button{
     padding: 0.7rem 2rem;
     width: 100%;
     margin: 1rem 0;
@@ -55,7 +58,7 @@ color: white !important;
   }
   .pay-button:hover{
     box-shadow: 2px 5px 15px 2px rgba(0, 0, 0, 0.2);
-  }
+  } */
 
   /* accounts form login registration css */
   .form-account .card {

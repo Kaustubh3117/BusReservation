@@ -9,19 +9,13 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RadioButton } from "primereact/radiobutton";
-import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { useForm, Controller } from "react-hook-form";
-import { Divider } from 'primereact/divider';
+import { Divider } from "primereact/divider";
 
 export const Passenger = () => {
-  // const [formValues, setFormValues] = useState([
-  //   { name: "", mobileNumber: "" },
-  // ]);
-  const [radioValue, setRadioValue] = useState("1");
-
-  // prime react
+  const [radioValue, setRadioValue] = useState("");
   const [formData, setFormData] = useState({});
 
   const defaultValues = {
@@ -40,17 +34,9 @@ export const Passenger = () => {
   const onSubmit = (e) => {
     setFormData(e);
   };
-
-  //get redux state
   const seatCount = useSelector(
     (state) => state.seat_data.seatData.seatData.seatNumber
   );
-
-  // let handleChange = (i, e) => {
-  //   let newFormValues = [...formValues];
-  //   newFormValues[i][e.target.name] = e.target.value;
-  //   setFormValues(newFormValues);
-  // };
 
   const getFormErrorMessage = (name) => {
     return (
@@ -58,38 +44,23 @@ export const Passenger = () => {
     );
   };
 
-  // let addFormFields = () => {
-  //   setFormValues([...formValues, { Name: "", MobileNumber: "" }]);
-  // };
-
-  // let removeFormFields = (i) => {
-  //   let newFormValues = [...formValues];
-  //   newFormValues.splice(i, 1);
-  //   setFormValues(newFormValues);
-  // };
-
-  // let handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   alert(JSON.stringify(formValues));
-  // };
-
   const radios = [
     { name: "Male", value: "1" },
     { name: "Female", value: "2" },
   ];
 
+  console.log("radio value..", radioValue);
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
         {seatCount.map((element, index) => (
           <>
-            {/* prime react */}
             <h4 className="d-flex flex-row justify-content-between">
-                Passenger {` 0${index + 1}`}
-              </h4>
+              Passenger {` 0${index + 1}`}
+            </h4>
             <div className="grid">
-             
-              <div className="col-6">
+              <div className="col">
                 <div className="field">
                   <span className="p-float-label">
                     <Controller
@@ -117,25 +88,22 @@ export const Passenger = () => {
                   {getFormErrorMessage("name")}
                 </div>
               </div>
-              <div className="col-6">
-              <div className="field">
+              <div className="col">
+                <div className="field">
                   <span className="p-float-label">
                     <Controller
                       name="mobileNumber"
                       control={control}
                       rules={{ required: "Mobile Number is required." }}
                       render={({ field, fieldState }) => (
-                        // <InputText
-                        //   id={field.name}
-                        //   {...field}
-                        //   autoFocus
-                        //   className={classNames({
-                        //     "p-invalid": fieldState.invalid,
-                        //   })}
-                        // />
-                        <InputNumber  id={field.name} {...field} autoFocus className={classNames({
-                          "p-invalid": fieldState.invalid,
-                        })} />
+                        <InputText
+                          id={field.name}
+                          {...field}
+                          autoFocus
+                          className={classNames({
+                            "p-invalid": fieldState.invalid,
+                          })}
+                        />
                       )}
                     />
                     <label
@@ -159,7 +127,11 @@ export const Passenger = () => {
                         name="gender"
                         value={radio.value}
                         checked={radioValue === radio.value}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        onChange={(e) =>
+                          e.currentTarget !== undefined
+                            ? setRadioValue(e.currentTarget.value)
+                            : ""
+                        }
                       />
                       <label htmlFor="gender"> {radio.name}</label>
                     </>
@@ -167,16 +139,21 @@ export const Passenger = () => {
                 </div>
               </div>
               <div className="col-6">
-              <div className="field">
+                <div className="field">
                   <span className="p-float-label">
                     <Controller
                       name="age"
                       control={control}
                       rules={{ required: "Age is required." }}
                       render={({ field, fieldState }) => (
-                        <InputNumber  id={field.name} {...field} autoFocus className={classNames({
-                          "p-invalid": fieldState.invalid,
-                        })} />
+                        <InputText
+                          id={field.name}
+                          {...field}
+                          autoFocus
+                          className={classNames({
+                            "p-invalid": fieldState.invalid,
+                          })}
+                        />
                       )}
                     />
                     <label
