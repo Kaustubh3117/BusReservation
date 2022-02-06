@@ -4,10 +4,11 @@ import { setSeatData } from "../../../stores/users/actions/SeatAction";
 import SeatPicker from "../../common/seat_chart/index";
 import "../../common/seat_chart/seat_style/seat_chart.css";
 import { SeatTypeData } from "../../common/seat_chart/SeatPicker/SeatTypeData";
-import { Button, Container, Row, Col, Card } from "react-bootstrap";
+// import { Button, Col, Card } from "react-bootstrap";
 import { SeatBookingModal } from "../booking/SeatBookingModal";
 import { GiSteeringWheel } from "react-icons/gi";
 import { BoardingDroppingPoint } from "../booking/components/BoardingDroppingPoint";
+import { Button } from 'primereact/button';
 
 class SeatChart extends Component {
   state = {
@@ -27,20 +28,6 @@ class SeatChart extends Component {
       this.props.setSeatData({ ...this.props.seatData, seatData: this.state });
     }
   }
-  // addSeatCallback = ({ row, number, id }, addCb) => {
-  //   this.setState(
-  //     {
-  //       loading: true,
-  //     },
-  //     async () => {
-  //       await new Promise((resolve) => setTimeout(resolve, 1500));
-  //       console.log(`Added seat ${number}, row ${row}, id ${id}`);
-  //       const newTooltip = `tooltip for id-${id} added by callback`;
-  //       addCb(row, number, id, newTooltip);
-  //       this.setState({ loading: false });
-  //     }
-  //   );
-  // };
 
   addSeatCallbackContinousCase = (
     { row, number, id },
@@ -141,9 +128,8 @@ class SeatChart extends Component {
 
     return (
       <>
-        <Container>
-          <Row>
-            <Col className="d-flex justify-content-end">
+          <div className="grid">
+            <div className="flex justify-content-end">
               <div style={{ marginTop: "100px" }}>
                 <GiSteeringWheel size={40} className="steeringWheel" />
                 <hr />
@@ -160,17 +146,17 @@ class SeatChart extends Component {
                   continuous
                 />
               </div>
-            </Col>
+            </div>
 
-            <Col>
+            <div className="col">
               <div className="seatPriceSection">
                 <div style={{ marginRight: "30%" }}>
-                  <Card>
-                    <Card.Body>
+                  <div className="card">
+                    {/* <Card.Body> */}
                       {this.state.showBpDpDetails === true ? (
                         <>
-                          <Row>
-                            <Col>
+                          <div className="grid">
+                            <div className="col">
                               {/* take this if code in Boarding dropping component if possible */}
                               Boarding & Dropping
                               <br />
@@ -191,9 +177,9 @@ class SeatChart extends Component {
                                 this.props.seatData.point.droppingPointRadio
                                   .name
                               }
-                            </Col>
-                            <Col>
-                              <Button
+                            </div>
+                            <div className="col">
+                              {/* <Button
                                 variant="link"
                                 className="fRight"
                                 onClick={() =>
@@ -201,9 +187,13 @@ class SeatChart extends Component {
                                 }
                               >
                                 Change
-                              </Button>
-                            </Col>
-                          </Row>
+                              </Button> */}
+                              <Button label="Change" className="p-button-link fRight"
+                                onClick={() =>
+                                  this.setState({ showBpDpDetails: false })
+                                } />
+                            </div>
+                          </div>
                           <hr/>
                         </>
                       ) : this.state.selectedSeatCount > 0 ? (
@@ -230,18 +220,17 @@ class SeatChart extends Component {
                       </div>
                       {this.state.showBpDpDetails ? (
                         <Button
-                          variant="primary"
+                        label="Continue →"
                           onClick={() => this.setState({ modalShow: true })}
                           style={{ width: "100%" }}
                           disabled={
                             this.state.selectedSeatCount > 0 ? false : true
                           }
-                        >
-                          Proceed to payment →
-                        </Button>
+                        />
+                        
                       ) : (
                         <Button
-                          variant="primary"
+                        label="Continue →"
                           onClick={() =>
                             this.setState({ showBpDpDetails: true })
                           }
@@ -256,22 +245,21 @@ class SeatChart extends Component {
                               ? false
                               : true
                           }
-                        >
-                          Continue →
-                        </Button>
+                        />
+                      
+                      
                       )}
-                    </Card.Body>
-                  </Card>
+                    {/* </Card.Body> */}
+                  </div>
                 </div>
               </div>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
           <SeatBookingModal
             show={this.state.modalShow}
             onHide={() => this.setState({ modalShow: false })}
           />
-        </Container>
       </>
     );
   }

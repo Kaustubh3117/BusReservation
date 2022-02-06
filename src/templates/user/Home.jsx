@@ -1,11 +1,13 @@
 import Banner from "./Banner";
 import { Carousels } from "./assets/Carousels";
- const Home = () => {
-    return(
-        <>
-<Banner/>
-<Carousels/>
-        </>
-    )
-}
-export default Home
+import { Footer } from "./assets/Footer";
+const Home = () => {
+  return (
+    <>
+      <Banner />
+      <Carousels />
+      <Footer />
+    </>
+  );
+};
+export default Home;

@@ -4,42 +4,74 @@ import {
   Form,
   Row,
   Col,
-  Container,
   ToggleButton,
   ButtonGroup,
 } from "react-bootstrap";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
+import { RadioButton } from "primereact/radiobutton";
+import { InputNumber } from "primereact/inputnumber";
+import { InputText } from "primereact/inputtext";
+import { classNames } from "primereact/utils";
+import { useForm, Controller } from "react-hook-form";
+import { Divider } from 'primereact/divider';
 
 export const Passenger = () => {
-  const [formValues, setFormValues] = useState([
-    { name: "", mobileNumber: "" },
-  ]);
+  // const [formValues, setFormValues] = useState([
+  //   { name: "", mobileNumber: "" },
+  // ]);
   const [radioValue, setRadioValue] = useState("1");
 
-//get redux state
-  const seatCount = useSelector((state) => state.seat_data.seatData.seatData.seatNumber)
+  // prime react
+  const [formData, setFormData] = useState({});
 
-  let handleChange = (i, e) => {
-    let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
+  const defaultValues = {
+    name: "",
+    mobileNumber: "",
+    gender: "",
+    age: "",
   };
 
-  let addFormFields = () => {
-    setFormValues([...formValues, { Name: "", MobileNumber: "" }]);
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ defaultValues });
+
+  const onSubmit = (e) => {
+    setFormData(e);
   };
 
-  let removeFormFields = (i) => {
-    let newFormValues = [...formValues];
-    newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+  //get redux state
+  const seatCount = useSelector(
+    (state) => state.seat_data.seatData.seatData.seatNumber
+  );
+
+  // let handleChange = (i, e) => {
+  //   let newFormValues = [...formValues];
+  //   newFormValues[i][e.target.name] = e.target.value;
+  //   setFormValues(newFormValues);
+  // };
+
+  const getFormErrorMessage = (name) => {
+    return (
+      errors[name] && <small className="p-error">{errors[name].message}</small>
+    );
   };
 
-  let handleSubmit = (event) => {
-    event.preventDefault();
-    alert(JSON.stringify(formValues));
-  };
+  // let addFormFields = () => {
+  //   setFormValues([...formValues, { Name: "", MobileNumber: "" }]);
+  // };
+
+  // let removeFormFields = (i) => {
+  //   let newFormValues = [...formValues];
+  //   newFormValues.splice(i, 1);
+  //   setFormValues(newFormValues);
+  // };
+
+  // let handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   alert(JSON.stringify(formValues));
+  // };
 
   const radios = [
     { name: "Male", value: "1" },
@@ -47,99 +79,121 @@ export const Passenger = () => {
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
-      {seatCount.map((element, index) => (
-        <div className="form-inline" key={index}>
-          <Row>
+    <>
+      <form onSubmit={handleSubmit}>
+        {seatCount.map((element, index) => (
+          <>
+            {/* prime react */}
             <h4 className="d-flex flex-row justify-content-between">
-              Passenger {` 0${index + 1}`}
-            </h4>
-
-            <Col>
-              <Form.Group className="mb-3" controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Enter your full name..."
-                  value={element.name || ""}
-                  onChange={(e) => handleChange(index, e)}
-                />
-              </Form.Group>
-            </Col>
-            <Col>
-              {" "}
-              <Form.Group className="mb-3" controlId="mobileNumber">
-                <Form.Label>Mobile Number</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="mobileNumber"
-                  id="mobileNumber"
-                  placeholder="Enter your mobile number.."
-                  value={element.mobileNumber || ""}
-                  onChange={(e) => handleChange(index, e)}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {/* <Form.Group className="mb-3" controlId="idProof">
-                <Form.Label>Upload ID Proof</Form.Label>
-                <Form.Control
-                  type="file"
-                  name="idProof"
-                  id="idProof"
-                  value={element.idProof}
-                  onChange={(e) => handleChange(index, e)}
-                />
-              </Form.Group> */}
-              <Form.Group className="mb-3" controlId="radio">
-                <Form.Label>Gender</Form.Label>
-                <br/>
-                <ButtonGroup>
-                  {radios.map((radio, idx) => (
-                    <ToggleButton
-                      key={idx}
-                      id={`radio-${idx}`}
-                      type="radio"
-                      variant={idx % 2 ? "outline-success" : "outline-danger"}
-                      name="radio"
-                      value={radio.value}
-                      checked={radioValue === radio.value}
-                      onChange={(e) => setRadioValue(e.currentTarget.value)}
+                Passenger {` 0${index + 1}`}
+              </h4>
+            <div className="grid">
+             
+              <div className="col-6">
+                <div className="field">
+                  <span className="p-float-label">
+                    <Controller
+                      name="name"
+                      control={control}
+                      rules={{ required: "Name is required." }}
+                      render={({ field, fieldState }) => (
+                        <InputText
+                          id={field.name}
+                          {...field}
+                          autoFocus
+                          className={classNames({
+                            "p-invalid": fieldState.invalid,
+                          })}
+                        />
+                      )}
+                    />
+                    <label
+                      htmlFor="name"
+                      className={classNames({ "p-error": errors.name })}
                     >
-                      {radio.name}
-                    </ToggleButton>
+                      Full Name*
+                    </label>
+                  </span>
+                  {getFormErrorMessage("name")}
+                </div>
+              </div>
+              <div className="col-6">
+              <div className="field">
+                  <span className="p-float-label">
+                    <Controller
+                      name="mobileNumber"
+                      control={control}
+                      rules={{ required: "Mobile Number is required." }}
+                      render={({ field, fieldState }) => (
+                        // <InputText
+                        //   id={field.name}
+                        //   {...field}
+                        //   autoFocus
+                        //   className={classNames({
+                        //     "p-invalid": fieldState.invalid,
+                        //   })}
+                        // />
+                        <InputNumber  id={field.name} {...field} autoFocus className={classNames({
+                          "p-invalid": fieldState.invalid,
+                        })} />
+                      )}
+                    />
+                    <label
+                      htmlFor="mobileNumber"
+                      className={classNames({ "p-error": errors.mobileNumber })}
+                    >
+                      Mobile Number*
+                    </label>
+                  </span>
+                  {getFormErrorMessage("mobileNumber")}
+                </div>
+              </div>
+            </div>
+            <div className="grid">
+              <div className="col-6">
+                <div className="field-radiobutton">
+                  {radios.map((radio, idx) => (
+                    <>
+                      <RadioButton
+                        inputId={`gender-${idx}`}
+                        name="gender"
+                        value={radio.value}
+                        checked={radioValue === radio.value}
+                        onChange={(e) => setRadioValue(e.currentTarget.value)}
+                      />
+                      <label htmlFor="gender"> {radio.name}</label>
+                    </>
                   ))}
-                </ButtonGroup>
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group className="mb-3" controlId="age">
-                <Form.Label>Age</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="age"
-                  id="age"
-                  placeholder="Enter age.."
-                  value={element.age || ""}
-                  onChange={(e) => handleChange(index, e)}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <hr />
-        </div>
-      ))}
-    
-
-      {/* <Row style={{ marginLeft: "50px", marginRight: "50px" }}>
-        <Button variant="dark" onClick={() => addFormFields()}>
-          Add Passenger
-        </Button>
-      </Row> */}
-    </form>
+                </div>
+              </div>
+              <div className="col-6">
+              <div className="field">
+                  <span className="p-float-label">
+                    <Controller
+                      name="age"
+                      control={control}
+                      rules={{ required: "Age is required." }}
+                      render={({ field, fieldState }) => (
+                        <InputNumber  id={field.name} {...field} autoFocus className={classNames({
+                          "p-invalid": fieldState.invalid,
+                        })} />
+                      )}
+                    />
+                    <label
+                      htmlFor="age"
+                      className={classNames({ "p-error": errors.age })}
+                    >
+                      Age*
+                    </label>
+                  </span>
+                  {getFormErrorMessage("age")}
+                </div>
+              </div>
+            </div>
+            <Divider />
+          </>
+        ))}
+      </form>
+    </>
   );
 };

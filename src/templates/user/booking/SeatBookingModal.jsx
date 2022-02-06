@@ -1,36 +1,35 @@
 import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
 import { Passenger } from "./components/Passenger";
 import { PaymentModal } from "./components/payment/PaymentModal";
-import { BoardingDroppingPoint } from "./components/BoardingDroppingPoint";
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
 
-export const  SeatBookingModal = (props) => {
+export const SeatBookingModal = (props) => {
   const [nextModal, setNextModal] = useState(true);
-  console.log("🚀 ~ file: SeatBookingModal.jsx ~ line 8 ~ SeatBookingModal ~ nextModal", nextModal)
+  const renderFooter = (name) => {
     return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-           Booking
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {
-            nextModal === true ? (<Passenger/>) :(<PaymentModal/>)
-          }
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-          <Button variant="primary" type="button" onClick={()=>setNextModal(false)}>
-          Next →
-        </Button>{" "}
-        </Modal.Footer>
-      </Modal>
+      <div>
+        <Button
+          label="Next →"
+          icon="pi pi-times"
+          onClick={() => setNextModal(false)}
+          className="p-button-text"
+        />
+      </div>
     );
-  }
-  
+  };
+  return (
+    <>
+      <Dialog
+      header="Booking"
+        visible={props.show}
+        onHide={props.onHide}
+        breakpoints={{ "960px": "75vw", "640px": "100vw" }}
+        style={{ width: "50vw" }}
+        footer={renderFooter("displayResponsive")}
+      >
+        {nextModal === true ? <Passenger /> : <PaymentModal />}
+      </Dialog>
+    </>
+  );
+};

@@ -11,11 +11,6 @@ const template = (product) => {
                     <h4 className="mb-1">{product.name}</h4>
                     <h6 className="mt-0 mb-3">${product.price}</h6>
                     <span className={`product-badge status-${product.inventoryStatus.toLowerCase()}`}>{product.inventoryStatus}</span>
-                    {/* <div className="car-buttons mt-5">
-                        <Button icon="pi pi-search" className="p-button p-button-rounded mr-2" />
-                        <Button icon="pi pi-star-fill" className="p-button-success p-button-rounded mr-2" />
-                        <Button icon="pi pi-cog" className="p-button-help p-button-rounded" />
-                    </div> */}
                 </div>
             </div>
         </div>

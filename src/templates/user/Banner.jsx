@@ -130,6 +130,7 @@ const Banner = () => {
                               })}
                               editable
                               showClear
+                              filter='name'
                             />
                           )}
                         />
@@ -172,6 +173,7 @@ const Banner = () => {
                             "p-invalid": fieldState.invalid,
                           })}
                           editable
+                          filter='name'
                           showClear
                         />
                       )}

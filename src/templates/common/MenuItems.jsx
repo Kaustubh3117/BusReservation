@@ -117,22 +117,15 @@ export const MenuItems = () => {
 
       <Divider />
 
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-       
-      </p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
 
       <Divider />
 
-      <p>
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui
-      </p>
+      <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui</p>
 
       <Divider />
 
-      <p>
-        Temporibus autem quibusdam et aut officiis debitis aut rerum
-      </p>
+      <p>Temporibus autem quibusdam et aut officiis debitis aut rerum</p>
 
       <Menu model={items} style={{ width: "90%" }} />
     </>
