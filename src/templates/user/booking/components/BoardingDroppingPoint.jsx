@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setSeatData } from "../../../../stores/users/actions/SeatAction";
 import { TabView, TabPanel } from "primereact/tabview";

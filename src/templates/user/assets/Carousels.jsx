@@ -2,7 +2,7 @@ import { Carousel } from 'primereact/carousel';
 
 const template = (product) => {
     return (
-        <div className="product-item">
+        <div className="product-item text flex justify-content-center">
             <div className="product-item-content">
                 <div className="mb-3">
                     <img src={`images/product/${product.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.name} className="product-image" />

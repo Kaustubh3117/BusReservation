@@ -1,32 +1,66 @@
-import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
+import { Menubar } from 'primereact/menubar';
 const NavigationBar = () => {
+  const items = [
+    {
+        label: 'Manage Booking',
+        icon: 'pi pi-fw pi-ticket',
+        items: [
+            {
+                label: 'Bus Ticket',
+                icon: 'pi pi-fw pi-align-left',
+                command: () => {
+                  window.location.href='/'
+                }},
+            {
+                label: 'Cancel',
+                icon: 'pi pi-fw pi-align-right'
+            },
+            {
+                label: 'Change Travel date',
+                icon: 'pi pi-fw pi-align-center'
+            },
+            {
+                label: 'Show My Ticket',
+                icon: 'pi pi-fw pi-align-justify',
+                command: () => {
+                  window.location.href='/manageBooking'
+                }
+            },
+
+        ]
+    },
+    {
+        label: 'Users',
+        icon: 'pi pi-fw pi-user',
+        items: [
+            {
+                label: 'Login',
+                icon: 'pi pi-fw pi-user-plus',
+                command: () => {
+                  window.location.href='/login'
+                }
+
+            },
+            {
+                label: 'Register',
+                icon: 'pi pi-fw pi-user-minus',
+                command: () => {
+                  window.location.href='/signup'
+                }
+            },
+        ]
+    },
+  
+    {
+        label: 'Logout',
+        icon: 'pi pi-fw pi-power-off'
+    }
+];
+const start = <img alt="logo" src="showcase/images/logo.png" onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} height="40" className="mr-2"></img>;
+    const end = null;
     return (
         <>
-       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-  <Container>
-  <Navbar.Brand href="/">GIYO TRAVELS</Navbar.Brand>
-  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-  <Navbar.Collapse id="responsive-navbar-nav">
-    <Nav className="me-auto">
-      <Nav.Link href="#features">Features</Nav.Link>
-      <Nav.Link href="#pricing">Pricing</Nav.Link>
-      <NavDropdown title="Manage Booking" id="collasible-nav-dropdown">
-        <NavDropdown.Item href="/manageBooking">Bus Ticket</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.2">Cancel</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.3">Change Travel Date</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.4">Show My Ticket</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.5">Email/SMS</NavDropdown.Item>
-      </NavDropdown>
-    </Nav>
-    <Nav>
-      <Nav.Link href="/login">Log In</Nav.Link>
-      <Nav.Link href= '/signup'>
-        Register
-      </Nav.Link>
-    </Nav>
-  </Navbar.Collapse>
-  </Container>
-</Navbar>
+<Menubar model={items} start={start} end={end} />
         </>
     );
   }
