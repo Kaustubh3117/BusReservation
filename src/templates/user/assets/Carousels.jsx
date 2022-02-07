@@ -48,7 +48,7 @@ export const Carousels = () =>{
         {"id": "1009","code": "cm230f032","name": "Gaming Set","description": "Product Description","image": "gaming-set.jpg","price": 299,"category": "Electronics","quantity": 63,"inventoryStatus": "INSTOCK","rating": 3}
     ]
 return (
-    <div className="card">
+    <div className="card bg-cyan-50 mt-5">
     <Carousel value={data} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions}
         itemTemplate={template} />
 </div>

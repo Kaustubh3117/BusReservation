@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { MenuItems } from "../../common/MenuItems";
 import { BreadCrumbs } from "../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
+import { Link } from "react-router-dom";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
@@ -26,19 +27,20 @@ export const AvailableBusses = () => {
 
           <div className="col-8">
             <BusDetailsCard />
+            <a
+          href="/seatchart"
+          id="submit"
+          className="p-button"
+          style={{ float: "right", marginTop:'-47px' }}
+        >
+          View Seats
+        </a>
           </div>
         </div>
       </div>
 
       <div className="col-12">
-        <a
-          href="/seatchart"
-          id="submit"
-          className="btn btn-primary border"
-          style={{ float: "right" }}
-        >
-          View Seats
-        </a>
+        
       </div>
     </>
   );

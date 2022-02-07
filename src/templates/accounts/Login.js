@@ -9,12 +9,13 @@ import { BsFacebook } from "react-icons/bs";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
-import { classNames } from 'primereact/utils';
+import { classNames } from "primereact/utils";
+import { Card } from "primereact/card";
 // react hook form
 import { useForm, Controller } from "react-hook-form";
 
 const Login = ({ login, isAuthenticated }) => {
-const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({});
   const defaultValues = {
     email: "",
     password: "",
@@ -27,14 +28,13 @@ const [formData, setFormData] = useState({});
 
   const onSubmit = (e) => {
     setFormData(e);
-  
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (Object.values(formData).length > 0) {
-    login(formData.email, formData.password);
+      login(formData.email, formData.password);
     }
-}, [login, formData])
+  }, [login, formData]);
 
   const continueWithGoogle = async () => {
     try {
@@ -68,104 +68,119 @@ const [formData, setFormData] = useState({});
 
   return (
     <>
-      <div className="form-account">
-        <div className="flex justify-content-center text-center">
-          <div className="card">
-            <div className="my-5 mx-6">
-            <h5>Login</h5>
-            <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-              <div className="field">
-                <span className="p-float-label p-input-icon-right">
-                  <i className="pi pi-envelope" />
-                  <Controller
-                    name="email"
-                    control={control}
-                    rules={{
-                      required: "Email is required.",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                        message:
-                          "Invalid email address. E.g. example@email.com",
-                      },
-                    }}
-                    render={({ field, fieldState }) => (
-                      <InputText
-                        id={field.name}
-                        {...field}
-                        name="email"
-                        className={classNames({
-                          "p-invalid": fieldState.invalid,
-                        })}
-                      />
-                    )}
-                  />
-                  <label
-                    htmlFor="email"
-                    className={classNames({ "p-error": !!errors.email })}
+      <div className="form-account mt-8">
+        <div className="text-center">
+          <div className="grid">
+            <div className="col-4"></div>
+            <div className="col-4">
+              <Card className="shadow-4">
+                <div className="my-5 mx-6">
+                  <h1>Login</h1>
+                  <span className="text-600 font-medium line-height-3">
+                    Don't have an account?
+                  </span>
+                  <a
+                    className="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+                    href="/signup"
                   >
-                    Email*
-                  </label>
-                </span>
-                {getFormErrorMessage("email")}
-              </div>
-              <div className="field">
-                <span className="p-float-label">
-                  <Controller
-                    name="password"
-                    control={control}
-                    rules={{ required: "Password is required." }}
-                    render={({ field, fieldState }) => (
-                      <Password
-                        id={field.name}
-                        {...field}
-                        toggleMask
-                        name="password"
-                        className={classNames({
-                          "p-invalid": fieldState.invalid,
-                        })}
-                      />
-                    )}
-                  />
-                  <label
-                    htmlFor="password"
-                    className={classNames({ "p-error": errors.password })}
-                  >
-                    Password*
-                  </label>
-                </span>
-                {getFormErrorMessage("password")}
-              </div>
-              <Button type="submit" label="Login" className="mt-2" />
+                    Create today!
+                  </a>
+                  <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
+                    <div className="field mt-4">
+                      <span className="p-float-label p-input-icon-right">
+                        <i className="pi pi-envelope" />
+                        <Controller
+                          name="email"
+                          control={control}
+                          rules={{
+                            required: "Email is required.",
+                            pattern: {
+                              value:
+                                /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                              message:
+                                "Invalid email address. E.g. example@email.com",
+                            },
+                          }}
+                          render={({ field, fieldState }) => (
+                            <InputText
+                              id={field.name}
+                              {...field}
+                              name="email"
+                              className={classNames({
+                                "p-invalid": fieldState.invalid,
+                              })}
+                            />
+                          )}
+                        />
+                        <label
+                          htmlFor="email"
+                          className={classNames({ "p-error": !!errors.email })}
+                        >
+                          Email*
+                        </label>
+                      </span>
+                      {getFormErrorMessage("email")}
+                    </div>
+                    <div className="field mt-4">
+                      <span className="p-float-label">
+                        <Controller
+                          name="password"
+                          control={control}
+                          rules={{ required: "Password is required." }}
+                          render={({ field, fieldState }) => (
+                            <Password
+                              id={field.name}
+                              {...field}
+                              toggleMask
+                              name="password"
+                              className={classNames({
+                                "p-invalid": fieldState.invalid,
+                              })}
+                            />
+                          )}
+                        />
+                        <label
+                          htmlFor="password"
+                          className={classNames({ "p-error": errors.password })}
+                        >
+                          Password*
+                        </label>
+                      </span>
+                      {getFormErrorMessage("password")}
+                    </div>
+                    <Button type="submit" label="Login" className="mt-2" />
 
-              <div className="grid">
-                <div className="col">
-                  <button
-                    className="btn btn-light mt-3 shadow"
-                    onClick={continueWithGoogle}
-                    style={{ width: "100%" }}
-                  >
-                    <FcGoogle size={20} />
-                    <span className="ml-3">Google</span>
-                  </button>
+                    <div className="grid">
+                      <div className="col">
+                        <Button
+                          className="p-button-outlined p-button-secondary mt-3 shadow-2"
+                          onClick={continueWithGoogle}
+                          style={{ width: "100%" }}
+                        >
+                          <FcGoogle size={20} />
+                          <span className="ml-3">Google</span>
+                        </Button>
+                      </div>
+                      <div className="col">
+                        <Button
+                          className="p-button-outlined p-button-secondary mt-3 shadow-2"
+                          onClick={continueWithFacebook}
+                          style={{ width: "100%" }}
+                        >
+                          <BsFacebook size={20} />
+                          <span className="ml-3">Facebook</span>
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      Forgot your Password?
+                      <Link to="/reset-password">Reset Password</Link>
+                    </div>
+                  </form>
                 </div>
-                <div className="col">
-                  <button
-                    className="btn btn-light mt-3 shadow"
-                    onClick={continueWithFacebook}
-                    style={{ width: "100%" }}
-                  >
-                    <BsFacebook size={20} />
-                    Facebook
-                  </button>
-                </div>
-              </div>
-              <div className="mt-3">
-                Forgot your Password?
-                <Link to="/reset-password">Reset Password</Link>
-              </div>
-            </form>
+              </Card>
             </div>
-           
+            <div className="col-4"></div>
           </div>
         </div>
       </div>

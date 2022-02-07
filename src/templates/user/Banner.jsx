@@ -56,7 +56,7 @@ const Banner = () => {
   ];
   return (
     <>
-      <div className="surface-0 text-800">
+      <div className="bg-indigo-200 surface-0 text-800">
         <div className=" p-6 text-center">
           <section>
             <span className="block text-6xl font-bold mb-1">Giyobus</span>
