@@ -1,63 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Navigate  } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { reset_password } from '../../stores/accounts/actions/AuthActions';
+import React, { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { reset_password } from "../../stores/accounts/actions/AuthActions";
 import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-// react hook form
 import { useForm, Controller } from "react-hook-form";
 
 const ResetPassword = ({ reset_password }) => {
-    const [requestSent, setRequestSent] = useState(false);
-    const [formData, setFormData] = useState({});
-    const defaultValues = {
-      email: "",
-    };
-    const {
-      control,
-      formState: { errors },
-      handleSubmit,
-    } = useForm({ defaultValues });
-  
-    const onSubmit = (e) => {
-      setFormData(e);
-    };
-  
-    useEffect(() => {
-      if (Object.values(formData).length > 0) {
-        reset_password(formData.email);
-        setRequestSent(true);
-      }
-    }, [formData]);
-    const getFormErrorMessage = (name) => {
-        return (
-          errors[name] && <small className="p-error">{errors[name].message}</small>
-        );
-      };
-    // const [formData, setFormData] = useState({
-    //     email: ''
-    // });
+  const [requestSent, setRequestSent] = useState(false);
+  const [formData, setFormData] = useState({});
+  const defaultValues = {
+    email: "",
+  };
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ defaultValues });
 
-    // const { email } = formData;
+  const onSubmit = (e) => {
+    setFormData(e);
+  };
 
-    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    // const onSubmit = e => {
-    //     e.preventDefault();
-
-        // reset_password(email);
-        // setRequestSent(true);
-    // };
-
-    if (requestSent) {
-        return <Navigate  to='/' />
+  useEffect(() => {
+    if (Object.values(formData).length > 0) {
+      reset_password(formData.email);
+      setRequestSent(true);
     }
-
+  }, [formData]);
+  const getFormErrorMessage = (name) => {
     return (
-        <>
-        <div className="form-account mt-8">
+      errors[name] && <small className="p-error">{errors[name].message}</small>
+    );
+  };
+
+  if (requestSent) {
+    return <Navigate to="/" />;
+  }
+
+  return (
+    <>
+      <div className="form-account mt-8">
         <div className="text-center">
           <div className="grid">
             <div className="col-4"></div>
@@ -101,7 +86,11 @@ const ResetPassword = ({ reset_password }) => {
                       </span>
                       {getFormErrorMessage("email")}
                     </div>
-                    <Button type="submit" label="Reset Password" className="mt-2" />
+                    <Button
+                      type="submit"
+                      label="Reset Password"
+                      className="mt-2"
+                    />
                   </form>
                 </div>
               </Card>
@@ -110,10 +99,8 @@ const ResetPassword = ({ reset_password }) => {
           </div>
         </div>
       </div>
-        </>
-       
-        
-    );
+    </>
+  );
 };
 
 export default connect(null, { reset_password })(ResetPassword);
