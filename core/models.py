@@ -1,3 +1,93 @@
 from django.db import models
+from BusReservation import settings
 
-# Create your models here.
+class UserInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, null=True)
+    first_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    mobile_number = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.first_name
+
+class Bus(models.Model):
+    bus_name = models.CharField(max_length=50)
+    bus_no = models.CharField(max_length=50)
+    capacity = models.IntegerField(default=48)
+    bus_type = models.CharField(max_length=50, default="Seater", null=True)
+    image = models.ImageField()
+    agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.bus_name
+
+
+class Tripschedule(models.Model):
+    trip_date = models.DateField()
+    departure_time = models.CharField(max_length=20, null=True, blank=True)
+    arrival_time = models.CharField(max_length=20, null=True, blank=True)
+    available_seat = models.IntegerField(default=48, null=True)
+    ticket_sold = models.IntegerField(default=0, null=True)
+    price = models.FloatField()
+    journey_time = models.CharField(max_length=25, null=True)
+    source = models.CharField(max_length=50, null=True)
+    destination = models.CharField(max_length=50, null=True)
+    bus_id = models.ForeignKey(Bus, on_delete=models.SET_NULL, null=True)
+    trip_schedule_agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.bus_id.bus_name
+
+
+class Ticket(models.Model):
+    total_amount = models.FloatField(default=0.0)
+    number_of_seats = models.IntegerField(default=0)
+    seat_no = models.CharField(max_length=100, null=True, blank=True)
+    boarding_point = models.CharField(max_length=50, null=True)
+    dropping_point = models.CharField(max_length=50, null=True)
+    trip_schedule_id = models.ForeignKey(Tripschedule, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    booked = models.BooleanField(default=False)
+    canceled = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.seat_no
+
+
+class BoardingPoint(models.Model):
+    pick_location = models.CharField(max_length=50, null=True)
+    price = models.FloatField(blank=True, null=True)
+    trip_schedule_id = models.ForeignKey(Tripschedule, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.pick_location
+
+
+class DroppingPoint(models.Model):
+    drop_location = models.CharField(max_length=50, null=True)
+    trip_schedule_id = models.ForeignKey(Tripschedule, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.drop_location
+
+
+class Seat(models.Model):
+    seat_no = models.CharField(max_length=100, null=True, blank=False)
+    bus_no = models.ForeignKey(Bus, on_delete=models.SET_NULL, null=True)
+    ticket_id = models.IntegerField()
+
+    def __str__(self):
+        return str(self.seat_no)
+
+
+class Payment(models.Model):
+    stripe_charge_id = models.CharField(max_length=50)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.SET_NULL, blank=True, null=True)
+    amount = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
