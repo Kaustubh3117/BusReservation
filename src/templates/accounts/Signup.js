@@ -23,8 +23,6 @@ const Signup = ({ signup, isAuthenticated }) => {
   const [formData, setFormData] = useState({});
 
   const defaultValues = {
-    first_name: "",
-    last_name: "",
     email: "",
     password: "",
     re_password: "",
@@ -46,8 +44,6 @@ const Signup = ({ signup, isAuthenticated }) => {
       formData.password === formData.re_password
     ) {
       signup(
-        formData.first_name,
-        formData.last_name,
         formData.email,
         formData.password,
         formData.re_password
@@ -129,58 +125,6 @@ const Signup = ({ signup, isAuthenticated }) => {
                     Sign In!
                   </a>
                   <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-                    <div className="field mt-5">
-                      <span className="p-float-label">
-                        <Controller
-                          name="first_name"
-                          control={control}
-                          rules={{ required: "First Name is required." }}
-                          render={({ field, fieldState }) => (
-                            <InputText
-                              id={field.name}
-                              {...field}
-                              autoFocus
-                              className={classNames({
-                                "p-invalid": fieldState.invalid,
-                              })}
-                            />
-                          )}
-                        />
-                        <label
-                          htmlFor="first_name"
-                          className={classNames({ "p-error": errors.name })}
-                        >
-                          First Name*
-                        </label>
-                      </span>
-                      {getFormErrorMessage("first_name")}
-                    </div>
-                    <div className="field mt-5">
-                      <span className="p-float-label">
-                        <Controller
-                          name="last_name"
-                          control={control}
-                          rules={{ required: "Last Name is required." }}
-                          render={({ field, fieldState }) => (
-                            <InputText
-                              id={field.name}
-                              {...field}
-                              autoFocus
-                              className={classNames({
-                                "p-invalid": fieldState.invalid,
-                              })}
-                            />
-                          )}
-                        />
-                        <label
-                          htmlFor="last_name"
-                          className={classNames({ "p-error": errors.name })}
-                        >
-                          Last Name*
-                        </label>
-                      </span>
-                      {getFormErrorMessage("last_name")}
-                    </div>
                     <div className="field mt-5">
                       <span className="p-float-label p-input-icon-right">
                         <i className="pi pi-envelope" />

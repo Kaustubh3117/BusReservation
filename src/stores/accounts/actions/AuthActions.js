@@ -185,14 +185,14 @@ export const login = (email, password) => async dispatch => {
     }
 };
 
-export const signup = (first_name, last_name, email, password, re_password) => async dispatch => {
+export const signup = (email, password, re_password) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
 
-    const body = JSON.stringify({ first_name, last_name, email, password, re_password });
+    const body = JSON.stringify({ email, password, re_password });
     console.log("🚀 ~ file: AuthActions.js ~ line 195 ~ body", body)
 
     try {
@@ -218,7 +218,7 @@ export const verify = (uid, token) => async dispatch => {
     };
 
     const body = JSON.stringify({ uid, token });
-
+console.log('activation..', body)
     try {
         await axios.post(`${backendUrl}/auth/users/activation/`, body, config);
 

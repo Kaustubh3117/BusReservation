@@ -1,5 +1,20 @@
 import { Menubar } from 'primereact/menubar';
-const NavigationBar = () => {
+import { useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { logout } from "../../../stores/accounts/actions/AuthActions";
+const NavigationBar = ({logout}) => {
+    const isAuthenticated = useSelector(
+        (state) => state.auth.isAuthenticated
+      );
+      const userEmail = useSelector(
+        (state) => state.auth.user!==null?state.auth.user.email:null
+      );
+      console.log('isAuthenticated...',isAuthenticated)
+      console.log('userEmail...', userEmail)
+
+      const logoutUser = ()=>{
+          logout()
+      }
   const items = [
     {
         label: 'Manage Booking',
@@ -28,8 +43,27 @@ const NavigationBar = () => {
             },
 
         ]
-    },
-    {
+    }
+  
+];
+
+if(isAuthenticated && userEmail !== null){
+    const authItems = {
+        label: 'Logout',
+        icon: 'pi pi-fw pi-power-off',
+        command: () => {
+            logoutUser();
+          }
+    }
+    const email = {
+        label: userEmail,
+        icon: 'pi pi-fw pi-user'
+    }
+items.push(authItems)
+items.push(email)
+}
+else{
+    const usersRegistration =   {
         label: 'Users',
         icon: 'pi pi-fw pi-user',
         items: [
@@ -49,13 +83,9 @@ const NavigationBar = () => {
                 }
             },
         ]
-    },
-  
-    {
-        label: 'Logout',
-        icon: 'pi pi-fw pi-power-off'
     }
-];
+items.push(usersRegistration)
+}
 const start = <img alt="logo" src="showcase/images/logo.png" onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} height="40" className="mr-2"></img>;
     const end = null
     return (
@@ -65,4 +95,4 @@ const start = <img alt="logo" src="showcase/images/logo.png" onError={(e) => e.t
     );
   }
 
-  export default NavigationBar;
+  export default connect(null, { logout })(NavigationBar);
