@@ -5,12 +5,16 @@ import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-// react hook form
+import { changeKeysFromObject } from "./UserHelper";
+import axios from "axios";
+
 import { useForm, Controller } from "react-hook-form";
 
 const Banner = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
+  const [boardingPointRes, setBoardingPointRes] = useState(null);
+  const [droppingPointRes, setDroppingPointRes] = useState(null);
   const defaultValues = {
     start_location: "",
     end_location: "",
@@ -27,7 +31,30 @@ const Banner = () => {
   };
 
   useEffect(() => {
-    console.log("formData..", formData);
+    axios
+      .get("http://127.0.0.1:8000/api/boarding_point/")
+      .then(function (response) {
+        const resData = changeKeysFromObject(response.data);
+        setBoardingPointRes(resData);
+      })
+      .catch(function (error) {
+        console.log("Boarding Point Error", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/dropping_point/")
+      .then(function (response) {
+        const resData = changeKeysFromObject(response.data);
+        setDroppingPointRes(resData);
+      })
+      .catch(function (error) {
+        console.log("dropping error...", error);
+      });
+  }, []);
+
+  useEffect(() => {
     if (Object.values(formData).length > 0) {
       navigate("/buslist", {
         state: {
@@ -36,10 +63,8 @@ const Banner = () => {
           date: formData.date,
         },
       });
-     
     }
   }, [navigate, formData]);
-
 
   const getFormErrorMessage = (name) => {
     return (
@@ -47,13 +72,6 @@ const Banner = () => {
     );
   };
 
-  const cities = [
-    { name: "New York", code: "NY" },
-    { name: "Rome", code: "RM" },
-    { name: "London", code: "LDN" },
-    { name: "Istanbul", code: "IST" },
-    { name: "Paris", code: "PRS" },
-  ];
   return (
     <>
       <div className="bg-indigo-200 surface-0 text-800">
@@ -62,7 +80,7 @@ const Banner = () => {
             <span className="block text-6xl font-bold mb-1">Giyobus</span>
             <div className="text-6xl text-primary font-bold mb-3">
               your visitors deserve to see
-            </div>  
+            </div>
             <p className="mt-0 mb-4 text-700 line-height-3">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -87,7 +105,7 @@ const Banner = () => {
                                 id={field.name}
                                 value={field.value}
                                 onChange={(e) => field.onChange(e.value)}
-                                options={cities}
+                                options={boardingPointRes}
                                 optionLabel="name"
                                 className={classNames({
                                   "p-invalid": fieldState.invalid,
@@ -123,7 +141,7 @@ const Banner = () => {
                             id={field.name}
                             value={field.value}
                             onChange={(e) => field.onChange(e.value)}
-                            options={cities}
+                            options={droppingPointRes}
                             optionLabel="name"
                             className={classNames({
                               "p-invalid": fieldState.invalid,
