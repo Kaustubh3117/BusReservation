@@ -17,12 +17,24 @@ class TicketAdmin(admin.ModelAdmin):
         'seat_no',
     ]
 
+class BoardingPointAdmin(admin.ModelAdmin):
+    list_display = [
+        'pick_location',
+        'trip_schedule_id',
+    ]
+
+class DroppingPointAdmin(admin.ModelAdmin):
+    list_display = [
+        'drop_location',
+        'trip_schedule_id',
+    ]
+
 
 # Register your models here.
 admin.site.register(Bus)
 admin.site.register(Tripschedule)
-admin.site.register(BoardingPoint)
-admin.site.register(DroppingPoint)
+admin.site.register(BoardingPoint, BoardingPointAdmin)
+admin.site.register(DroppingPoint, DroppingPointAdmin)
 admin.site.register(Seat)
 admin.site.register(Ticket, TicketAdmin)
 admin.site.register(UserInfo)

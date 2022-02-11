@@ -4,10 +4,9 @@ const initialState = {
    seatData:null,
   };
 
+  // eslint-disable-next-line import/no-anonymous-default-export
   export default function(state = initialState, action) {
-    console.log("🚀 ~ file: SeatReducer.js ~ line 8 ~ function ~ action", action)
     const { type, payload } = action;
-    console.log("🚀 ~ file: SeatReducer.js ~ line 10 ~ function ~ payload", payload)
     switch(type) {
         case SET_SEAT_DATA:
             return {

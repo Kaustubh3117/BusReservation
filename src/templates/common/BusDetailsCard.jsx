@@ -1,14 +1,15 @@
 import { FaLightbulb, FaBriefcaseMedical, FaPhoneVolume } from "react-icons/fa";
 import { Card } from "primereact/card";
 
-export const BusDetailsCard = () => {
+export const BusDetailsCard = (props) => {
+  console.log("props: ", props);
   return (
     <>
-      <Card className="shadow-5" style={{ width: "100%" }}>
+      <Card className="shadow-5 mt-4" style={{ width: "100%" }}>
         <div className="grid">
           <div className="col-2">
             <img
-              src=""
+              src={props.props.bus_id.image}
               className="mobile_image"
               height="100px"
               width="100px"
@@ -20,9 +21,9 @@ export const BusDetailsCard = () => {
               <div className="col-3">
             
                 <ul style={{ listStyleType: "none" }}>
-                  <li className="text-xl font-medium">Ganesh Travels</li>
+                  <li className="text-xl font-medium">{props.props.bus_id.bus_name}</li>
                   <li>From : Karad</li>
-                  <li>A/C Sleeper</li>
+                  <li>{props.props.bus_id.bus_type}</li>
                   <li>Amenities</li>
                 </ul>
               </div>
@@ -31,19 +32,19 @@ export const BusDetailsCard = () => {
               
                 <ul style={{ listStyleType: "none" }}>
                   <li>To: Pune</li>
-                  <li>Departure time: 1:00 p.m</li>
-                  <li>Arrival time: 4:00 p.m</li>
-                  <li>Time: 3 hrs</li>
+                  <li>Departure time: {props.props.departure_time}</li>
+                  <li>Arrival time:{props.props.arrival_time}</li>
+                  <li>Time: {props.props.journey_time}</li>
                 </ul>
               </div>
 
               <div className="col-3">
               
                 <ul style={{ listStyleType: "none" }}>
-                  <li>Date: 12/11/2022</li>
-                  <li>INR: 100</li>
-                  <li>Bus No: Mh 54 ba 2342</li>
-                  <li>Available Seats: 12</li>
+                  <li>Date: {props.props.trip_date}</li>
+                  <li>INR: {props.props.price}</li>
+                  <li>Bus No:{props.props.bus_id.bus_no}</li>
+                  <li>Available Seats: {props.props.available_seat}</li>
                 </ul>
               </div>
             </div>

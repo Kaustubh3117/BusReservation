@@ -47,6 +47,7 @@ const Banner = () => {
       .get("http://127.0.0.1:8000/api/dropping_point/")
       .then(function (response) {
         const resData = changeKeysFromObject(response.data);
+        console.log("resData: ", resData);
         setDroppingPointRes(resData);
       })
       .catch(function (error) {

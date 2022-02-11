@@ -11,3 +11,16 @@ export const changeKeysFromObject = (data) =>{
     }
     return data
 }
+
+export const changeDateFormat = (date) =>{
+    const year = new Date(date).getFullYear();
+    const month = new Date(date).getMonth() + 1;
+    const day = new Date(date).getDate();
+  
+    const monthWithZero = (month < 10 ? '0' : '') + month;
+    const dayWithZero = (day < 10 ? '0' : '') + day;
+  
+  const finalDate = year+'-'+monthWithZero+'-'+dayWithZero;
+  console.log("finalDate: ", finalDate);
+  return finalDate
+}
