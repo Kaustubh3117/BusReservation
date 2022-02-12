@@ -22,7 +22,7 @@ export const BusDetailsCard = (props) => {
             
                 <ul style={{ listStyleType: "none" }}>
                   <li className="text-xl font-medium">{props.props.bus_id.bus_name}</li>
-                  <li>From : Karad</li>
+                  <li>From : {props.props.fromLocation}</li>
                   <li>{props.props.bus_id.bus_type}</li>
                   <li>Amenities</li>
                 </ul>
@@ -31,7 +31,7 @@ export const BusDetailsCard = (props) => {
               <div className="col-3">
               
                 <ul style={{ listStyleType: "none" }}>
-                  <li>To: Pune</li>
+                  <li>To: {props.props.toLocation}</li>
                   <li>Departure time: {props.props.departure_time}</li>
                   <li>Arrival time:{props.props.arrival_time}</li>
                   <li>Time: {props.props.journey_time}</li>

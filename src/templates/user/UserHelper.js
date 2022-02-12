@@ -1,6 +1,7 @@
+import uniqBy from 'lodash/uniqBy';
+ 
 export const changeKeysFromObject = (data) =>{
-    console.log("data: ", data);
-    if( data !== undefined && data.length > 0){
+    if(data !== undefined && data !== null && data.length > 0){
         const resData = data.map((elm) => (
             {
             name:  elm.drop_location !== undefined ? elm.drop_location : elm.pick_location,
@@ -23,4 +24,17 @@ export const changeDateFormat = (date) =>{
   const finalDate = year+'-'+monthWithZero+'-'+dayWithZero;
   console.log("finalDate: ", finalDate);
   return finalDate
+}
+
+export const removeDuplicateArrayObject = (arr, type)=>{
+  let data;
+  if(arr !== undefined && arr !== null && arr.length > 0){
+    if(type === 'boarding_point'){
+       data = uniqBy(arr, 'pick_location');
+    }
+    if(type === 'dropping_point'){
+       data = uniqBy(arr, 'drop_location');
+    }
+  return data
+  }
 }

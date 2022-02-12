@@ -17,19 +17,32 @@ dispatch( {
 }
 
 export const setBoardingPointData = () => async dispatch => {
-    console.log("setBoardingPointData: ");
     try {
         const res = await axios.get(`${backendUrl}/api/boarding_point/`)
         console.log("res: ", res);
 
-        // if (res.data !== null) {
+        if (res.data !== null) {
             dispatch({
                 type: REQUEST_ADD_BOARDINGPOINT_DATA,
                 payload:res.data
             });
-        // }
+        }
     } catch (err) {
         ToastMessage(ERROR, "Something Went Wrong While Fecthing Data")
     }
     }
+
+    export const setDroppingPointData = () => async dispatch => {
+        try {
+            const res = await axios.get(`${backendUrl}/api/dropping_point/`)
+            if (res.data !== null) {
+                dispatch({
+                    type: REQUEST_ADD_DROPPINGPOINT_DATA,
+                    payload:res.data
+                });
+            }
+        } catch (err) {
+            ToastMessage(ERROR, "Something Went Wrong While Fecthing Data")
+        }
+        }
 

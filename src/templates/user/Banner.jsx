@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 // prime React
 import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-import { changeKeysFromObject } from "./UserHelper";
+import { changeKeysFromObject, removeDuplicateArrayObject } from "./UserHelper";
 import axios from "axios";
-import { setBoardingPointData } from "../../stores/users/actions/UserAction";
+import {
+  setBoardingPointData,
+  setDroppingPointData,
+} from "../../stores/users/actions/UserAction";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -17,13 +20,18 @@ const Banner = () => {
   const [formData, setFormData] = useState({});
   const [boardingPointRes, setBoardingPointRes] = useState(null);
   const [droppingPointRes, setDroppingPointRes] = useState(null);
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+  const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
+  const droppingPoint = useSelector((state) => state.user_data.droppingPoint);
+
+
+
   const defaultValues = {
     start_location: "",
     end_location: "",
     date: "",
   };
+
   const {
     control,
     formState: { errors },
@@ -35,30 +43,9 @@ const Banner = () => {
   };
 
   useEffect(() => {
-    dispatch(setBoardingPointData())
-    axios
-      .get("http://127.0.0.1:8000/api/boarding_point/")
-      .then(function (response) {
-        const resData = changeKeysFromObject(response.data);
-        setBoardingPointRes(resData);
-      })
-      .catch(function (error) {
-        console.log("Boarding Point Error", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/dropping_point/")
-      .then(function (response) {
-        const resData = changeKeysFromObject(response.data);
-        console.log("resData: ", resData);
-        setDroppingPointRes(resData);
-      })
-      .catch(function (error) {
-        console.log("dropping error...", error);
-      });
-  }, []);
+    dispatch(setBoardingPointData());
+    dispatch(setDroppingPointData());
+  }, [])
 
   useEffect(() => {
     if (Object.values(formData).length > 0) {
@@ -71,6 +58,15 @@ const Banner = () => {
       });
     }
   }, [navigate, formData]);
+
+  useEffect(()=>{
+    const filteredBpArray = removeDuplicateArrayObject(boardingPoint, 'boarding_point')
+    const filteredDpArray = removeDuplicateArrayObject(droppingPoint, 'dropping_point')
+    const resBpData = changeKeysFromObject(filteredBpArray)
+    setBoardingPointRes(resBpData);
+    const resDpData = changeKeysFromObject(filteredDpArray);
+    setDroppingPointRes(resDpData);
+  },[boardingPoint, droppingPoint]);
 
   const getFormErrorMessage = (name) => {
     return (
