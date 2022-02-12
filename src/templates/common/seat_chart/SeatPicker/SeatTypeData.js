@@ -1,5 +1,5 @@
 export const SeatTypeData = (seatType) =>{
-    let rows = null
+    let rows = []
     if(seatType === 'seater'){
         const seater =[
             [

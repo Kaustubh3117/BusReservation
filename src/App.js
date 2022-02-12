@@ -9,7 +9,7 @@ import "primeflex/primeflex.min.css"
 
 import Home from './templates/user/Home';
 import {AvailableBusses} from './templates/user/available_busses/AvailableBusses';
-import SeatChart from './templates/user/seats/SeatChart';
+import { ViewSeat } from './templates/user/seats/ViewSeat';
 
 import Login from './templates/accounts/Login';
 import Signup from './templates/accounts/Signup';
@@ -35,7 +35,7 @@ const App = () => (
                     <Route exact path='*' element={<PageNotFound/>} />
                     <Route exact path='/' element={<Home/>} />
                     <Route exact path='/buslist' element={<AvailableBusses/>} />
-                    <Route exact path='/seatchart' element={<SeatChart/>} />
+                    <Route exact path='/seat/:id' element={<ViewSeat/>} />
                     <Route exact path='/manageBooking' element={<ManageBooking/>} />
                     
                     <Route exact path='/login' element={<Login/>} />

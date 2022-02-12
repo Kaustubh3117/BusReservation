@@ -1,28 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setSeatData } from "../../../stores/users/actions/UserAction";
-import SeatPicker from "../../common/seat_chart/index";
-import "../../common/seat_chart/seat_style/seat_chart.css";
-import { SeatTypeData } from "../../common/seat_chart/SeatPicker/SeatTypeData";
-// import { Button, Col, Card } from "react-bootstrap";
-import { SeatBookingModal } from "../booking/SeatBookingModal";
+import { setSeatData } from "../../../../stores/users/actions/UserAction";
+import SeatPicker from "../../../common/seat_chart/index";
+import "../../../common/seat_chart/seat_style/seat_chart.css";
+import { SeatTypeData } from "../../../common/seat_chart/SeatPicker/SeatTypeData";
+import { SeatBookingModal } from "../../booking/SeatBookingModal";
 import { GiSteeringWheel } from "react-icons/gi";
-import { BoardingDroppingPoint } from "../booking/components/BoardingDroppingPoint";
+import { BoardingDroppingPoint } from "../../booking/components/BoardingDroppingPoint";
 import { Button } from "primereact/button";
-import { Card } from "primereact/card";
-import { SeatColorDetails } from "./components/SeatColorDetails";
-import { SeatDetailsConfirmation } from "./components/SeatDetailsConfirmation";
-import { SeatSelectionAndPricing } from "./components/SeatSelectionAndPricing";
+import { SeatColorDetails } from "./SeatColorDetails";
+import { SeatDetailsConfirmation } from "./SeatDetailsConfirmation";
+import { SeatSelectionAndPricing } from "./SeatSelectionAndPricing";
+
 
 class SeatChart extends Component {
   state = {
     loading: false,
     price: 0,
+    totalPrice:0,
     modalShow: false,
     selectedSeatCount: 0,
     seatNumber: [],
     showBpDpDetails: false,
   };
+
+  componentDidMount(){
+    this.setState({price:this.props.tripSchedule.price})
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.props.setSeatData({ ...this.props.seatData, seatData: this.state });
@@ -83,9 +88,9 @@ class SeatChart extends Component {
       selectedSeatCount: this.state.selectedSeatCount + 1,
     });
 
-    const price = 100;
+    const price = this.state.price;
     this.setState({
-      price: this.state.price + price,
+      totalPrice: this.state.totalPrice + price,
       seatNumber: [...this.state.seatNumber, seatNumber],
     });
   };
@@ -97,32 +102,37 @@ class SeatChart extends Component {
       this.state.seatNumber.splice(index, 1);
     }
 
-    const price = 100;
+    const price = this.state.price;
     let selectedSeat = this.setState({
-      price: this.state.price - price,
+      totalPrice: this.state.totalPrice - price,
       selectedSeatCount: this.state.selectedSeatCount - 1,
     });
   };
 
   render() {
-    //static values for radio button afterwards set database values
-    const boardingPointRadio = [
-      { name: "Karad Bus Stand", value: "1" },
-      { name: "Kolhapur Naka", value: "2" },
-    ];
+    console.log("this.props.id: ", this.props.tripSchedule);
+    console.log("this.props.bpDpArray: ", this.props.bpDpArray);
 
-    const droppingPointRadio = [
-      { name: "Swargate", value: "1" },
-      { name: "Katraj", value: "2" },
-    ];
+    // console.log("this.props.dpArray: ", this.props.dpArray);
 
-    const bpDpVals = {
-      boardingPointProps: boardingPointRadio,
-      droppingPointProps: droppingPointRadio,
-    };
+    // //static values for radio button afterwards set database values
+    // const boardingPointRadio = [
+    //   { name: "Karad Bus Stand", value: "1" },
+    //   { name: "Kolhapur Naka", value: "2" },
+    // ];
+
+    // const droppingPointRadio = [
+    //   { name: "Swargate", value: "1" },
+    //   { name: "Katraj", value: "2" },
+    // ];
+
+    // const bpDpVals = {
+    //   boardingPointProps: boardingPointRadio,
+    //   droppingPointProps: droppingPointRadio,
+    // };
 
     //send bus types
-    const rows = SeatTypeData("sleeper");
+    const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type);
 
     const { loading } = this.state;
 
@@ -179,7 +189,7 @@ class SeatChart extends Component {
                     </>
                   ) : this.state.selectedSeatCount > 0 ? (
                     <>
-                      <BoardingDroppingPoint bpDpVals={bpDpVals} />
+                      <BoardingDroppingPoint bpDpVals={this.props.bpDpArray} />
                       <hr />
                     </>
                   ) : null}

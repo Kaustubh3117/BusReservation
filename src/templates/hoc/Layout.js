@@ -2,11 +2,14 @@ import React, { useEffect } from 'react';
 import Navbar from '../user/assets/NavigationBar';
 import { connect } from 'react-redux';
 import { checkAuthenticated, load_user } from '.././../stores/accounts/actions/AuthActions';
+import { setBoardingPointData, setDroppingPointData } from '../../stores/users/actions/UserAction';
 
-const Layout = ({ checkAuthenticated, load_user, children }) => {
+const Layout = ({ checkAuthenticated, load_user, setBoardingPointData, setDroppingPointData, children }) => {
     useEffect(() => {
         checkAuthenticated();
         load_user();
+        setBoardingPointData();
+        setDroppingPointData();
     }, []);
 
     return (
@@ -17,4 +20,4 @@ const Layout = ({ checkAuthenticated, load_user, children }) => {
     );
 };
 
-export default connect(null, { checkAuthenticated, load_user })(Layout);
+export default connect(null, { checkAuthenticated, load_user, setBoardingPointData, setDroppingPointData })(Layout);

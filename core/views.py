@@ -49,4 +49,15 @@ class FilterTripSchedule(generics.ListAPIView):
         else:
             return Response({"message": "No Bus Available"}, status=HTTP_400_BAD_REQUEST)
 
+class SeatView(generics.ListAPIView):
+    serializer_class = TripscheduleSerializer
+    queryset = Tripschedule.objects.all()
+    def get_queryset(self):
+        trip_schedule_id = self.kwargs['trip_schedule_id']
+        obj_list = self.queryset.filter(pk = trip_schedule_id)
+        if obj_list is not None:
+            return obj_list
+        else:
+            return Response({"message": "No Schedule Available"}, status=HTTP_400_BAD_REQUEST)
+
 

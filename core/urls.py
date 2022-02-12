@@ -5,6 +5,7 @@ from .views import (
    DroppingPointView,
 #    filter_trip_schedule,
    FilterTripSchedule,
+   SeatView
 )
 app_name = 'core'
 
@@ -13,4 +14,6 @@ urlpatterns = [
     path('dropping_point/', DroppingPointView.as_view(), name='dropping_point'),
     # path('filter_trip_schedule/<str:boarding_point>/<str:dropping_point>/<str:date>/',  filter_trip_schedule, name='filter_trip_schedule'),
     path('filter_trip_schedule/<str:boarding_point>/<str:dropping_point>/<str:date>', FilterTripSchedule.as_view(), name='filter_trip_schedule'),
+    path('view_seat/<int:trip_schedule_id>', SeatView.as_view(), name='view_seat'),
+
 ]

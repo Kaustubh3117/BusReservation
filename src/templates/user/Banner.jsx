@@ -7,11 +7,11 @@ import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { changeKeysFromObject, removeDuplicateArrayObject } from "./UserHelper";
-import axios from "axios";
-import {
-  setBoardingPointData,
-  setDroppingPointData,
-} from "../../stores/users/actions/UserAction";
+// import axios from "axios";
+// import {
+//   setBoardingPointData,
+//   setDroppingPointData,
+// } from "../../stores/users/actions/UserAction";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -20,7 +20,7 @@ const Banner = () => {
   const [formData, setFormData] = useState({});
   const [boardingPointRes, setBoardingPointRes] = useState(null);
   const [droppingPointRes, setDroppingPointRes] = useState(null);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
   const droppingPoint = useSelector((state) => state.user_data.droppingPoint);
 
@@ -42,10 +42,10 @@ const Banner = () => {
     setFormData(e);
   };
 
-  useEffect(() => {
-    dispatch(setBoardingPointData());
-    dispatch(setDroppingPointData());
-  }, [])
+  // useEffect(() => {
+  //   dispatch(setBoardingPointData());
+  //   dispatch(setDroppingPointData());
+  // }, [])
 
   useEffect(() => {
     if (Object.values(formData).length > 0) {
