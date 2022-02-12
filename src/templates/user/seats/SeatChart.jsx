@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setSeatData } from "../../../stores/users/actions/SeatAction";
+import { setSeatData } from "../../../stores/users/actions/UserAction";
 import SeatPicker from "../../common/seat_chart/index";
 import "../../common/seat_chart/seat_style/seat_chart.css";
 import { SeatTypeData } from "../../common/seat_chart/SeatPicker/SeatTypeData";
@@ -226,7 +226,7 @@ class SeatChart extends Component {
 //get redux state here and pass it as props in class e.g this.props.isAuthenticated
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  seatData: state.seat_data.seatData,
+  seatData: state.user_data.seatData,
 });
 
 // action in last second parenthesis

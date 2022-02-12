@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 // prime React
 import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
@@ -7,6 +8,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { changeKeysFromObject } from "./UserHelper";
 import axios from "axios";
+import { setBoardingPointData } from "../../stores/users/actions/UserAction";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -15,6 +17,8 @@ const Banner = () => {
   const [formData, setFormData] = useState({});
   const [boardingPointRes, setBoardingPointRes] = useState(null);
   const [droppingPointRes, setDroppingPointRes] = useState(null);
+  const dispatch = useDispatch()
+  
   const defaultValues = {
     start_location: "",
     end_location: "",
@@ -31,6 +35,7 @@ const Banner = () => {
   };
 
   useEffect(() => {
+    dispatch(setBoardingPointData())
     axios
       .get("http://127.0.0.1:8000/api/boarding_point/")
       .then(function (response) {

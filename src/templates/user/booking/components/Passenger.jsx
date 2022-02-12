@@ -27,7 +27,7 @@ export const Passenger = () => {
     setFormData(e);
   };
   const seatCount = useSelector(
-    (state) => state.seat_data.seatData.seatData.seatNumber
+    (state) => state.user_data.seatData.seatData.seatNumber
   );
 
   const getFormErrorMessage = (name) => {

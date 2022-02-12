@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import auth from './accounts/reducers/AuthReducer';
-import seat_data from './users/reducer/SeatReducer'
+import user_data from './users/reducer/UserReducer'
 
 export default combineReducers({
     auth,
-    seat_data
+    user_data
 });

@@ -6,8 +6,10 @@ import { MenuItems } from "../../common/MenuItems";
 import { BreadCrumbs } from "../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
 import { changeDateFormat } from "../UserHelper";
+import { useNavigate } from "react-router-dom";
 
 export const AvailableBusses = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const { start_location, end_location, date } = state;
   const [availableBusses, setAvailableBusses] = useState(null);
@@ -26,6 +28,16 @@ export const AvailableBusses = () => {
         console.log("tripschdule error...", error);
       });
   }, []);
+
+  // const onClick= () =>{
+  //   navigate("/buslist", {
+  //     state: {
+  //       trip_schedule_id: '',
+  //       price: '',
+  //       bus_type: '',
+  //     },
+  //   });
+  // }
 
   return (
     <>

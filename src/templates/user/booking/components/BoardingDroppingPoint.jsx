@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSeatData } from "../../../../stores/users/actions/SeatAction";
+import { setSeatData } from "../../../../stores/users/actions/UserAction";
 import { TabView, TabPanel } from "primereact/tabview";
 import { RadioButton } from "primereact/radiobutton";
 
 export const BoardingDroppingPoint = (props) => {
-  const reduxSeatDataState = useSelector((state) => state.seat_data.seatData);
+  const reduxSeatDataState = useSelector((state) => state.user_data.seatData);
   const [activeIndex, setActiveIndex] = useState(0);
   let checkIfBpPresent = false;
   let checkIfDpPresent = false;
@@ -52,7 +52,7 @@ export const BoardingDroppingPoint = (props) => {
 };
 
 const RadioButtonValues = (values, type) => {
-  const reduxSeatDataState = useSelector((state) => state.seat_data.seatData);
+  const reduxSeatDataState = useSelector((state) => state.user_data.seatData);
   const dispatch = useDispatch();
   const [boardingPointRadio, setBoardingPointRadio] = useState({
     name: "",

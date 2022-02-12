@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 export const SeatDetailsConfirmation = () =>{
-    const point = useSelector(state => state.seat_data.seatData.point);
+    const point = useSelector(state => state.user_data.seatData.point);
     return (
         <>
           <span className="text-xl font-medium">
