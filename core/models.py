@@ -4,9 +4,11 @@ from BusReservation import settings
 class UserInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, null=True)
-    first_name = models.CharField(max_length=50, null=True, blank=True)
-    last_name = models.CharField(max_length=50, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
     mobile_number = models.CharField(max_length=50, null=True, blank=True)
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    age = models.IntegerField()
+
 
     def __str__(self):
         return self.first_name

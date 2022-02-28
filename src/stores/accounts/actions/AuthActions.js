@@ -23,6 +23,7 @@ import {
 import { backendUrl } from '../../../environment/development';
 import { ToastMessage } from '../../../middleware/ToastMessage';
 import { SUCCESS, ERROR } from '../../../constants/common/CrudMessageEnum';
+import { config } from '../../../environment/service';
 
 export const load_user = () => async dispatch => {
     if (localStorage.getItem('access')) {
@@ -159,11 +160,11 @@ export const checkAuthenticated = () => async dispatch => {
 };
 
 export const login = (email, password) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
 
     const body = JSON.stringify({ email, password });
 
@@ -186,15 +187,13 @@ export const login = (email, password) => async dispatch => {
 };
 
 export const signup = (email, password, re_password) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
 
     const body = JSON.stringify({ email, password, re_password });
-    console.log("🚀 ~ file: AuthActions.js ~ line 195 ~ body", body)
-
     try {
         const res = await axios.post(`${backendUrl}/auth/users/`, body, config);
 
@@ -211,11 +210,11 @@ export const signup = (email, password, re_password) => async dispatch => {
 };
 
 export const verify = (uid, token) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
 
     const body = JSON.stringify({ uid, token });
 console.log('activation..', body)
@@ -234,11 +233,11 @@ console.log('activation..', body)
 };
 
 export const reset_password = (email) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
 
     const body = JSON.stringify({ email });
 
@@ -257,11 +256,11 @@ export const reset_password = (email) => async dispatch => {
 };
 
 export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
 
     const body = JSON.stringify({ uid, token, new_password, re_new_password });
 

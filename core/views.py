@@ -1,11 +1,14 @@
 import json
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import BoardingPointSerializer, DroppingPointSerializer, TripscheduleSerializer
+from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TicketSerializer, TripscheduleSerializer, UserInfoSerializer
 from .models import BoardingPoint, DroppingPoint, Tripschedule
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
+from django.http import Http404
+from rest_framework import status
 
 class BoardingPointView(generics.ListCreateAPIView):
     queryset = BoardingPoint.objects.all()
@@ -60,4 +63,13 @@ class SeatView(generics.ListAPIView):
         else:
             return Response({"message": "No Schedule Available"}, status=HTTP_400_BAD_REQUEST)
 
-
+class PassengerView(APIView):
+     def post(self, request, format=None):
+        print('data........******', request.data)
+        ticket_serializer = TicketSerializer(data=request.data)
+        seat_serializer = SeatSerializer(data=request.data)
+        user_info_serializer = UserInfoSerializer(data=request.data)
+        if ticket_serializer.is_valid():
+            ticket_serializer.save()
+            return Response(ticket_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

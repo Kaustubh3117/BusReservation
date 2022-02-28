@@ -1,9 +1,10 @@
-import { SET_SEAT_DATA, REMOVE_SEAT_DATA, REQUEST_ADD_DROPPINGPOINT_DATA, REQUEST_ADD_BOARDINGPOINT_DATA } from "../../../constants/users/user_constants";
+import { SET_SEAT_DATA, REMOVE_SEAT_DATA, REQUEST_ADD_DROPPINGPOINT_DATA, REQUEST_ADD_BOARDINGPOINT_DATA, SET_PASSENGER_DATA } from "../../../constants/users/user_constants";
 
 const initialState = {
    seatData:null,
    boardingPoint:null,
-   droppingPoint:null
+   droppingPoint:null,
+   passengerData:null
   };
 
   // eslint-disable-next-line import/no-anonymous-default-export
@@ -24,6 +25,11 @@ const initialState = {
             return{
                 ...state,
                 droppingPoint:payload
+            }
+        case SET_PASSENGER_DATA:
+            return{
+                ...state,
+                passengerData:payload
             }
         default:
                 return state;

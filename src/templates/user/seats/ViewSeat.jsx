@@ -26,14 +26,9 @@ export const ViewSeat = () => {
     droppingPointProps: droppingPointRadio,
   };
 
-  console.log("bpDpVals: ", bpDpVals);
-
-
 
   useEffect(() => {
     axios.get(`${backendUrl}/api/view_seat/${id}`).then(function (response) {
-      console.log("view seat: ", response.data);
-
       setTripSchedule(response.data);
     });
   }, []);

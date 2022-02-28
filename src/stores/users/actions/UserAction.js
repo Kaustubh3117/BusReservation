@@ -1,48 +1,71 @@
 import {
-    SET_SEAT_DATA,
-    REMOVE_SEAT_DATA,
-    REQUEST_ADD_BOARDINGPOINT_DATA,
-    REQUEST_ADD_DROPPINGPOINT_DATA
-} from '../../../constants/users/user_constants';
+  SET_SEAT_DATA,
+  REMOVE_SEAT_DATA,
+  REQUEST_ADD_BOARDINGPOINT_DATA,
+  REQUEST_ADD_DROPPINGPOINT_DATA,
+  SET_PASSENGER_DATA,
+  SAVE_PASSENGER_DATA,
+} from "../../../constants/users/user_constants";
+import { config } from "../../../environment/service";
 import axios from "axios";
-import { backendUrl } from '../../../environment/development';
-import { ToastMessage } from '../../../middleware/ToastMessage';
-import { SUCCESS, ERROR } from '../../../constants/common/CrudMessageEnum';
+import { backendUrl } from "../../../environment/development";
+import { ToastMessage } from "../../../middleware/ToastMessage";
+import { SUCCESS, ERROR } from "../../../constants/common/CrudMessageEnum";
 
-export const setSeatData = (payload) => async dispatch => {
-dispatch( {
+export const setBoardingPointData = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`${backendUrl}/api/boarding_point/`);
+    console.log("res: ", res);
+
+    if (res.data !== null) {
+      dispatch({
+        type: REQUEST_ADD_BOARDINGPOINT_DATA,
+        payload: res.data,
+      });
+    }
+  } catch (err) {
+    ToastMessage(ERROR, "Something Went Wrong While Fecthing Data");
+  }
+};
+
+export const setDroppingPointData = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`${backendUrl}/api/dropping_point/`);
+    if (res.data !== null) {
+      dispatch({
+        type: REQUEST_ADD_DROPPINGPOINT_DATA,
+        payload: res.data,
+      });
+    }
+  } catch (err) {
+    ToastMessage(ERROR, "Something Went Wrong While Fecthing Data");
+  }
+};
+
+export const setSeatData = (payload) => async (dispatch) => {
+  dispatch({
     type: SET_SEAT_DATA,
-    payload
-})
-}
+    payload,
+  });
+};
 
-export const setBoardingPointData = () => async dispatch => {
-    try {
-        const res = await axios.get(`${backendUrl}/api/boarding_point/`)
-        console.log("res: ", res);
+export const setPassengerData = (payload) => async (dispatch) => {
+    dispatch({
+        type: SET_PASSENGER_DATA,
+        payload,
+      });
+};
 
-        if (res.data !== null) {
-            dispatch({
-                type: REQUEST_ADD_BOARDINGPOINT_DATA,
-                payload:res.data
-            });
-        }
-    } catch (err) {
-        ToastMessage(ERROR, "Something Went Wrong While Fecthing Data")
-    }
-    }
+export const savePassengerData = (payload) => async (dispatch) => {
+  const body = JSON.stringify({ payload });
+  console.log("body: ", body);
 
-    export const setDroppingPointData = () => async dispatch => {
-        try {
-            const res = await axios.get(`${backendUrl}/api/dropping_point/`)
-            if (res.data !== null) {
-                dispatch({
-                    type: REQUEST_ADD_DROPPINGPOINT_DATA,
-                    payload:res.data
-                });
-            }
-        } catch (err) {
-            ToastMessage(ERROR, "Something Went Wrong While Fecthing Data")
-        }
-        }
+  try {
+      const res = await axios.post(`${backendUrl}/api/passenger_data/`, body, config);
+      console.log("res: ", res);
 
+  } catch (err) {  
+      console.log(err.data)
+      ToastMessage(ERROR, 'hey')
+  }
+};

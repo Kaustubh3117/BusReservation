@@ -25,3 +25,18 @@ class TripscheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tripschedule
         fields = ['id', 'trip_date', 'departure_time', 'arrival_time', 'available_seat', 'ticket_sold', 'price', 'journey_time', 'status', 'bus_id']
+
+class SeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seat
+        fields = '__all__'
+
+class TicketSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Ticket
+        fields = '__all__'
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = '__all__'

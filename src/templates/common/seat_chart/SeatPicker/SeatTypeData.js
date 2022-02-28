@@ -1,4 +1,5 @@
-export const SeatTypeData = (seatType) =>{
+export const SeatTypeData = (seatType, busId) =>{
+  console.log("busId: ", busId);
     let rows = []
     if(seatType === 'seater'){
         const seater =[
@@ -74,7 +75,7 @@ export const SeatTypeData = (seatType) =>{
               { id: 1, number: 1, isReserved: false },
               { id: 2, number: 2, isReserved: false },
               null,
-              { id: 3, number: 3, isReserved: false },
+              { id: 3, number: 3, isReserved: true },
               // { id: 4, number: 4, isReserved: false }
             ],
             [

@@ -113,26 +113,8 @@ class SeatChart extends Component {
     console.log("this.props.id: ", this.props.tripSchedule);
     console.log("this.props.bpDpArray: ", this.props.bpDpArray);
 
-    // console.log("this.props.dpArray: ", this.props.dpArray);
-
-    // //static values for radio button afterwards set database values
-    // const boardingPointRadio = [
-    //   { name: "Karad Bus Stand", value: "1" },
-    //   { name: "Kolhapur Naka", value: "2" },
-    // ];
-
-    // const droppingPointRadio = [
-    //   { name: "Swargate", value: "1" },
-    //   { name: "Katraj", value: "2" },
-    // ];
-
-    // const bpDpVals = {
-    //   boardingPointProps: boardingPointRadio,
-    //   droppingPointProps: droppingPointRadio,
-    // };
-
     //send bus types
-    const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type);
+    const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.props.tripSchedule.bus_id.id);
 
     const { loading } = this.state;
 
@@ -227,6 +209,7 @@ class SeatChart extends Component {
         <SeatBookingModal
           show={this.state.modalShow}
           onHide={() => this.setState({ modalShow: false })}
+          data={this.props}
         />
       </>
     );

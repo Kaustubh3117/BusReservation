@@ -80,7 +80,7 @@ export const AvailableBusses = () => {
               ? availableBusses.map((data) => {
                   return (
                     <>
-                      <BusDetailsCard props={data} />
+                      <BusDetailsCard data={data} />
                       <Link
                         to={`/seat/${data.id}`}
                         className="p-button"

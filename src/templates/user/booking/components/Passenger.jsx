@@ -1,51 +1,69 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
 import { classNames } from "primereact/utils";
 import { useForm, Controller } from "react-hook-form";
 import { Divider } from "primereact/divider";
+import { Button } from "primereact/button";
+import { setPassengerData } from "../../../../stores/users/actions/UserAction";
 
 export const Passenger = () => {
-  const [radioValue, setRadioValue] = useState("");
+   const dispatch = useDispatch();
+  const [radioValue, setRadioValue] = useState(null);
   const [formData, setFormData] = useState({});
 
-  const defaultValues = {
-    name: "",
-    mobileNumber: "",
-    gender: "",
-    age: "",
-  };
+  //new code for dynamic form 
+  const [name, setName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState(0)
+  const [age, setAge] = useState(0)
 
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({ defaultValues });
+  // const defaultValues = {
+  //   name: "",
+  //   mobileNumber: "",
+  //   gender: "",
+  //   age: "",
+  // };
+
+  // const {
+  //   control,
+  //   formState: { errors },
+  //   handleSubmit,
+  // } = useForm({ defaultValues });
 
   const onSubmit = (e) => {
-    setFormData(e);
+    e.preventDefault()
+  console.log("radio value..", radioValue);
+  console.log("name...", name)
+  console.log("mobile number...", mobileNumber)
+  console.log("Age...", age)
+  const payload = {
+    name:name,
+    mobileNumber: mobileNumber,
+    gender: radioValue,
+    age: age
+  }
+  dispatch(setPassengerData(payload))
   };
   const seatCount = useSelector(
     (state) => state.user_data.seatData.seatData.seatNumber
   );
 
-  const getFormErrorMessage = (name) => {
-    return (
-      errors[name] && <small className="p-error">{errors[name].message}</small>
-    );
-  };
+  // const getFormErrorMessage = (name) => {
+  //   return (
+  //     errors[name] && <small className="p-error">{errors[name].message}</small>
+  //   );
+  // };
 
   const radios = [
     { name: "Male", value: "1" },
     { name: "Female", value: "2" },
   ];
 
-  console.log("radio value..", radioValue);
-
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
+      <form className="p-fluid">
         {seatCount.map((element, index) => (
           <>
             <h4 className="d-flex flex-row justify-content-between">
@@ -54,58 +72,18 @@ export const Passenger = () => {
             <div className="grid">
               <div className="col">
                 <div className="field">
-                  <span className="p-float-label">
-                    <Controller
-                      name="name"
-                      control={control}
-                      rules={{ required: "Name is required." }}
-                      render={({ field, fieldState }) => (
-                        <InputText
-                          id={field.name}
-                          {...field}
-                          autoFocus
-                          className={classNames({
-                            "p-invalid": fieldState.invalid,
-                          })}
-                        />
-                      )}
-                    />
-                    <label
-                      htmlFor="name"
-                      className={classNames({ "p-error": errors.name })}
-                    >
-                      Full Name*
-                    </label>
-                  </span>
-                  {getFormErrorMessage("name")}
+                <span className="p-float-label">
+                            <InputText id="name" value={name[`name${index + 1}`]} onChange={(e) => setName({...name, [`name${index + 1}`]:e.target.value})} />
+                            <label htmlFor="name">Full Name</label>
+                        </span>
                 </div>
               </div>
               <div className="col">
                 <div className="field">
                   <span className="p-float-label">
-                    <Controller
-                      name="mobileNumber"
-                      control={control}
-                      rules={{ required: "Mobile Number is required." }}
-                      render={({ field, fieldState }) => (
-                        <InputText
-                          id={field.name}
-                          {...field}
-                          autoFocus
-                          className={classNames({
-                            "p-invalid": fieldState.invalid,
-                          })}
-                        />
-                      )}
-                    />
-                    <label
-                      htmlFor="mobileNumber"
-                      className={classNames({ "p-error": errors.mobileNumber })}
-                    >
-                      Mobile Number*
-                    </label>
+                  <InputNumber id="mobileNumber" name="mobileNumber" value={mobileNumber[`mobileNumber${index + 1}`]} onValueChange={(e) => setMobileNumber({...mobileNumber, [`mobileNumber${index + 1}`]:e.target.value})}  min={0} max={99999999999} />
+                  <label htmlFor="mobileNumber">Mobile Number</label>
                   </span>
-                  {getFormErrorMessage("mobileNumber")}
                 </div>
               </div>
             </div>
@@ -115,17 +93,15 @@ export const Passenger = () => {
                   {radios.map((radio, idx) => (
                     <>
                       <RadioButton
-                        inputId={`gender-${idx}`}
-                        name="gender"
-                        value={radio.value}
-                        checked={radioValue === radio.value}
+                        inputId={`gender-${radio.value+(index + 1)}`}
+                        name={` gender${index + 1}`}
+                        value={radio.name+(index + 1)}
                         onChange={(e) =>
-                          e.currentTarget !== undefined
-                            ? setRadioValue(e.currentTarget.value)
-                            : ""
+                             setRadioValue({...radioValue,[` gender${index + 1}`]:e.value})
                         }
+                        checked={radioValue !== null? radioValue[` gender${index + 1}`] === radio.name+(index + 1): radio.name+(index + 1) === 'Male'}
                       />
-                      <label htmlFor="gender"> {radio.name}</label>
+                      <label htmlFor="gender">{radio.name}</label>
                     </>
                   ))}
                 </div>
@@ -133,35 +109,21 @@ export const Passenger = () => {
               <div className="col-6">
                 <div className="field">
                   <span className="p-float-label">
-                    <Controller
-                      name="age"
-                      control={control}
-                      rules={{ required: "Age is required." }}
-                      render={({ field, fieldState }) => (
-                        <InputText
-                          id={field.name}
-                          {...field}
-                          autoFocus
-                          className={classNames({
-                            "p-invalid": fieldState.invalid,
-                          })}
-                        />
-                      )}
-                    />
-                    <label
-                      htmlFor="age"
-                      className={classNames({ "p-error": errors.age })}
-                    >
-                      Age*
-                    </label>
+                  <InputNumber id="age" name="age" value={age[`age${index + 1}`]} onValueChange={(e) => setAge({...age, [`age${index + 1}`]:e.target.value})}  min={0} max={100} />
+                  <label htmlFor="age">Age</label>
                   </span>
-                  {getFormErrorMessage("age")}
+                 
                 </div>
               </div>
             </div>
             <Divider />
           </>
         ))}
+         <Button
+          label="Next →"
+          onClick={(e) => onSubmit(e)}
+          className="w-3"
+        />
       </form>
     </>
   );
