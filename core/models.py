@@ -54,8 +54,8 @@ class Ticket(models.Model):
     booked = models.BooleanField(default=False)
     canceled = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.seat_no
+    # def __str__(self):
+    #     return self.seat_no
 
 
 class BoardingPoint(models.Model):

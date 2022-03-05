@@ -15,6 +15,7 @@ import { SeatSelectionAndPricing } from "./SeatSelectionAndPricing";
 
 class SeatChart extends Component {
   state = {
+    tripScheduleId:null,
     loading: false,
     price: 0,
     totalPrice:0,
@@ -25,7 +26,8 @@ class SeatChart extends Component {
   };
 
   componentDidMount(){
-    this.setState({price:this.props.tripSchedule.price})
+    console.log("this.props: ", this.props);
+    this.setState({tripScheduleId:this.props.tripSchedule.id, price:this.props.tripSchedule.price})
   }
 
   componentDidUpdate(prevProps, prevState) {

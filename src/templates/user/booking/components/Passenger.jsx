@@ -94,12 +94,12 @@ export const Passenger = () => {
                     <>
                       <RadioButton
                         inputId={`gender-${radio.value+(index + 1)}`}
-                        name={` gender${index + 1}`}
+                        name={`gender${index + 1}`}
                         value={radio.name+(index + 1)}
                         onChange={(e) =>
-                             setRadioValue({...radioValue,[` gender${index + 1}`]:e.value})
+                             setRadioValue({...radioValue,[`gender${index + 1}`]:e.value})
                         }
-                        checked={radioValue !== null? radioValue[` gender${index + 1}`] === radio.name+(index + 1): radio.name+(index + 1) === 'Male'}
+                        checked={radioValue !== null? radioValue[`gender${index + 1}`] === radio.name+(index + 1): radio.name+(index + 1) === 'Male'}
                       />
                       <label htmlFor="gender">{radio.name}</label>
                     </>
