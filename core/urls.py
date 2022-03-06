@@ -6,15 +6,16 @@ from .views import (
 #    filter_trip_schedule,
    FilterTripSchedule,
    SeatView,
-   PassengerView
+   PassengerView,
+   ReservedSeatView
 )
 app_name = 'core'
 
 urlpatterns = [
     path('boarding_point/', BoardingPointView.as_view(), name='boarding_point'),
     path('dropping_point/', DroppingPointView.as_view(), name='dropping_point'),
-    # path('filter_trip_schedule/<str:boarding_point>/<str:dropping_point>/<str:date>/',  filter_trip_schedule, name='filter_trip_schedule'),
     path('filter_trip_schedule/<str:boarding_point>/<str:dropping_point>/<str:date>', FilterTripSchedule.as_view(), name='filter_trip_schedule'),
     path('view_seat/<int:trip_schedule_id>', SeatView.as_view(), name='view_seat'),
-    path('passenger_data/', PassengerView.as_view(), name='passenger_data')
+    path('passenger_data/', PassengerView.as_view(), name='passenger_data'),
+    path('get_seat/<int:bus_id>', ReservedSeatView.as_view(), name='get_seat'),
 ]

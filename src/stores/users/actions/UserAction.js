@@ -5,6 +5,7 @@ import {
   REQUEST_ADD_DROPPINGPOINT_DATA,
   SET_PASSENGER_DATA,
   SAVE_PASSENGER_DATA,
+  SET_RESERVE_SEAT_DATA
 } from "../../../constants/users/user_constants";
 import { config } from "../../../environment/service";
 import axios from "axios";
@@ -67,5 +68,21 @@ export const savePassengerData = (payload) => async (dispatch) => {
   } catch (err) {  
       console.log(err.data)
       ToastMessage(ERROR, 'hey')
+  }
+};
+
+export const setReservedSeatData = (busId) =>async (dispatch) => {
+  console.log("busId ~----UserAction: ", busId);
+
+  try {
+      const res = await axios.get(`${backendUrl}/api/get_seat/${busId}`);
+      console.log("User Action ....res: ", res);
+      dispatch({
+        type: SET_RESERVE_SEAT_DATA,
+        payload: res.data,
+      });
+
+  } catch (err) {  
+      console.log(err.data)
   }
 };

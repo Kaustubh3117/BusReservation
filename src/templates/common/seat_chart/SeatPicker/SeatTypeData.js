@@ -1,5 +1,18 @@
-export const SeatTypeData = (seatType, busId) =>{
-  console.log("busId: ", busId);
+import React, {useState, useEffect} from "react";
+import { useSelector } from "react-redux";
+import cloneDeep from 'lodash'
+
+export const SeatTypeData = (seatType, busData) =>{
+console.log("busData: ", busData);
+let resBusData = ''
+  if(Array.isArray(busData) && busData.length >0){
+    busData.forEach((ele)=>{
+      resBusData = resBusData + "," + ele.seat_no
+    })
+    
+  }
+  const trimBusSeatString = resBusData.substring(1);
+  console.log("bD: ", trimBusSeatString);
     let rows = []
     if(seatType === 'seater'){
         const seater =[
@@ -67,7 +80,9 @@ export const SeatTypeData = (seatType, busId) =>{
               { id: 37, number: 37, isReserved: false }
             ],
           ];
-          rows = seater
+         
+          const getReservedSeat = reserveSeat(seater, trimBusSeatString) 
+          rows = getReservedSeat
     }
     else if (seatType === 'sleeper'){
         const sleeper = [
@@ -75,7 +90,7 @@ export const SeatTypeData = (seatType, busId) =>{
               { id: 1, number: 1, isReserved: false },
               { id: 2, number: 2, isReserved: false },
               null,
-              { id: 3, number: 3, isReserved: true },
+              { id: 3, number: 3, isReserved: false },
               // { id: 4, number: 4, isReserved: false }
             ],
             [
@@ -128,7 +143,34 @@ export const SeatTypeData = (seatType, busId) =>{
               // { id: 32, number: 32, isReserved: false }
             ],
             ]
-            rows = sleeper
+            const getReservedSeat = reserveSeat(sleeper, trimBusSeatString) 
+            rows = getReservedSeat
     }
    return rows
+}
+
+const reserveSeat = (seatArr, busData)=>{
+  let resReservedSeat = null
+  if(busData!==undefined && busData !== null){
+     resReservedSeat = busData.split(',');
+  }
+  if(resReservedSeat !== null){
+    seatArr.map((arr) => {
+      arr.map((ele) => {
+          if(ele !== null){
+            resReservedSeat.map((seat)=>{
+              const seatNo = parseInt(seat)
+              if(seatNo === ele.number){
+                ele.isReserved = true
+              }
+            })
+          }
+      })
+    })
+    return seatArr
+  }
+  else{
+    return seatArr
+  }
+ 
 }

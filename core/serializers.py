@@ -40,3 +40,4 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = '__all__'
+

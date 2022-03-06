@@ -1,8 +1,9 @@
 import json
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TicketSerializer, TripscheduleSerializer, UserInfoSerializer
-from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule
+from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TripscheduleSerializer, UserInfoSerializer
+from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule, UserInfo, Seat, Bus
+from accounts.models import UserAccount
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -57,6 +58,7 @@ class SeatView(generics.ListAPIView):
     queryset = Tripschedule.objects.all()
     def get_queryset(self):
         trip_schedule_id = self.kwargs['trip_schedule_id']
+        print("trip schedule.........***********", trip_schedule_id)
         obj_list = self.queryset.filter(pk = trip_schedule_id)
         if obj_list is not None:
             return obj_list
@@ -66,24 +68,37 @@ class SeatView(generics.ListAPIView):
 class PassengerView(APIView):
      def post(self, request, format=None):
         print('data........******', request.data)
-        # print('data........get data******', request.data['payload']['seat_data']['tripScheduleId'])
+        res_user_id = request.data['payload']['seat_data']['seatData']['loggedInUserId']
+        res_bus_id = request.data['payload']['seat_data']['seatData']['busId']
         res_trip_schedule_id = request.data['payload']['seat_data']['seatData']['tripScheduleId']
         ticket_res_data =  request.data['payload']['seat_data']['seatData']
         res_ticket_price = request.data['payload']['seat_data']['seatData']['totalPrice']
         res_no_of_seat = request.data['payload']['seat_data']['seatData']['selectedSeatCount']
         res_seat_number = request.data['payload']['seat_data']['seatData']['seatNumber']
+        res_booking_status = request.data['payload']['seat_data']['seatData']['booking_status']
         converted_seat_number = ""
         for i in res_seat_number:
-            converted_seat_number = converted_seat_number + str(i)
-           
+            converted_seat_number = converted_seat_number + ',' + str(i)
+    
+        c_str = converted_seat_number[1:]
+
         boarding_point_res_data = request.data['payload']['seat_data']['point']['boardingPointRadio']['name']
         dropping_point_res_data = request.data['payload']['seat_data']['point']['droppingPointRadio']['name']
 
+        get_user_data = UserAccount.objects.get(pk=res_user_id)
         get_trip_schedule = Tripschedule.objects.get(pk=res_trip_schedule_id)
-        ticket_serializer = Ticket(total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = converted_seat_number, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule)
-        seat_serializer = SeatSerializer(data=request.data)
-        user_info_serializer = UserInfoSerializer(data=request.data)
-        # if ticket_serializer.is_valid():
+        ticket_serializer = Ticket(total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = c_str, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule, user = get_user_data, booked = res_booking_status)
         ticket_serializer.save()
+
+        #save seat
+        get_bus_instance = Bus.objects.get(pk = res_bus_id)
+        seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = 3)
+        seat_serializer.save()
         return Response(ticket_serializer.data, status=status.HTTP_201_CREATED)
         # return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ReservedSeatView(generics.ListAPIView):
+    serializer_class = SeatSerializer
+    def get_queryset(self):
+        bus_id = self.kwargs['bus_id']
+        return Seat.objects.filter(bus_no=bus_id)

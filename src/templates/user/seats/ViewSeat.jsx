@@ -10,7 +10,6 @@ import { changeKeysNamesFromObjectForRadio } from "./SeatHelper";
 export const ViewSeat = () => {
   const { id } = useParams();
   const tripSheduleId = parseInt(id);
-  console.log("id: ", id);
   const [tripSchedule, setTripSchedule] = useState(null);
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
 
@@ -26,12 +25,12 @@ export const ViewSeat = () => {
     droppingPointProps: droppingPointRadio,
   };
 
-
   useEffect(() => {
     axios.get(`${backendUrl}/api/view_seat/${id}`).then(function (response) {
       setTripSchedule(response.data);
     });
   }, []);
+
   return (
     <>
       {tripSchedule !== null &&

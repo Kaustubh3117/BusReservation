@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setSeatData } from "../../../../stores/users/actions/UserAction";
+import { setReservedSeatData, setSeatData } from "../../../../stores/users/actions/UserAction";
 import SeatPicker from "../../../common/seat_chart/index";
 import "../../../common/seat_chart/seat_style/seat_chart.css";
 import { SeatTypeData } from "../../../common/seat_chart/SeatPicker/SeatTypeData";
@@ -15,6 +15,8 @@ import { SeatSelectionAndPricing } from "./SeatSelectionAndPricing";
 
 class SeatChart extends Component {
   state = {
+    busId:null,
+    loggedInUserId:null,
     tripScheduleId:null,
     loading: false,
     price: 0,
@@ -23,16 +25,24 @@ class SeatChart extends Component {
     selectedSeatCount: 0,
     seatNumber: [],
     showBpDpDetails: false,
+    reservedSeatData: null,
+    seatChart: null
   };
 
   componentDidMount(){
-    console.log("this.props: ", this.props);
-    this.setState({tripScheduleId:this.props.tripSchedule.id, price:this.props.tripSchedule.price})
+    const {tripSchedule, authData} =this.props
+    this.setState({busId: tripSchedule.bus_id.id, loggedInUserId: authData.user.id, tripScheduleId:tripSchedule.id, price:tripSchedule.price})
+  this.props.setReservedSeatData(tripSchedule.bus_id.id)
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.props.setSeatData({ ...this.props.seatData, seatData: this.state });
+    }
+    if(prevProps.reserveSeatData !== this.props.reserveSeatData){
+      const data = this.props.reserveSeatData
+      this.setState({reservedSeatData: data})
+      console.log("data: ", data);
     }
   }
 
@@ -116,7 +126,8 @@ class SeatChart extends Component {
     console.log("this.props.bpDpArray: ", this.props.bpDpArray);
 
     //send bus types
-    const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.props.tripSchedule.bus_id.id);
+    const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.state.reservedSeatData);
+    console.log("rows: line 129....~Render Method", rows);
 
     const { loading } = this.state;
 
@@ -221,8 +232,10 @@ class SeatChart extends Component {
 //get redux state here and pass it as props in class e.g this.props.isAuthenticated
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  authData: state.auth,
   seatData: state.user_data.seatData,
+  reserveSeatData: state.user_data.reservedSeatData
 });
 
 // action in last second parenthesis
-export default connect(mapStateToProps, { setSeatData })(SeatChart);
+export default connect(mapStateToProps, { setSeatData, setReservedSeatData })(SeatChart);

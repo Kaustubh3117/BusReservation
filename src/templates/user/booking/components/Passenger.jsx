@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
@@ -10,42 +10,30 @@ import { Button } from "primereact/button";
 import { setPassengerData } from "../../../../stores/users/actions/UserAction";
 
 export const Passenger = () => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [radioValue, setRadioValue] = useState(null);
-  const [formData, setFormData] = useState({});
-
-  //new code for dynamic form 
   const [name, setName] = useState('');
   const [mobileNumber, setMobileNumber] = useState(0)
   const [age, setAge] = useState(0)
 
-  // const defaultValues = {
-  //   name: "",
-  //   mobileNumber: "",
-  //   gender: "",
-  //   age: "",
+  useEffect(()=>{
+    console.log("radio value..", radioValue);
+    console.log("name...", name)
+    console.log("mobile number...", mobileNumber)
+    console.log("Age...", age)
+    const payload = {
+      name:name,
+      mobileNumber: mobileNumber,
+      gender: radioValue,
+      age: age
+    }
+    dispatch(setPassengerData(payload))
+  }, [name, mobileNumber, radioValue, age])
+
+  // const onSubmit = (e) => {
+  //   e.preventDefault()
+
   // };
-
-  // const {
-  //   control,
-  //   formState: { errors },
-  //   handleSubmit,
-  // } = useForm({ defaultValues });
-
-  const onSubmit = (e) => {
-    e.preventDefault()
-  console.log("radio value..", radioValue);
-  console.log("name...", name)
-  console.log("mobile number...", mobileNumber)
-  console.log("Age...", age)
-  const payload = {
-    name:name,
-    mobileNumber: mobileNumber,
-    gender: radioValue,
-    age: age
-  }
-  dispatch(setPassengerData(payload))
-  };
   const seatCount = useSelector(
     (state) => state.user_data.seatData.seatData.seatNumber
   );
@@ -112,18 +100,17 @@ export const Passenger = () => {
                   <InputNumber id="age" name="age" value={age[`age${index + 1}`]} onValueChange={(e) => setAge({...age, [`age${index + 1}`]:e.target.value})}  min={0} max={100} />
                   <label htmlFor="age">Age</label>
                   </span>
-                 
                 </div>
               </div>
             </div>
             <Divider />
           </>
         ))}
-         <Button
+         {/* <Button
           label="Next →"
           onClick={(e) => onSubmit(e)}
           className="w-3"
-        />
+        /> */}
       </form>
     </>
   );
