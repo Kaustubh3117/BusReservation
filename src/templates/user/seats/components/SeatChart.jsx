@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import { setReservedSeatData, setSeatData } from "../../../../stores/users/actions/UserAction";
 import SeatPicker from "../../../common/seat_chart/index";
@@ -26,12 +27,19 @@ class SeatChart extends Component {
     seatNumber: [],
     showBpDpDetails: false,
     reservedSeatData: null,
-    seatChart: null
+    seatChart: null,
+    renderKey: false,
   };
 
   componentDidMount(){
-    const {tripSchedule, authData} =this.props
-    this.setState({busId: tripSchedule.bus_id.id, loggedInUserId: authData.user.id, tripScheduleId:tripSchedule.id, price:tripSchedule.price})
+    const {tripSchedule, authData, isAuthenticated} =this.props
+
+    
+
+if(authData !== undefined && authData.user !== undefined &&  authData.user !== null && authData.user.id !== undefined  &&  authData.user.id !== null){
+  this.setState({busId: tripSchedule.bus_id.id, loggedInUserId: authData.user.id, tripScheduleId:tripSchedule.id, price:tripSchedule.price})
+
+}
   this.props.setReservedSeatData(tripSchedule.bus_id.id)
   }
 
@@ -43,6 +51,10 @@ class SeatChart extends Component {
       const data = this.props.reserveSeatData
       this.setState({reservedSeatData: data})
       console.log("data: ", data);
+    }
+
+    if(prevState.reservedSeatData !== this.state.reservedSeatData){
+this.setState({renderKey:true})
     }
   }
 
@@ -122,13 +134,13 @@ class SeatChart extends Component {
   };
 
   render() {
-    console.log("this.props.id: ", this.props.tripSchedule);
-    console.log("this.props.bpDpArray: ", this.props.bpDpArray);
-
+const { isAuthenticated} = this.props
+    if(!isAuthenticated){
+      window.location.href="/login"
+      // return <Navigate replace to="/login" />
+    }
     //send bus types
     const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.state.reservedSeatData);
-    console.log("rows: line 129....~Render Method", rows);
-
     const { loading } = this.state;
 
     return (
@@ -153,6 +165,7 @@ class SeatChart extends Component {
                   loading={loading}
                   tooltipProps={{ multiline: true }}
                   continuous
+                  key={this.state.renderKey ?rows.length +1 : rows.length}
                 />
               </div>
             </div>

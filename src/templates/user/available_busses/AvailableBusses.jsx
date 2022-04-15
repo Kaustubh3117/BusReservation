@@ -76,7 +76,7 @@ export const AvailableBusses = () => {
           </div>
 
           <div className="col-8">
-            {availableBusses !== null
+            {availableBusses !== null && availableBusses.length > 0
               ? availableBusses.map((data) => {
                   return (
                     <>
@@ -91,7 +91,7 @@ export const AvailableBusses = () => {
                     </>
                   );
                 })
-              : null}
+              :  <h1>No busses Available</h1>}
           </div>
         </div>
       </div>
