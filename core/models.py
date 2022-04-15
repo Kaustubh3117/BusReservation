@@ -11,7 +11,7 @@ class UserInfo(models.Model):
 
 
     def __str__(self):
-        return self.first_name
+        return self.name
 
 class Bus(models.Model):
     bus_name = models.CharField(max_length=50)

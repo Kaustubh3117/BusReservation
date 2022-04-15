@@ -61,7 +61,7 @@ export const Passenger = () => {
               <div className="col">
                 <div className="field">
                 <span className="p-float-label">
-                            <InputText id="name" value={name[`name${index + 1}`]} onChange={(e) => setName({...name, [`name${index + 1}`]:e.target.value})} />
+                            <InputText id="name" value={name[`name_${index + 1}`]} onChange={(e) => setName({...name, [`name_${index + 1}`]:e.target.value})} />
                             <label htmlFor="name">Full Name</label>
                         </span>
                 </div>
@@ -69,7 +69,7 @@ export const Passenger = () => {
               <div className="col">
                 <div className="field">
                   <span className="p-float-label">
-                  <InputNumber id="mobileNumber" name="mobileNumber" value={mobileNumber[`mobileNumber${index + 1}`]} onValueChange={(e) => setMobileNumber({...mobileNumber, [`mobileNumber${index + 1}`]:e.target.value})}  min={0} max={99999999999} />
+                  <InputNumber id="mobileNumber" name="mobileNumber" value={mobileNumber[`mobileNumber_${index + 1}`]} onValueChange={(e) => setMobileNumber({...mobileNumber, [`mobileNumber_${index + 1}`]:e.target.value})}  min={0} max={99999999999} />
                   <label htmlFor="mobileNumber">Mobile Number</label>
                   </span>
                 </div>
@@ -85,9 +85,9 @@ export const Passenger = () => {
                         name={`gender${index + 1}`}
                         value={radio.name+(index + 1)}
                         onChange={(e) =>
-                             setRadioValue({...radioValue,[`gender${index + 1}`]:e.value})
+                             setRadioValue({...radioValue,[`gender_${index + 1}`]:e.value})
                         }
-                        checked={radioValue !== null? radioValue[`gender${index + 1}`] === radio.name+(index + 1): radio.name+(index + 1) === 'Male'}
+                        checked={radioValue !== null? radioValue[`gender_${index + 1}`] === radio.name+(index + 1): radio.name+(index + 1) === 'Male'}
                       />
                       <label htmlFor="gender">{radio.name}</label>
                     </>
@@ -97,7 +97,7 @@ export const Passenger = () => {
               <div className="col-6">
                 <div className="field">
                   <span className="p-float-label">
-                  <InputNumber id="age" name="age" value={age[`age${index + 1}`]} onValueChange={(e) => setAge({...age, [`age${index + 1}`]:e.target.value})}  min={0} max={100} />
+                  <InputNumber id="age" name="age" value={age[`age_${index + 1}`]} onValueChange={(e) => setAge({...age, [`age_${index + 1}`]:e.target.value})}  min={0} max={100} />
                   <label htmlFor="age">Age</label>
                   </span>
                 </div>
