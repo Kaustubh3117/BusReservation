@@ -2,7 +2,7 @@ import json
 from re import I
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TripscheduleSerializer, UserInfoSerializer
+from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TicketSerializer, TripscheduleSerializer, UserInfoSerializer
 from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule, UserInfo, Seat, Bus
 from accounts.models import UserAccount
 from django.db.models import Q
@@ -124,3 +124,12 @@ class ReservedSeatView(generics.ListAPIView):
     def get_queryset(self):
         bus_id = self.kwargs['bus_id']
         return Seat.objects.filter(bus_no=bus_id)
+
+class ManageBookingView(generics.ListAPIView):
+    serializer_class = TicketSerializer
+    def get_queryset(self):
+        user_id = self.kwargs['user']
+        print("user_id........", user_id)
+        ticket_data = Ticket.objects.filter(user__id__contains = user_id)
+        print('ticket data.....', ticket_data)
+        return Ticket.objects.filter(user__id__contains = user_id)

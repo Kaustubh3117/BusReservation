@@ -160,12 +160,6 @@ export const checkAuthenticated = () => async dispatch => {
 };
 
 export const login = (email, password) => async dispatch => {
-    // const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-
     const body = JSON.stringify({ email, password });
 
     try {
@@ -187,12 +181,6 @@ export const login = (email, password) => async dispatch => {
 };
 
 export const signup = (email, password, re_password) => async dispatch => {
-    // const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-
     const body = JSON.stringify({ email, password, re_password });
     try {
         const res = await axios.post(`${backendUrl}/auth/users/`, body, config);
@@ -210,12 +198,6 @@ export const signup = (email, password, re_password) => async dispatch => {
 };
 
 export const verify = (uid, token) => async dispatch => {
-    // const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-
     const body = JSON.stringify({ uid, token });
 console.log('activation..', body)
     try {
@@ -233,12 +215,6 @@ console.log('activation..', body)
 };
 
 export const reset_password = (email) => async dispatch => {
-    // const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-
     const body = JSON.stringify({ email });
 
     try {
@@ -256,14 +232,7 @@ export const reset_password = (email) => async dispatch => {
 };
 
 export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
-    // const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-
     const body = JSON.stringify({ uid, token, new_password, re_new_password });
-
     try {
         await axios.post(`${backendUrl}/auth/users/reset_password_confirm/`, body, config);
 

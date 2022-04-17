@@ -7,7 +7,8 @@ from .views import (
    FilterTripSchedule,
    SeatView,
    PassengerView,
-   ReservedSeatView
+   ReservedSeatView,
+   ManageBookingView
 )
 app_name = 'core'
 
@@ -18,4 +19,5 @@ urlpatterns = [
     path('view_seat/<int:trip_schedule_id>', SeatView.as_view(), name='view_seat'),
     path('passenger_data/', PassengerView.as_view(), name='passenger_data'),
     path('get_seat/<int:bus_id>', ReservedSeatView.as_view(), name='get_seat'),
+    path('manage_booking/<int:user>', ManageBookingView.as_view(), name='manage_booking'),
 ]

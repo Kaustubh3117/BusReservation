@@ -27,8 +27,11 @@ const NavigationBar = ({logout}) => {
                   window.location.href='/'
                 }},
             {
-                label: 'Cancel',
-                icon: 'pi pi-fw pi-align-right'
+                label: 'Manage Booking',
+                icon: 'pi pi-fw pi-align-right',
+                command: () => {
+                    window.location.href='/manageBooking'
+                  },
             },
             {
                 label: 'Change Travel date',
