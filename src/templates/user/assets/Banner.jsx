@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-import { changeKeysFromObject, removeDuplicateArrayObject } from "./UserHelper";
+import { changeKeysFromObject, removeDuplicateArrayObject } from "../UserHelper";
 // import axios from "axios";
 // import {
 //   setBoardingPointData,
