@@ -36,7 +36,7 @@ const App = () => (
                     <Route exact path='/' element={<Home/>} />
                     <Route exact path='/buslist' element={<AvailableBusses/>} />
                     <Route exact path='/seat/:id' element={<ViewSeat/>} />
-                    <Route exact path='/manageBooking' element={<ManageBooking/>} />
+                    <Route exact path='/manageBooking/:user_id' element={<ManageBooking/>} />
                     
                     <Route exact path='/login' element={<Login/>} />
                     <Route exact path='/signup' element={<Signup/>} />

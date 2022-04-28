@@ -3,10 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
-import { classNames } from "primereact/utils";
-import { useForm, Controller } from "react-hook-form";
 import { Divider } from "primereact/divider";
-import { Button } from "primereact/button";
 import { setPassengerData } from "../../../../stores/users/actions/UserAction";
 
 export const Passenger = () => {
@@ -17,10 +14,6 @@ export const Passenger = () => {
   const [age, setAge] = useState(0)
 
   useEffect(()=>{
-    console.log("radio value..", radioValue);
-    console.log("name...", name)
-    console.log("mobile number...", mobileNumber)
-    console.log("Age...", age)
     const payload = {
       name:name,
       mobileNumber: mobileNumber,
@@ -30,19 +23,9 @@ export const Passenger = () => {
     dispatch(setPassengerData(payload))
   }, [name, mobileNumber, radioValue, age])
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault()
-
-  // };
   const seatCount = useSelector(
     (state) => state.user_data.seatData.seatData.seatNumber
   );
-
-  // const getFormErrorMessage = (name) => {
-  //   return (
-  //     errors[name] && <small className="p-error">{errors[name].message}</small>
-  //   );
-  // };
 
   const radios = [
     { name: "Male", value: "1" },
@@ -106,11 +89,6 @@ export const Passenger = () => {
             <Divider />
           </>
         ))}
-         {/* <Button
-          label="Next →"
-          onClick={(e) => onSubmit(e)}
-          className="w-3"
-        /> */}
       </form>
     </>
   );

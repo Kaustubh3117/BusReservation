@@ -1,4 +1,6 @@
-import json
+import random
+import string
+
 from re import I
 from django.shortcuts import render
 from rest_framework import generics
@@ -12,6 +14,9 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import status
 import re
+
+def create_ticket_number():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 class BoardingPointView(generics.ListCreateAPIView):
     queryset = BoardingPoint.objects.all()
@@ -69,6 +74,7 @@ class SeatView(generics.ListAPIView):
 
 class PassengerView(APIView):
      def post(self, request, format=None):
+        ticket_number = create_ticket_number()
         print('data........******', request.data)
         res_user_id = request.data['payload']['seat_data']['seatData']['loggedInUserId']
         res_bus_id = request.data['payload']['seat_data']['seatData']['busId']
@@ -90,7 +96,7 @@ class PassengerView(APIView):
         #split seat number and add passenger data
         converted_seat_number = ""
         passenger_data_arr = []
-        for i in res_seat_number:
+        for i in range(1, len(res_seat_number)+1):
             converted_seat_number = converted_seat_number + ',' + str(i)
             #get passenger fields values from passenger data
             passenger_data_arr.append({'name':res_passenger_name['name_'+str(i)], 'mobile_number': res_passenger_mobile_number['mobileNumber_'+str(i)],'gender': res_passenger_gender['gender_'+str(i)], 'age':res_passenger_age['age_'+str(i)]})
@@ -103,20 +109,20 @@ class PassengerView(APIView):
 
         #save user info
         for data in passenger_data_arr:
-            passenger_serializer = UserInfo(user = get_user_data, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'])
+            passenger_serializer = UserInfo(user = get_user_data, ticket_number= ticket_number, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'])
             passenger_serializer.save()
 
         #save ticket data
         get_user_data = UserAccount.objects.get(pk=res_user_id)
         get_trip_schedule = Tripschedule.objects.get(pk=res_trip_schedule_id)
-        ticket_serializer = Ticket(total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = c_str, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule, user = get_user_data, booked = res_booking_status)
+        ticket_serializer = Ticket(ticket_number = ticket_number, total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = c_str, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule, user = get_user_data, booked = res_booking_status)
         ticket_serializer.save()
 
         #save seat
         get_bus_instance = Bus.objects.get(pk = res_bus_id)
         seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = 3)
         seat_serializer.save()
-        return Response(ticket_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
         # return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ReservedSeatView(generics.ListAPIView):

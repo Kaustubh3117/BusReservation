@@ -4,6 +4,7 @@ from BusReservation import settings
 class UserInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, null=True)
+    ticket_number = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     mobile_number = models.CharField(max_length=50, null=True, blank=True)
     gender = models.CharField(max_length=10, null=True, blank=True)
@@ -33,10 +34,7 @@ class Tripschedule(models.Model):
     ticket_sold = models.IntegerField(default=0, null=True)
     price = models.FloatField()
     journey_time = models.CharField(max_length=25, null=True)
-    # source = models.CharField(max_length=50, null=True)
-    # destination = models.CharField(max_length=50, null=True)
     bus_id = models.ForeignKey(Bus, on_delete=models.SET_NULL, null=True, related_name='bus')
-    # trip_schedule_agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     status = models.BooleanField(default=False)
 
     def __str__(self):
@@ -44,6 +42,7 @@ class Tripschedule(models.Model):
 
 
 class Ticket(models.Model):
+    ticket_number = models.CharField(max_length=100, null=True)
     total_amount = models.FloatField(default=0.0)
     number_of_seats = models.IntegerField(default=0)
     seat_no = models.CharField(max_length=100, null=True, blank=True)
