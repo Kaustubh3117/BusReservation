@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { BusDetailsCard } from "../../common/BusDetailsCard";
 import { useLocation } from "react-router-dom";
-import { MenuItems } from "../../common/MenuItems";
+import { MenuItems } from "./components/MenuItems";
 import { BreadCrumbs } from "../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
 import { changeDateFormat } from "../user_landing_view/UserHelper";

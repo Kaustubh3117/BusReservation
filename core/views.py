@@ -132,10 +132,10 @@ class ReservedSeatView(generics.ListAPIView):
         return Seat.objects.filter(bus_no=bus_id)
 
 class ManageBookingView(generics.ListAPIView):
-    serializer_class = TicketSerializer
+    serializer_class = UserInfoSerializer
     def get_queryset(self):
         user_id = self.kwargs['user']
         print("user_id........", user_id)
-        ticket_data = Ticket.objects.filter(user__id__contains = user_id)
-        print('ticket data.....', ticket_data)
-        return Ticket.objects.filter(user__id__contains = user_id)
+        user_data = UserInfo.objects.filter(user__id__contains = user_id)
+        print('ticket data.....', user_data)
+        return user_data

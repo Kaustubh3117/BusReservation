@@ -1,19 +1,6 @@
 from django.db import models
 from BusReservation import settings
 
-class UserInfo(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, null=True)
-    ticket_number = models.CharField(max_length=100, null=True)
-    name = models.CharField(max_length=50, null=True, blank=True)
-    mobile_number = models.CharField(max_length=50, null=True, blank=True)
-    gender = models.CharField(max_length=10, null=True, blank=True)
-    age = models.IntegerField()
-
-
-    def __str__(self):
-        return self.name
-
 class Bus(models.Model):
     bus_name = models.CharField(max_length=50)
     bus_no = models.CharField(max_length=50)
@@ -91,3 +78,17 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class UserInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, null=True)
+    ticket_number = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    mobile_number = models.CharField(max_length=50, null=True, blank=True)
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    age = models.IntegerField()
+    ticket = models.ForeignKey(Ticket, on_delete=models.SET_NULL, null=True)
+
+
+    def __str__(self):
+        return self.name

@@ -38,7 +38,9 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = ['id', 'total_amount', 'number_of_seats', 'seat_no', 'boarding_point', 'dropping_point', 'trip_schedule_id', 'user', 'booked', 'canceled']
 
 class UserInfoSerializer(serializers.ModelSerializer):
+    ticket = TicketSerializer()
     class Meta:
         model = UserInfo
-        fields = '__all__'
+        fields = ['id', 'user', 'ticket_number', 'name', 'mobile_number', 'gender', 'age', 'ticket']
+
 
