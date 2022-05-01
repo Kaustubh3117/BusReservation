@@ -7,7 +7,7 @@ import axios from "axios";
 import { getTripScheduleBpDpArray } from "./SeatHelper";
 import { changeKeysNamesFromObjectForRadio } from "./SeatHelper";
 
-export const ViewSeat = () => {
+export const SeatView = () => {
   const { id } = useParams();
   const tripSheduleId = parseInt(id);
   const [tripSchedule, setTripSchedule] = useState(null);

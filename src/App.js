@@ -9,7 +9,7 @@ import "primeflex/primeflex.min.css"
 
 import Home from './templates/user/Home';
 import {AvailableBusses} from './templates/user/available_busses/AvailableBusses';
-import { ViewSeat } from './templates/user/seats/ViewSeat';
+import { SeatView } from './templates/user/seat_selection/SeatView';
 
 import Login from './templates/accounts/Login';
 import Signup from './templates/accounts/Signup';
@@ -25,7 +25,7 @@ import { Provider } from 'react-redux';
 import store from './stores/store';
 
 import Layout from './templates/hoc/Layout';
-import { ManageBooking } from './templates/user/manage_booking/ManageBooking';
+import { ManageBooking } from './templates/user/manage_booking/ManageBookingView';
 
 const App = () => (
     <Provider store={store}>
@@ -35,7 +35,7 @@ const App = () => (
                     <Route exact path='*' element={<PageNotFound/>} />
                     <Route exact path='/' element={<Home/>} />
                     <Route exact path='/buslist' element={<AvailableBusses/>} />
-                    <Route exact path='/seat/:id' element={<ViewSeat/>} />
+                    <Route exact path='/seat/:id' element={<SeatView/>} />
                     <Route exact path='/manageBooking/:user_id' element={<ManageBooking/>} />
                     
                     <Route exact path='/login' element={<Login/>} />
