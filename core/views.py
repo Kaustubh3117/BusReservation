@@ -97,11 +97,18 @@ class PassengerView(APIView):
         converted_seat_number = ""
         passenger_data_arr = []
         for i in range(1, len(res_seat_number)+1):
-            converted_seat_number = converted_seat_number + ',' + str(i)
+            print('i.....*****', i)
+            # converted_seat_number = converted_seat_number + ',' + str(i)
             #get passenger fields values from passenger data
             passenger_data_arr.append({'name':res_passenger_name['name_'+str(i)], 'mobile_number': res_passenger_mobile_number['mobileNumber_'+str(i)],'gender': res_passenger_gender['gender_'+str(i)], 'age':res_passenger_age['age_'+str(i)]})
+        
+        print("res no of seat ....****", res_seat_number)
+        for seat in res_seat_number:
+            converted_seat_number = converted_seat_number + ',' + str(seat)
+
 
         c_str = converted_seat_number[1:]
+        print("seat number....*****", c_str)
         boarding_point_res_data = request.data['payload']['seat_data']['point']['boardingPointRadio']['name']
         dropping_point_res_data = request.data['payload']['seat_data']['point']['droppingPointRadio']['name']
 
@@ -121,7 +128,7 @@ class PassengerView(APIView):
 
         #save seat
         get_bus_instance = Bus.objects.get(pk = res_bus_id)
-        seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = 3)
+        seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = get_last_saved_ticket)
         seat_serializer.save()
         return Response(status=status.HTTP_201_CREATED)
         # return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -140,3 +147,14 @@ class ManageBookingView(generics.ListAPIView):
         user_data = UserInfo.objects.filter(user__id__contains = user_id)
         print('ticket data.....', user_data)
         return user_data
+
+# @api_view(['GET', 'PUT', 'DELETE'])
+def cancel_booking_view(request, ticket_id):
+    ticket_data = Seat.objects.filter(ticket_id=ticket_id)
+    ticket_data.delete()
+    # update ticket Status
+    ticket_data = Ticket.objects.get(id = ticket_id)
+    ticket_data.booked = False
+    ticket_data.canceled = True
+    ticket_data.save()
+    return Response("Booking Cancelled Successfully.", status=status.HTTP_404_OK)

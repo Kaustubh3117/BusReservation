@@ -24,27 +24,45 @@ export const ManageBooking = () => {
           // let ticketNumber = null
           let newRsData = []
           let count = 0
-          data.map((ele, index)=>{
+          data.map((ele, index) => {
             // ticketNumber = ele.ticket_number
             count++
             const addTicketNumber = {}
-            if(data[index-1]?.ticket_number !== ele.ticket_number && count > 1){
-              addTicketNumber['ticketData'] = {...ele.ticket}
+            if (data[index - 1]?.ticket_number !== ele.ticket_number && count > 1) {
+              addTicketNumber['ticketData'] = { ...ele.ticket }
               addTicketNumber['ticketNumber'] = ele.ticket_number
               newRsData.push(addTicketNumber)
             }
-            else if(count === 1){
-              addTicketNumber['ticketData'] = {...ele.ticket}
+            else if (count === 1) {
+              addTicketNumber['ticketData'] = { ...ele.ticket }
               addTicketNumber['ticketNumber'] = ele.ticket_number
               newRsData.push(addTicketNumber)
             }
           })
           console.log("new res..", newRsData)
           setTicketData(newRsData)
-        
+
         })
     }
   }, [AuthenticatedUserId, isAuthenticated])
+
+
+  const onCancelBookingClick = (ticket_id) =>{
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+    }
+  };
+    axios
+    .get(
+      `${backendUrl}/api/cancel_booking_view/${ticket_id}`
+    )
+    .then(function (response) {
+  console.log(response)
+    }
+    )
+  }
+
 
   return (
     <>
@@ -73,26 +91,23 @@ export const ManageBooking = () => {
                           <li>{data.ticketData.trip_schedule_id.bus_id.bus_type}</li>
                         </ul>
 
-{
-passengerData.map((pEle)=>{
-  return(
-  pEle.ticket_number === data.ticketNumber? 
-  
-    <>
-     <ul style={{ listStyleType: "none" }}>
-                          <li>name: {pEle.name}</li>
-                          <li>age: {pEle.age} Rs</li>
-                          <li>Gender: {pEle.gender}</li>
-                          <li>Number: {pEle.mobile_number}</li>
-                        </ul>
-    </>
-  : null
-  )
-})
-}
-                       
+                        {
+                          passengerData.map((pEle) => {
+                            return (
+                              pEle.ticket_number === data.ticketNumber ?
 
-
+                                <>
+                                  <ul style={{ listStyleType: "none" }}>
+                                    <li>name: {pEle.name}</li>
+                                    <li>age: {pEle.age} Rs</li>
+                                    <li>Gender: {pEle.gender}</li>
+                                    <li>Number: {pEle.mobile_number}</li>
+                                  </ul>
+                                </>
+                                : null
+                            )
+                          })
+                        }
                       </div>
 
                       <div className="col-3">
@@ -118,8 +133,8 @@ passengerData.map((pEle)=>{
                   </div>
                 </div>
                 <Button type="submit" label="View Details" />
-                <Button type="submit
-                " label="Cancel Booking" className="p-button-danger" />
+                <Button type="Button
+                " label="Cancel Booking" className="p-button-danger" onClick={(e)=>{onCancelBookingClick(data.ticketData.id)}} />
               </Card>
             )
           })
@@ -128,3 +143,4 @@ passengerData.map((pEle)=>{
     </>
   )
 }
+
