@@ -1,7 +1,7 @@
 import { Menubar } from 'primereact/menubar';
 import { useSelector } from "react-redux";
 import { connect } from "react-redux";
-import { logout } from "../../../stores/accounts/actions/AuthActions";
+import { logout } from "../../../../stores/accounts/actions/AuthActions";
 
 const NavigationBar = ({ logout }) => {
     const isAuthenticated = useSelector(

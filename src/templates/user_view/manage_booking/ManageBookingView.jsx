@@ -9,6 +9,8 @@ export const ManageBooking = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const AuthenticatedUserId = useSelector((state) => state.auth.user !== null ? state.auth.user.id : null);
   const [ticketData, setTicketData] = useState({ ticketData: null })
+  const [passengerData, setPassengerData] = useState({ passengerData: null })
+
 
   useEffect(() => {
     if (AuthenticatedUserId !== null) {
@@ -17,7 +19,29 @@ export const ManageBooking = () => {
           `${backendUrl}/api/manage_booking/${AuthenticatedUserId}`
         )
         .then(function (response) {
-          setTicketData(response.data)
+          const data = response.data
+          setPassengerData(data)
+          // let ticketNumber = null
+          let newRsData = []
+          let count = 0
+          data.map((ele, index)=>{
+            // ticketNumber = ele.ticket_number
+            count++
+            const addTicketNumber = {}
+            if(data[index-1]?.ticket_number !== ele.ticket_number && count > 1){
+              addTicketNumber['ticketData'] = {...ele.ticket}
+              addTicketNumber['ticketNumber'] = ele.ticket_number
+              newRsData.push(addTicketNumber)
+            }
+            else if(count === 1){
+              addTicketNumber['ticketData'] = {...ele.ticket}
+              addTicketNumber['ticketNumber'] = ele.ticket_number
+              newRsData.push(addTicketNumber)
+            }
+          })
+          console.log("new res..", newRsData)
+          setTicketData(newRsData)
+        
         })
     }
   }, [AuthenticatedUserId, isAuthenticated])
@@ -44,36 +68,58 @@ export const ManageBooking = () => {
                       <div className="col-3">
 
                         <ul style={{ listStyleType: "none" }}>
-                          <li className="text-xl font-medium">{data.trip_schedule_id.bus_id.bus_name}</li>
-                          <li>From : {data.boarding_point}</li>
-                          <li>{data.trip_schedule_id.bus_id.bus_type}</li>
+                          <li className="text-xl font-medium">{data.ticketData.trip_schedule_id.bus_id.bus_name}</li>
+                          <li>From : {data.ticketData.boarding_point}</li>
+                          <li>{data.ticketData.trip_schedule_id.bus_id.bus_type}</li>
                         </ul>
+
+{
+passengerData.map((pEle)=>{
+  return(
+  pEle.ticket_number === data.ticketNumber? 
+  
+    <>
+     <ul style={{ listStyleType: "none" }}>
+                          <li>name: {pEle.name}</li>
+                          <li>age: {pEle.age} Rs</li>
+                          <li>Gender: {pEle.gender}</li>
+                          <li>Number: {pEle.mobile_number}</li>
+                        </ul>
+    </>
+  : null
+  )
+})
+}
+                       
+
+
                       </div>
 
                       <div className="col-3">
                         <ul style={{ listStyleType: "none" }}>
-                          <li>To: {data.dropping_point}</li>
-                          <li>Departure time: {data.departure_time} P.M</li>
-                          <li>Arrival time: {data.arrival_time} P.M</li>
-                          <li>Time: {data.trip_schedule_id.journey_time} Hrs</li>
+                          <li>To: {data.ticketData.dropping_point}</li>
+                          <li>Departure time: {data.ticketData.departure_time} P.M</li>
+                          <li>Arrival time: {data.ticketData.arrival_time} P.M</li>
+                          <li>Time: {data.ticketData.trip_schedule_id.journey_time} Hrs</li>
                         </ul>
                       </div>
 
                       <div className="col-3">
 
                         <ul style={{ listStyleType: "none" }}>
-                          <li>Date: {data.trip_schedule_id.trip_date}</li>
-                          <li>INR: {data.total_amount} Rs</li>
-                          <li>Bus No: {data.trip_schedule_id.bus_id.bus_no}</li>
-                          <li>Number of Seats: {data.number_of_seats}</li>
-                          <li>Seat Number: {data.seat_no}</li>
+                          <li>Date: {data.ticketData.trip_schedule_id.trip_date}</li>
+                          <li>INR: {data.ticketData.total_amount} Rs</li>
+                          <li>Bus No: {data.ticketData.trip_schedule_id.bus_id.bus_no}</li>
+                          <li>Number of Seats: {data.ticketData.number_of_seats}</li>
+                          <li>Seat Number: {data.ticketData.seat_no}</li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
                 <Button type="submit" label="View Details" />
-                <Button type="submit" label="Cancel Booking" className="p-button-danger" />
+                <Button type="submit
+                " label="Cancel Booking" className="p-button-danger" />
               </Card>
             )
           })

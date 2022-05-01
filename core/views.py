@@ -101,22 +101,23 @@ class PassengerView(APIView):
             #get passenger fields values from passenger data
             passenger_data_arr.append({'name':res_passenger_name['name_'+str(i)], 'mobile_number': res_passenger_mobile_number['mobileNumber_'+str(i)],'gender': res_passenger_gender['gender_'+str(i)], 'age':res_passenger_age['age_'+str(i)]})
 
-        print('passenger Data *************++++++++....', passenger_data_arr)    
         c_str = converted_seat_number[1:]
-
         boarding_point_res_data = request.data['payload']['seat_data']['point']['boardingPointRadio']['name']
         dropping_point_res_data = request.data['payload']['seat_data']['point']['droppingPointRadio']['name']
-
-        #save user info
-        for data in passenger_data_arr:
-            passenger_serializer = UserInfo(user = get_user_data, ticket_number= ticket_number, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'])
-            passenger_serializer.save()
 
         #save ticket data
         get_user_data = UserAccount.objects.get(pk=res_user_id)
         get_trip_schedule = Tripschedule.objects.get(pk=res_trip_schedule_id)
         ticket_serializer = Ticket(ticket_number = ticket_number, total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = c_str, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule, user = get_user_data, booked = res_booking_status)
         ticket_serializer.save()
+
+
+        #save user info
+        get_last_saved_ticket = Ticket.objects.get(ticket_number = ticket_number)
+        print('get last ticket...**', get_last_saved_ticket)
+        for data in passenger_data_arr:
+            passenger_serializer = UserInfo(user = get_user_data, ticket_number= ticket_number, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'], ticket = get_last_saved_ticket)
+            passenger_serializer.save()
 
         #save seat
         get_bus_instance = Bus.objects.get(pk = res_bus_id)
