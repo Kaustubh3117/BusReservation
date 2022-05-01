@@ -65,7 +65,6 @@ class SeatView(generics.ListAPIView):
     queryset = Tripschedule.objects.all()
     def get_queryset(self):
         trip_schedule_id = self.kwargs['trip_schedule_id']
-        print("trip schedule.........***********", trip_schedule_id)
         obj_list = self.queryset.filter(pk = trip_schedule_id)
         if obj_list is not None:
             return obj_list
@@ -75,7 +74,6 @@ class SeatView(generics.ListAPIView):
 class PassengerView(APIView):
      def post(self, request, format=None):
         ticket_number = create_ticket_number()
-        print('data........******', request.data)
         res_user_id = request.data['payload']['seat_data']['seatData']['loggedInUserId']
         res_bus_id = request.data['payload']['seat_data']['seatData']['busId']
         res_trip_schedule_id = request.data['payload']['seat_data']['seatData']['tripScheduleId']
@@ -91,24 +89,19 @@ class PassengerView(APIView):
         res_passenger_gender = request.data['payload']['passenger_data']['gender']
         res_passenger_age = request.data['payload']['passenger_data']['age']
 
-
         get_user_data = UserAccount.objects.get(pk=res_user_id)
         #split seat number and add passenger data
         converted_seat_number = ""
         passenger_data_arr = []
         for i in range(1, len(res_seat_number)+1):
-            print('i.....*****', i)
-            # converted_seat_number = converted_seat_number + ',' + str(i)
             #get passenger fields values from passenger data
             passenger_data_arr.append({'name':res_passenger_name['name_'+str(i)], 'mobile_number': res_passenger_mobile_number['mobileNumber_'+str(i)],'gender': res_passenger_gender['gender_'+str(i)], 'age':res_passenger_age['age_'+str(i)]})
         
-        print("res no of seat ....****", res_seat_number)
         for seat in res_seat_number:
             converted_seat_number = converted_seat_number + ',' + str(seat)
 
 
         c_str = converted_seat_number[1:]
-        print("seat number....*****", c_str)
         boarding_point_res_data = request.data['payload']['seat_data']['point']['boardingPointRadio']['name']
         dropping_point_res_data = request.data['payload']['seat_data']['point']['droppingPointRadio']['name']
 
@@ -118,10 +111,8 @@ class PassengerView(APIView):
         ticket_serializer = Ticket(ticket_number = ticket_number, total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = c_str, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule, user = get_user_data, booked = res_booking_status)
         ticket_serializer.save()
 
-
         #save user info
         get_last_saved_ticket = Ticket.objects.get(ticket_number = ticket_number)
-        print('get last ticket...**', get_last_saved_ticket)
         for data in passenger_data_arr:
             passenger_serializer = UserInfo(user = get_user_data, ticket_number= ticket_number, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'], ticket = get_last_saved_ticket)
             passenger_serializer.save()
@@ -143,9 +134,7 @@ class ManageBookingView(generics.ListAPIView):
     serializer_class = UserInfoSerializer
     def get_queryset(self):
         user_id = self.kwargs['user']
-        print("user_id........", user_id)
         user_data = UserInfo.objects.filter(user__id__contains = user_id)
-        print('ticket data.....', user_data)
         return user_data
 
 # @api_view(['GET', 'PUT', 'DELETE'])

@@ -22,7 +22,7 @@ import {
 } from '../../../constants/accounts/account_constants';
 import { backendUrl } from '../../../environment/development';
 import { ToastMessage } from '../../../middleware/ToastMessage';
-import { SUCCESS, ERROR } from '../../../constants/common/CrudMessageEnum';
+import { SUCCESS, ERROR, WARNING } from '../../../constants/common/CrudMessageEnum';
 import { config } from '../../../environment/service';
 
 export const load_user = () => async dispatch => {
@@ -171,12 +171,13 @@ export const login = (email, password) => async dispatch => {
         });
 
         dispatch(load_user());
+        ToastMessage(SUCCESS, 'You are logged in successfully')
     } catch (err) {
         dispatch({
             type: LOGIN_FAIL
         })
-        console.log(err.data)
-        ToastMessage(ERROR, 'hey')
+        console.log('login error..', err)
+        ToastMessage(ERROR, err.response.data.detail)
     }
 };
 
@@ -189,11 +190,13 @@ export const signup = (email, password, re_password) => async dispatch => {
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
+        ToastMessage(SUCCESS, "Verification url sent to your email, please check your email")
+
     } catch (err) {
         dispatch({
             type: SIGNUP_FAIL
         })
-        ToastMessage(ERROR, err.message)
+        ToastMessage(ERROR, err.response.data.detail)
     }
 };
 
@@ -206,11 +209,13 @@ console.log('activation..', body)
         dispatch({
             type: ACTIVATION_SUCCESS,
         });
+        ToastMessage(SUCCESS, "Registration successfull")
+
     } catch (err) {
         dispatch({
             type: ACTIVATION_FAIL
         })
-        ToastMessage(ERROR, err.message)
+        ToastMessage(ERROR, err.response.data.detail)
     }
 };
 
@@ -223,11 +228,12 @@ export const reset_password = (email) => async dispatch => {
         dispatch({
             type: PASSWORD_RESET_SUCCESS
         });
+        ToastMessage(WARNING, "Please verify your email")
     } catch (err) {
         dispatch({
             type: PASSWORD_RESET_FAIL
         });
-        ToastMessage(ERROR, err.message)
+        ToastMessage(ERROR, err.response.data.detail)
     }
 };
 
@@ -239,11 +245,12 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
         dispatch({
             type: PASSWORD_RESET_CONFIRM_SUCCESS
         });
+        ToastMessage(SUCCESS, "Password reset successfull")
     } catch (err) {
         dispatch({
             type: PASSWORD_RESET_CONFIRM_FAIL
         });
-        ToastMessage(ERROR, err.message)
+        ToastMessage(ERROR, err.response.data.detail)
     }
 };
 
@@ -251,4 +258,5 @@ export const logout = () => dispatch => {
     dispatch({
         type: LOGOUT
     });
+    ToastMessage(SUCCESS, "You are logged out successfully")
 };

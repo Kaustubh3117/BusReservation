@@ -42,11 +42,6 @@ const Banner = () => {
     setFormData(e);
   };
 
-  // useEffect(() => {
-  //   dispatch(setBoardingPointData());
-  //   dispatch(setDroppingPointData());
-  // }, [])
-
   useEffect(() => {
     if (Object.values(formData).length > 0) {
       navigate("/buslist", {

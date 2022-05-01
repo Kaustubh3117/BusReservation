@@ -132,6 +132,7 @@ const Login = ({ login, isAuthenticated }) => {
                               id={field.name}
                               {...field}
                               toggleMask
+                              feedback={false}
                               name="password"
                               className={classNames({
                                 "p-invalid": fieldState.invalid,
