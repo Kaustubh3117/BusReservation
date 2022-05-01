@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import { setReservedSeatData, setSeatData } from "../../../../stores/users/actions/UserAction";
 import SeatPicker from "../../../common/seat_chart/index";
 import "../../../common/seat_chart/seat_style/seat_chart.css";
 import { SeatTypeData } from "../../../common/seat_chart/SeatPicker/SeatTypeData";
-import { SeatBookingModal } from "../../booking/SeatBookingModal";
+import { BookingView } from "../../seat_booking/BookingView";
 import { GiSteeringWheel } from "react-icons/gi";
-import { BoardingDroppingPoint } from "../../booking/components/BoardingDroppingPoint";
+import { BoardingDroppingPoint } from "../../seat_booking/components/BoardingDroppingPoint";
 import { Button } from "primereact/button";
 import { SeatColorDetails } from "./SeatColorDetails";
 import { SeatDetailsConfirmation } from "./SeatDetailsConfirmation";
@@ -232,7 +231,7 @@ const { isAuthenticated} = this.props
           </div>
         </div>
 
-        <SeatBookingModal
+        <BookingView
           show={this.state.modalShow}
           onHide={() => this.setState({ modalShow: false })}
           data={this.props}

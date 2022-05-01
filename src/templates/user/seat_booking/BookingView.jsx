@@ -4,7 +4,7 @@ import { PaymentModal } from "./components/payment/PaymentModal";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 
-export const SeatBookingModal = (props) => {
+export const BookingView = (props) => {
   console.log("seat booking props: ", props);
   const [nextModal, setNextModal] = useState(true);
   const renderFooter = () => {
