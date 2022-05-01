@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { MenuItems } from "../../common/MenuItems";
 import { BreadCrumbs } from "../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
-import { changeDateFormat } from "../UserHelper";
+import { changeDateFormat } from "../user_landing_view/UserHelper";
 import { cloneDeep } from "lodash";
 import { backendUrl } from "../../../environment/development";
 import { Link } from "react-router-dom";

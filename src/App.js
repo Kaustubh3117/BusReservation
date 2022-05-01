@@ -7,9 +7,9 @@ import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";   
 import "primeflex/primeflex.min.css"
 
-import Home from './templates/user/Home';
-import {AvailableBusses} from './templates/user/available_busses/AvailableBusses';
-import { SeatView } from './templates/user/seat_selection/SeatView';
+import HomeView from './templates/user_view/user_landing_view/HomeView';
+import {AvailableBusses} from './templates/user_view/available_busses/AvailableBusses';
+import { SeatView } from './templates/user_view/seat_selection/SeatView';
 
 import Login from './templates/accounts/Login';
 import Signup from './templates/accounts/Signup';
@@ -25,7 +25,7 @@ import { Provider } from 'react-redux';
 import store from './stores/store';
 
 import Layout from './templates/hoc/Layout';
-import { ManageBooking } from './templates/user/manage_booking/ManageBookingView';
+import { ManageBooking } from './templates/user_view/manage_booking/ManageBookingView';
 
 const App = () => (
     <Provider store={store}>
@@ -33,7 +33,7 @@ const App = () => (
             <Layout>
                 <Routes>
                     <Route exact path='*' element={<PageNotFound/>} />
-                    <Route exact path='/' element={<Home/>} />
+                    <Route exact path='/' element={<HomeView/>} />
                     <Route exact path='/buslist' element={<AvailableBusses/>} />
                     <Route exact path='/seat/:id' element={<SeatView/>} />
                     <Route exact path='/manageBooking/:user_id' element={<ManageBooking/>} />

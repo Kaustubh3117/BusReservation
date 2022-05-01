@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Navbar from '../user/assets/NavigationBar';
+import Navbar from '../user_view/assets/NavigationBar';
 import { connect } from 'react-redux';
 import { checkAuthenticated, load_user } from '.././../stores/accounts/actions/AuthActions';
 import { setBoardingPointData, setDroppingPointData } from '../../stores/users/actions/UserAction';
