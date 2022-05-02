@@ -4,7 +4,7 @@ import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Divider } from "primereact/divider";
-import { setPassengerData } from "../../../../stores/users/actions/UserAction";
+import { setPassengerData, setShowNextModdal } from "../../../../stores/users/actions/UserAction";
 
 export const Passenger = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ export const Passenger = () => {
 
   return (
     <>
-      <form className="p-fluid">
+      <form className="p-fluid" onSubmit={()=>{dispatch(setShowNextModdal(true))}}>
         {seatCount.map((element, index) => (
           <>
             <h4 className="d-flex flex-row justify-content-between">
@@ -44,7 +44,7 @@ export const Passenger = () => {
               <div className="col">
                 <div className="field">
                 <span className="p-float-label">
-                            <InputText id="name" value={name[`name_${index + 1}`]} onChange={(e) => setName({...name, [`name_${index + 1}`]:e.target.value})} />
+                            <InputText id="name" value={name[`name_${index + 1}`]} onChange={(e) => setName({...name, [`name_${index + 1}`]:e.target.value})} required/>
                             <label htmlFor="name">Full Name</label>
                         </span>
                 </div>
@@ -52,7 +52,7 @@ export const Passenger = () => {
               <div className="col">
                 <div className="field">
                   <span className="p-float-label">
-                  <InputNumber id="mobileNumber" name="mobileNumber" value={mobileNumber[`mobileNumber_${index + 1}`]} onValueChange={(e) => setMobileNumber({...mobileNumber, [`mobileNumber_${index + 1}`]:e.target.value})}  min={0} max={99999999999} />
+                  <InputNumber id="mobileNumber" name="mobileNumber" value={mobileNumber[`mobileNumber_${index + 1}`]} onValueChange={(e) => setMobileNumber({...mobileNumber, [`mobileNumber_${index + 1}`]:e.target.value})}  min={0} max={99999999999} required />
                   <label htmlFor="mobileNumber">Mobile Number</label>
                   </span>
                 </div>
@@ -71,6 +71,7 @@ export const Passenger = () => {
                              setRadioValue({...radioValue,[`gender_${index + 1}`]:e.value})
                         }
                         checked={radioValue !== null? radioValue[`gender_${index + 1}`] === radio.name+(index + 1): radio.name+(index + 1) === 'Male'}
+                        required
                       />
                       <label htmlFor="gender">{radio.name}</label>
                     </>
@@ -80,7 +81,7 @@ export const Passenger = () => {
               <div className="col-6">
                 <div className="field">
                   <span className="p-float-label">
-                  <InputNumber id="age" name="age" value={age[`age_${index + 1}`]} onValueChange={(e) => setAge({...age, [`age_${index + 1}`]:e.target.value})}  min={0} max={100} />
+                  <InputNumber id="age" name="age" value={age[`age_${index + 1}`]} onValueChange={(e) => setAge({...age, [`age_${index + 1}`]:e.target.value})}  min={0} max={100} required/>
                   <label htmlFor="age">Age</label>
                   </span>
                 </div>
@@ -89,6 +90,7 @@ export const Passenger = () => {
             <Divider />
           </>
         ))}
+        <button type="submit">Next</button>
       </form>
     </>
   );

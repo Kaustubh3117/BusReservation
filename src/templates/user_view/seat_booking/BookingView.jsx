@@ -1,31 +1,14 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Passenger } from "./components/Passenger";
 import { PaymentModal } from "./components/payment/PaymentModal";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 
 export const BookingView = (props) => {
-  console.log("seat booking props: ", props);
-  const [nextModal, setNextModal] = useState(true);
-  const renderFooter = () => {
-    return (
-      <div>
-        <Button
-          label="Next →"
-          onClick={() => setNextModal(false)}
-          className="w-3"
-          hidden={nextModal === false ? true : false}
-        />
-        {nextModal === false ? (
-          <Button
-            label="← Back"
-            onClick={() => setNextModal(true)}
-            className="w-3"
-          />
-        ) : null}
-      </div>
-    );
-  };
+  const showNextModal = useSelector(
+    (state) => state.user_data.showNextModal
+  );
   return (
     <>
       <Dialog
@@ -34,9 +17,8 @@ export const BookingView = (props) => {
         onHide={props.onHide}
         breakpoints={{ "960px": "75vw", "640px": "100vw" }}
         style={{ width: "50vw" }}
-        footer={renderFooter()}
       >
-        {nextModal === true ? <Passenger /> : <PaymentModal />}
+        {showNextModal === false ? <Passenger /> : <PaymentModal />}
       </Dialog>
     </>
   );

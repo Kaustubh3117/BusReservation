@@ -5,7 +5,8 @@ import {
   REQUEST_ADD_DROPPINGPOINT_DATA,
   SET_PASSENGER_DATA,
   SAVE_PASSENGER_DATA,
-  SET_RESERVE_SEAT_DATA
+  SET_RESERVE_SEAT_DATA,
+  SET_SHOW_NEXT_MODAL
 } from "../../../constants/users/user_constants";
 import { config } from "../../../environment/service";
 import axios from "axios";
@@ -86,3 +87,10 @@ export const setReservedSeatData = (busId) =>async (dispatch) => {
       console.log(err.data)
   }
 };
+
+export const setShowNextModdal = (flag) => (dispatch) =>{
+  dispatch({
+    type: SET_SHOW_NEXT_MODAL,
+    payload: flag,
+  });
+}
