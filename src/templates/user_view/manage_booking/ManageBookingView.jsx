@@ -39,7 +39,6 @@ export const ManageBooking = () => {
               newRsData.push(addTicketNumber)
             }
           })
-          console.log("new res..", newRsData)
           setTicketData(newRsData)
 
         })
@@ -48,17 +47,11 @@ export const ManageBooking = () => {
 
 
   const onCancelBookingClick = (ticket_id) =>{
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-    }
-  };
     axios
     .get(
       `${backendUrl}/api/cancel_booking_view/${ticket_id}`
     )
     .then(function (response) {
-  console.log(response)
     }
     )
   }

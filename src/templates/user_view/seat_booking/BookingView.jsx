@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Passenger } from "./components/Passenger";
 import { PaymentModal } from "./components/payment/PaymentModal";
 import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
-
 export const BookingView = (props) => {
   const showNextModal = useSelector(
     (state) => state.user_data.showNextModal

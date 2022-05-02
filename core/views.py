@@ -121,7 +121,7 @@ class PassengerView(APIView):
         get_bus_instance = Bus.objects.get(pk = res_bus_id)
         seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = get_last_saved_ticket)
         seat_serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(data = "success",status=status.HTTP_201_CREATED)
         # return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ReservedSeatView(generics.ListAPIView):

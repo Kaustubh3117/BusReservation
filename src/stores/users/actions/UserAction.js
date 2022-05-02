@@ -58,26 +58,21 @@ export const setPassengerData = (payload) => async (dispatch) => {
       });
 };
 
-export const savePassengerData = (payload) => async (dispatch) => {
+export const savePassengerData = (payload) => async () => {
   const body = JSON.stringify({ payload });
-  console.log("body: ", body);
-
   try {
       const res = await axios.post(`${backendUrl}/api/passenger_data/`, body, config);
-      console.log("res: ", res);
-
+      if(res.data === "success"){
+        ToastMessage(SUCCESS, "Your booking is Successfull");
+      }
   } catch (err) {  
-      console.log(err.data)
-      ToastMessage(ERROR, 'hey')
+      ToastMessage(ERROR, 'Your booking was unsuccessfull please contact admin if you are having problem with booking')
   }
 };
 
 export const setReservedSeatData = (busId) =>async (dispatch) => {
-  console.log("busId ~----UserAction: ", busId);
-
   try {
       const res = await axios.get(`${backendUrl}/api/get_seat/${busId}`);
-      console.log("User Action ....res: ", res);
       dispatch({
         type: SET_RESERVE_SEAT_DATA,
         payload: res.data,
