@@ -13,6 +13,7 @@ import { classNames } from "primereact/utils";
 import { Card } from "primereact/card";
 // react hook form
 import { useForm, Controller } from "react-hook-form";
+import { USER } from "../../constants/accounts/account_constants";
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({});
@@ -81,7 +82,7 @@ const Login = ({ login, isAuthenticated }) => {
                   </span>
                   <a
                     className="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-                    href="/signup"
+                    href={`/signup/${USER}`}
                   >
                     Create today!
                   </a>

@@ -130,7 +130,6 @@ this.setState({renderKey:true})
 const { isAuthenticated} = this.props
     if(!isAuthenticated){
       window.location.href="/login"
-      // return <Navigate replace to="/login" />
     }
     //send bus types
     const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.state.reservedSeatData);

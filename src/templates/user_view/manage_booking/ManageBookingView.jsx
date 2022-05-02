@@ -6,6 +6,7 @@ import { Card } from "primereact/card";
 import { Button } from "primereact/button"
 import { ToastMessage } from '../../../middleware/ToastMessage';
 import { SUCCESS } from '../../../constants/common/CrudMessageEnum';
+import { Badge } from 'primereact/badge';
 
 
 export const ManageBooking = () => {
@@ -126,6 +127,7 @@ if(response.data === "success"){
                           <li>Bus No: {data.ticketData.trip_schedule_id.bus_id.bus_no}</li>
                           <li>Number of Seats: {data.ticketData.number_of_seats}</li>
                           <li>Seat Number: {data.ticketData.seat_no}</li>
+                          <li>{data.ticketData.booked && !data.ticketData.canceled ? <Badge value="Booked" severity="success"/>: !data.ticketData.booked && data.ticketData.canceled ? <Badge value="Cancelled" severity="danger"/>: null}</li>
                         </ul>
                       </div>
                     </div>
@@ -133,7 +135,7 @@ if(response.data === "success"){
                 </div>
                 <Button type="submit" label="View Details" />
                 <Button type="Button
-                " label="Cancel Booking" className="p-button-danger" onClick={(e)=>{onCancelBookingClick(data.ticketData.id)}} />
+                " label="Cancel Booking" disabled={!data.ticketData.booked && data.ticketData.canceled ? true : false} className="p-button-danger" onClick={(e)=>{onCancelBookingClick(data.ticketData.id)}} />
               </Card>
             )
           })

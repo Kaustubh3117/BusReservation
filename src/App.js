@@ -24,7 +24,7 @@ import PageNotFound from './templates/404';
 import { Provider } from 'react-redux';
 import store from './stores/store';
 
-import Layout from './templates/hoc/Layout';
+import Layout from './templates/user_view/hoc/Layout';
 import { ManageBooking } from './templates/user_view/manage_booking/ManageBookingView';
 
 const App = () => (
@@ -39,7 +39,7 @@ const App = () => (
                     <Route exact path='/manageBooking/:user_id' element={<ManageBooking/>} />
                     
                     <Route exact path='/login' element={<Login/>} />
-                    <Route exact path='/signup' element={<Signup/>} />
+                    <Route exact path='/signup/:id' element={<Signup/>} />
                     <Route exact path='/facebook' element={<Facebook/>} />
                     <Route exact path='/google' element={<Google/>} />
                     <Route exact path='/reset-password' element={<ResetPassword/>} />

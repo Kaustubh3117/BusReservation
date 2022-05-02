@@ -16,6 +16,9 @@ import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
 // react hook form
 import { useForm, Controller } from "react-hook-form";
+import {USER} from "../../constants/accounts/account_constants"
+import { AGENT } from "../../constants/accounts/account_constants";
+
 
 const Signup = ({ signup, isAuthenticated }) => {
   const [accountCreated, setAccountCreated] = useState(false);
@@ -81,7 +84,7 @@ const Signup = ({ signup, isAuthenticated }) => {
     return <Navigate to="/" />;
   }
   if (accountCreated) {
-    return <Navigate to="/login" />;
+    return <Navigate to={`/login/${USER}`} />;
   }
 
   const getFormErrorMessage = (name) => {
@@ -120,7 +123,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                   </span>
                   <a
                     className="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-                    href="/login"
+                    href={`/login/${USER}`}
                   >
                     Sign In!
                   </a>
@@ -250,7 +253,8 @@ const Signup = ({ signup, isAuthenticated }) => {
                       </div>
                     </div>
                     <div className="mt-3">
-                      Are you an agent? <Link to="/login">Sign In</Link>
+                      Are you an agent? <Link  to={`/signup/${AGENT}`}>Sign In</Link>
+                      
                     </div>
                   </form>
                 </div>

@@ -2,6 +2,7 @@ import { Menubar } from 'primereact/menubar';
 import { useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { logout } from "../../../../stores/accounts/actions/AuthActions";
+import { USER } from '../../../../constants/accounts/account_constants';
 
 const NavigationBar = ({ logout }) => {
     const isAuthenticated = useSelector(
@@ -83,7 +84,7 @@ const NavigationBar = ({ logout }) => {
                     label: 'Register',
                     icon: 'pi pi-fw pi-user-minus',
                     command: () => {
-                        window.location.href = '/signup'
+                        window.location.href = `/signup/${USER}`
                     }
                 },
             ]

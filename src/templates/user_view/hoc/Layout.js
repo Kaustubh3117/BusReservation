@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import Navbar from '../user_view/user_landing_view/components/NavigationBar'
+import Navbar from '../user_landing_view/components/NavigationBar'
 import { connect } from 'react-redux';
-import { checkAuthenticated, load_user } from '.././../stores/accounts/actions/AuthActions';
-import { setBoardingPointData, setDroppingPointData } from '../../stores/users/actions/UserAction';
+import { checkAuthenticated, load_user } from '../../../stores/accounts/actions/AuthActions';
+import { setBoardingPointData, setDroppingPointData } from '../../../stores/users/actions/UserAction';
 
 const Layout = ({ checkAuthenticated, load_user, setBoardingPointData, setDroppingPointData, children }) => {
     useEffect(() => {
