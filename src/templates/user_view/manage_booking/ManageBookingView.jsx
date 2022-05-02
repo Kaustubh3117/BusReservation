@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { backendUrl } from "../../../environment/development";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button"
-import cloneDeep from 'lodash'
+import { ToastMessage } from '../../../middleware/ToastMessage';
+import { SUCCESS } from '../../../constants/common/CrudMessageEnum';
+
+
 export const ManageBooking = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const AuthenticatedUserId = useSelector((state) => state.auth.user !== null ? state.auth.user.id : null);
@@ -48,10 +51,13 @@ export const ManageBooking = () => {
 
   const onCancelBookingClick = (ticket_id) =>{
     axios
-    .get(
+    .post(
       `${backendUrl}/api/cancel_booking_view/${ticket_id}`
     )
     .then(function (response) {
+if(response.data === "success"){
+  ToastMessage(SUCCESS, "Booking Cancelled Successfully")
+}
     }
     )
   }

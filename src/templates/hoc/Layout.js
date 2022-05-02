@@ -6,8 +6,8 @@ import { setBoardingPointData, setDroppingPointData } from '../../stores/users/a
 
 const Layout = ({ checkAuthenticated, load_user, setBoardingPointData, setDroppingPointData, children }) => {
     useEffect(() => {
-        // checkAuthenticated();
-        // load_user();
+        checkAuthenticated();
+        load_user();
         setBoardingPointData();
         setDroppingPointData();
     }, []);

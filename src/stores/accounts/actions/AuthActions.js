@@ -46,7 +46,6 @@ export const load_user = () => async dispatch => {
             dispatch({
                 type: USER_LOADED_FAIL
             });
-            ToastMessage(ERROR, err.message)
         }
     } else {
         dispatch({
@@ -143,13 +142,11 @@ export const checkAuthenticated = () => async dispatch => {
                 dispatch({
                     type: AUTHENTICATED_FAIL
                 });
-                ToastMessage(ERROR, "Authentication Failed Token Not Valid")
             }
         } catch (err) {
             dispatch({
                 type: AUTHENTICATED_FAIL
             });
-            ToastMessage(ERROR, err.message)
         }
 
     } else {

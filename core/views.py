@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import status
 import re
+from rest_framework.decorators import  renderer_classes
 
 def create_ticket_number():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
@@ -138,12 +139,15 @@ class ManageBookingView(generics.ListAPIView):
         return user_data
 
 # @api_view(['GET', 'PUT', 'DELETE'])
-def cancel_booking_view(request, ticket_id):
-    ticket_data = Seat.objects.filter(ticket_id=ticket_id)
-    ticket_data.delete()
-    # update ticket Status
-    ticket_data = Ticket.objects.get(id = ticket_id)
-    ticket_data.booked = False
-    ticket_data.canceled = True
-    ticket_data.save()
-    return Response("Booking Cancelled Successfully.", status=status.HTTP_404_OK)
+class CancelBookingView(APIView):
+    def post(self, request,  *args, **kwargs):
+        tick_id = kwargs.get('ticket_id')
+        print("ticket_id....******", tick_id)
+        ticket_data = Seat.objects.filter(ticket_id=tick_id)
+        ticket_data.delete()
+        # update ticket Status
+        ticket_data = Ticket.objects.get(id = tick_id)
+        ticket_data.booked = False
+        ticket_data.canceled = True
+        ticket_data.save()
+        return Response(data = "success", status=status.HTTP_201_CREATED)
