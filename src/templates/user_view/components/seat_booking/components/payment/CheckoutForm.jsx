@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {useSelector, useDispatch} from 'react-redux';
-import { savePassengerData } from "../../../../../stores/users/actions/UserAction";
+import { savePassengerData } from "../../../../../../stores/users/actions/UserAction";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { setShowNextModdal } from "../../../../../stores/users/actions/UserAction";
+import { setShowNextModdal } from "../../../../../../stores/users/actions/UserAction";
 
 export const CheckoutForm = () => {
   const dispatch= useDispatch()

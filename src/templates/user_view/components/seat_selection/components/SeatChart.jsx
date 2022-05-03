@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setReservedSeatData, setSeatData } from "../../../../stores/users/actions/UserAction";
-import SeatPicker from "../../../common/seat_chart/index";
-import "../../../common/seat_chart/seat_style/seat_chart.css";
-import { SeatTypeData } from "../../../common/seat_chart/SeatPicker/SeatTypeData";
+import { setReservedSeatData, setSeatData } from "../../../../../stores/users/actions/UserAction";
+import SeatPicker from "../../../../common/seat_chart/index";
+import "../../../../common/seat_chart/seat_style/seat_chart.css";
+import { SeatTypeData } from "../../../../common/seat_chart/SeatPicker/SeatTypeData";
 import { BookingView } from "../../seat_booking/BookingView";
 import { GiSteeringWheel } from "react-icons/gi";
 import { BoardingDroppingPoint } from "../../seat_booking/components/BoardingDroppingPoint";

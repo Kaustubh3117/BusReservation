@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { backendUrl } from "../../../environment/development";
+import { backendUrl } from "../../../../environment/development";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button"
-import { ToastMessage } from '../../../middleware/ToastMessage';
-import { SUCCESS } from '../../../constants/common/CrudMessageEnum';
+import { ToastMessage } from '../../../../middleware/ToastMessage';
+import { SUCCESS } from '../../../../constants/common/CrudMessageEnum';
 import { Badge } from 'primereact/badge';
 
 

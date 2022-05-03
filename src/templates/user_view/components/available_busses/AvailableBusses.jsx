@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { BusDetailsCard } from "../../common/BusDetailsCard";
+import {BusDetailsCard} from "../../../common/BusDetailsCard"
 import { useLocation } from "react-router-dom";
 import { MenuItems } from "./components/MenuItems";
-import { BreadCrumbs } from "../../common/BreadCrumbs";
+import { BreadCrumbs } from "../../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
-import { changeDateFormat } from "../user_landing_view/UserHelper";
+import { changeDateFormat } from "../../UserHelper";
 import { cloneDeep } from "lodash";
-import { backendUrl } from "../../../environment/development";
+import { backendUrl } from "../../../../environment/development";
 import { Link } from "react-router-dom";
 
 export const AvailableBusses = () => {

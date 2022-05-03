@@ -4,7 +4,7 @@ import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Divider } from "primereact/divider";
-import { setPassengerData, setShowNextModdal } from "../../../../stores/users/actions/UserAction";
+import { setPassengerData, setShowNextModdal } from "../../../../../stores/users/actions/UserAction";
 
 export const Passenger = () => {
   const dispatch = useDispatch();

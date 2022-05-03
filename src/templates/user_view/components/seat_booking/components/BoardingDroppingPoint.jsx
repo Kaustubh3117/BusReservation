@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSeatData } from "../../../../stores/users/actions/UserAction";
+import { setSeatData } from "../../../../../stores/users/actions/UserAction";
 import { TabView, TabPanel } from "primereact/tabview";
 import { RadioButton } from "primereact/radiobutton";
 

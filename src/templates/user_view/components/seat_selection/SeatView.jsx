@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SeatChart from "./components/SeatChart";
 import { useParams } from "react-router-dom";
-import { backendUrl } from "../../../environment/development";
+import { backendUrl } from "../../../../environment/development";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { getTripScheduleBpDpArray } from "./SeatHelper";
