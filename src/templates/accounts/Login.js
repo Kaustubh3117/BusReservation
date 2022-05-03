@@ -15,7 +15,7 @@ import { Card } from "primereact/card";
 import { useForm, Controller } from "react-hook-form";
 import { USER } from "../../constants/accounts/account_constants";
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = ({ login, isAuthenticated, isAgent }) => {
   const [formData, setFormData] = useState({});
   const defaultValues = {
     email: "",
@@ -192,6 +192,7 @@ const Login = ({ login, isAuthenticated }) => {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  isAgent: state?.auth?.user?.is_agent
 });
 
 export default connect(mapStateToProps, { login })(Login);

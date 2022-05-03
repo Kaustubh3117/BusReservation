@@ -10,6 +10,8 @@ import "primeflex/primeflex.min.css"
 import HomeView from './templates/user_view/user_landing_view/HomeView';
 import {AvailableBusses} from './templates/user_view/available_busses/AvailableBusses';
 import { SeatView } from './templates/user_view/seat_selection/SeatView';
+import Layout from './templates/user_view/hoc/Layout';
+import { ManageBooking } from './templates/user_view/manage_booking/ManageBookingView';
 
 import Login from './templates/accounts/Login';
 import Signup from './templates/accounts/Signup';
@@ -24,20 +26,23 @@ import PageNotFound from './templates/404';
 import { Provider } from 'react-redux';
 import store from './stores/store';
 
-import Layout from './templates/user_view/hoc/Layout';
-import { ManageBooking } from './templates/user_view/manage_booking/ManageBookingView';
+import { AgentView } from './templates/agent_view/AgentView';
+
+
 
 const App = () => (
     <Provider store={store}>
         <Router>
             <Layout>
                 <Routes>
+                    {/* user */}
                     <Route exact path='*' element={<PageNotFound/>} />
                     <Route exact path='/' element={<HomeView/>} />
                     <Route exact path='/buslist' element={<AvailableBusses/>} />
                     <Route exact path='/seat/:id' element={<SeatView/>} />
                     <Route exact path='/manageBooking/:user_id' element={<ManageBooking/>} />
                     
+                    {/* authentication */}
                     <Route exact path='/login' element={<Login/>} />
                     <Route exact path='/signup/:user' element={<Signup/>} />
                     <Route exact path='/facebook' element={<Facebook/>} />
@@ -45,6 +50,9 @@ const App = () => (
                     <Route exact path='/reset-password' element={<ResetPassword/>} />
                     <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm/>} />
                     <Route exact path='/activate/:uid/:token' element={<Activate/>} />
+
+                    {/* agent */}
+                    <Route exact path='/agentView' element={<AgentView/>} />
                 </Routes>
             </Layout>
         </Router>
