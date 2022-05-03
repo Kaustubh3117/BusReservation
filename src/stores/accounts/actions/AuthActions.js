@@ -178,8 +178,8 @@ export const login = (email, password) => async dispatch => {
     }
 };
 
-export const signup = (email, password, re_password) => async dispatch => {
-    const body = JSON.stringify({ email, password, re_password });
+export const signup = (email, password, re_password, is_agent) => async dispatch => {
+    const body = JSON.stringify({ email, password, re_password, is_agent });
     try {
         const res = await axios.post(`${backendUrl}/auth/users/`, body, config);
 

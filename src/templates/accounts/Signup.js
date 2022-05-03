@@ -42,6 +42,10 @@ const Signup = ({ signup, isAuthenticated }) => {
   };
 
   useEffect(() => {
+    const url = window.location.pathname
+    const urlSplit = url.split('/')
+    const userType = urlSplit.pop()
+    
     if (
       Object.values(formData).length > 0 &&
       formData.password === formData.re_password
@@ -49,7 +53,8 @@ const Signup = ({ signup, isAuthenticated }) => {
       signup(
         formData.email,
         formData.password,
-        formData.re_password
+        formData.re_password,
+        userType === "AGENT" ? "True" : "False"
       );
       setAccountCreated(true);
     } else if (

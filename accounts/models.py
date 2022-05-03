@@ -2,16 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password, is_agent, **extra_fields):
+        print("Email...***", email)
+        print("extra fields...***", extra_fields)
+        print("agent...*88", is_agent)
         if not email:
             raise ValueError('Users must have an email address')
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=email,is_agent=is_agent, **extra_fields)
         user.set_password(password)
         user.save()
         return user
     
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password, is_agent, **extra_fields):
         """
         Create and save a SuperUser with the given email and password.
         """
@@ -37,6 +40,8 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['is_agent']
+
     
     def __str__(self):
         return self.email
