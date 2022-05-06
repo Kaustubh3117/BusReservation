@@ -1,14 +1,4 @@
-import { Rating } from 'primereact/rating';
 
-// const imageBodyTemplate = (rowData) => {
-//     return <img src={`images/product/${rowData.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={rowData.image} className="product-image" />
-// }
-// const ratingBodyTemplate = (rowData) => {
-//     return <Rating value={rowData.rating} readOnly cancel={false} />;
-// }
-// const statusBodyTemplate = (rowData) => {
-//     return <span className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>;
-// }
 export const dataTableColums = [{
     field: "id",
     header: "id",

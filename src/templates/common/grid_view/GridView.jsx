@@ -34,15 +34,17 @@ export const GridView = (props) => {
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
-    const [selectedProducts, setSelectedProducts] = useState(null);
+    const [selectedRowData, setSelectedRowData] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    }
+    
+
+    useEffect(() => {
+        setProducts(props.data);
+    }, [props.data]);
 
     const openNew = () => {
         setProduct(emptyProduct);
@@ -168,17 +170,11 @@ export const GridView = (props) => {
     }
 
     const deleteSelectedProducts = () => {
-        let _products = products.filter(val => !selectedProducts.includes(val));
+        let _products = products.filter(val => !selectedRowData.includes(val));
         setProducts(_products);
         setDeleteProductsDialog(false);
-        setSelectedProducts(null);
+        setSelectedRowData(null);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    }
-
-    const onCategoryChange = (e) => {
-        let _product = { ...product };
-        _product['category'] = e.value;
-        setProduct(_product);
     }
 
     const onInputChange = (e, name) => {
@@ -201,7 +197,7 @@ export const GridView = (props) => {
         return (
             <React.Fragment>
                 <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
+                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRowData || !selectedRowData.length} />
             </React.Fragment>
         )
     }
@@ -215,22 +211,7 @@ export const GridView = (props) => {
         )
     }
 
-    // const imageBodyTemplate = (rowData) => {
-    //     return <img src={`images/product/${rowData.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={rowData.image} className="product-image" />
-    // }
-
-    // const priceBodyTemplate = (rowData) => {
-    //     return formatCurrency(rowData.price);
-    // }
-
-    // const ratingBodyTemplate = (rowData) => {
-    //     return <Rating value={rowData.rating} readOnly cancel={false} />;
-    // }
-
-    const statusBodyTemplate = (rowData) => {
-        return <span className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>;
-    }
-
+    
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -267,7 +248,7 @@ export const GridView = (props) => {
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedProducts} />
         </React.Fragment>
     );
-
+console.log("product...", product)
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
@@ -280,8 +261,8 @@ export const GridView = (props) => {
 
                 <DataTable ref={dt}
                     value={props.data}
-                    selection={selectedProducts}
-                    onSelectionChange={(e) => setSelectedProducts(e.value)}
+                    selection={selectedRowData}
+                    onSelectionChange={(e) => setSelectedRowData(e.value)}
                     dataKey="id" paginator rows={10}
                     rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -301,7 +282,7 @@ export const GridView = (props) => {
 
             {/* edit and add dialog */}
 
-            <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+            <Dialog visible={productDialog} style={{ width: '450px' }} header={props.title} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 {product.image && <img src={`images/product/${product.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.image} className="product-image block m-auto pb-3" />}
                 <h1>Bus Name for which tripschedule created</h1>
                 {
@@ -313,7 +294,7 @@ export const GridView = (props) => {
                                 {
                                     fields.fieldType === "InputText" ? <div className="field">
                                         <label htmlFor="name">{fields.label}</label>
-                                        <InputText id={fields.id} name={fields.name} value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
+                                        <InputText id={fields.id} name={fields.name} value={product[fields['name']]} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
                                         {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
                                     </div> : null
                                 }
@@ -321,47 +302,10 @@ export const GridView = (props) => {
                               {
                                 fields.fieldType === "InputNumber" ? <div className="field">
                                     <label htmlFor="name">{fields.label}</label>
-                                    <InputNumber id={fields.id} name={fields.name} value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
+                                    <InputNumber id={fields.id} name={fields.name} value={product[fields['name']]} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
                                     {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
                                 </div> : null
                             }
-                            {/* <div className="field">
-                                    <label htmlFor="description">Description</label>
-                                    <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                                </div>
-
-                                <div className="field">
-                                    <label className="mb-3">Category</label>
-                                    <div className="formgrid grid">
-                                        <div className="field-radiobutton col-6">
-                                            <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
-                                            <label htmlFor="category1">Accessories</label>
-                                        </div>
-                                        <div className="field-radiobutton col-6">
-                                            <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
-                                            <label htmlFor="category2">Clothing</label>
-                                        </div>
-                                        <div className="field-radiobutton col-6">
-                                            <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
-                                            <label htmlFor="category3">Electronics</label>
-                                        </div>
-                                        <div className="field-radiobutton col-6">
-                                            <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
-                                            <label htmlFor="category4">Fitness</label>
-                                        </div>
-                                    </div>
-                                </div> */}
-
-                            {/* <div className="formgrid grid">
-                                <div className="field col">
-                                    <label htmlFor="price">Price</label>
-                                    <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                                </div>
-                                <div className="field col">
-                                    <label htmlFor="quantity">Quantity</label>
-                                    <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
-                                </div>
-                            </div> */}
                             </>
                             )
                         })
