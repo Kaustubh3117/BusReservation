@@ -26,10 +26,12 @@ import ResetPasswordConfirm from './templates/accounts/ResetPasswordConfirm';
 import Facebook from './templates/accounts/Facebook';
 import Google from './templates/accounts/Google';
 import PageNotFound from './templates/404';
+import { TripScheduleView } from './templates/agent_view/components/trip_schedule/TripScheduleView';
 
 
 // agent import
 import { AgentView } from './templates/agent_view/AgentView';
+import { BusView } from './templates/agent_view/components/bus/BusView';
 
 
 
@@ -56,6 +58,8 @@ const App = () => (
 
                     {/* agent */}
                     <Route exact path='/agentView' element={<AgentView/>} />
+                    <Route exact path='/busView' element={<BusView/>} />
+                    <Route exact path='/tripScheduleView' element={<TripScheduleView/>} />
                 </Routes>
             </Layout>
         </Router>

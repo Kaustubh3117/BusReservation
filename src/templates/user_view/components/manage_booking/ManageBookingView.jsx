@@ -44,23 +44,22 @@ export const ManageBooking = () => {
             }
           })
           setTicketData(newRsData)
-
         })
     }
   }, [AuthenticatedUserId, isAuthenticated])
 
 
-  const onCancelBookingClick = (ticket_id) =>{
+  const onCancelBookingClick = (ticket_id) => {
     axios
-    .post(
-      `${backendUrl}/api/cancel_booking_view/${ticket_id}`
-    )
-    .then(function (response) {
-if(response.data === "success"){
-  ToastMessage(SUCCESS, "Booking Cancelled Successfully")
-}
-    }
-    )
+      .post(
+        `${backendUrl}/api/cancel_booking_view/${ticket_id}`
+      )
+      .then(function (response) {
+        if (response.status === "success") {
+          ToastMessage(SUCCESS, "Booking Cancelled Successfully")
+        }
+      }
+      )
   }
 
 
@@ -127,7 +126,7 @@ if(response.data === "success"){
                           <li>Bus No: {data.ticketData.trip_schedule_id.bus_id.bus_no}</li>
                           <li>Number of Seats: {data.ticketData.number_of_seats}</li>
                           <li>Seat Number: {data.ticketData.seat_no}</li>
-                          <li>{data.ticketData.booked && !data.ticketData.canceled ? <Badge value="Booked" severity="success"/>: !data.ticketData.booked && data.ticketData.canceled ? <Badge value="Cancelled" severity="danger"/>: null}</li>
+                          <li>{data.ticketData.booked && !data.ticketData.canceled ? <Badge value="Booked" severity="success" /> : !data.ticketData.booked && data.ticketData.canceled ? <Badge value="Cancelled" severity="danger" /> : null}</li>
                         </ul>
                       </div>
                     </div>
@@ -135,11 +134,17 @@ if(response.data === "success"){
                 </div>
                 <Button type="submit" label="View Details" />
                 <Button type="Button
-                " label="Cancel Booking" disabled={!data.ticketData.booked && data.ticketData.canceled ? true : false} className="p-button-danger" onClick={(e)=>{onCancelBookingClick(data.ticketData.id)}} />
+                " label="Cancel Booking" disabled={!data.ticketData.booked && data.ticketData.canceled ? true : false} className="p-button-danger" onClick={(e) => { onCancelBookingClick(data.ticketData.id) }} />
               </Card>
             )
           })
-          : null
+          : <div className="text-center mt-8">
+            <span className="flex justify-content-center  text-8xl">No Ticket</span>
+            <div id="info">
+              <h3 className="flex justify-content-center " >No Ticket Available.</h3>
+              <a href="/">Please Book your seat</a>
+            </div>
+          </div>
       }
     </>
   )
