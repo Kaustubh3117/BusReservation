@@ -57,7 +57,7 @@ export const tripScheduleFields = [
         id:"trip_date",
         name: "trip_date",
         label:"Trip Date",
-        fieldType: "InputText",
+        fieldType: "date",
         value:'',
         errorMessage: 'Please Enter Trip Date'
     },
@@ -65,7 +65,7 @@ export const tripScheduleFields = [
         id:"departure_time",
         name: "departure_time",
         label:"Departure Time",
-        fieldType: "InputText",
+        fieldType: "time",
         value:'',
         errorMessage: 'Please Enter Trip Date'
     },
@@ -73,7 +73,7 @@ export const tripScheduleFields = [
         id:"arrival_time",
         name: "arrival_time",
         label:"Arrival Time",
-        fieldType: "InputText",
+        fieldType: "time",
         value:'',
         errorMessage: 'Please Enter Trip Date'
     },
@@ -81,7 +81,21 @@ export const tripScheduleFields = [
         id:"available_seat",
         name: "available_seat",
         label:"Available Seat",
-        fieldType: "InputNumber",
+        fieldType: "number",
+        errorMessage: 'Please Enter Trip Date'
+    },
+    {
+        id:"journey_time",
+        name: "journey_time",
+        label:"Journey Time",
+        fieldType: "text",
+        errorMessage: 'Please Enter Trip Date'
+    },
+    {
+        id:"price",
+        name: "price",
+        label:"Price",
+        fieldType: "number",
         errorMessage: 'Please Enter Trip Date'
     },
 ]

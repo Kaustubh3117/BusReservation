@@ -13,7 +13,13 @@ import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import { GridViewHelper } from './GridViewHelper';
 // import './DataTableDemo.css';
+
+// import from helper
+import { selectValues } from './GridViewHelper';
 
 export const GridView = (props) => {
 
@@ -28,7 +34,8 @@ export const GridView = (props) => {
         rating: 0,
         inventoryStatus: 'INSTOCK'
     };
-
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null);
     const [products, setProducts] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -37,10 +44,11 @@ export const GridView = (props) => {
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
+    const [select, setSelect] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
 
-    
+
 
     useEffect(() => {
         setProducts(props.data);
@@ -193,6 +201,13 @@ export const GridView = (props) => {
         setProduct(_product);
     }
 
+    const onSelectChange = (e) => {
+        setSelect(e.value);
+    }
+
+    
+
+
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -211,7 +226,7 @@ export const GridView = (props) => {
         )
     }
 
-    
+
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -248,7 +263,8 @@ export const GridView = (props) => {
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedProducts} />
         </React.Fragment>
     );
-console.log("product...", product)
+    console.log("product...", product)
+    console.log("Time....", time)
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
@@ -290,26 +306,45 @@ console.log("product...", product)
                         props.formFields.map((fields) => {
                             return (
                                 <>
-                              
-                                {
-                                    fields.fieldType === "InputText" ? <div className="field">
-                                        <label htmlFor="name">{fields.label}</label>
-                                        <InputText id={fields.id} name={fields.name} value={product[fields['name']]} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                                        {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
-                                    </div> : null
-                                }
-                              
-                              {
-                                fields.fieldType === "InputNumber" ? <div className="field">
-                                    <label htmlFor="name">{fields.label}</label>
-                                    <InputNumber id={fields.id} name={fields.name} value={product[fields['name']]} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
-                                    {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
-                                </div> : null
-                            }
-                            </>
+                                    {
+                                        fields.fieldType === "text" ? <div className="field">
+                                            <label htmlFor="name">{fields.label}</label>
+                                            <InputText id={fields.id} name={fields.name} value={product[fields['name']]} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
+                                            {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
+                                        </div> : null
+                                    }
+                                    {
+                                        fields.fieldType === "time" ? <div className="field">
+                                            <label htmlFor="name">{fields.label}</label>
+                                            <Calendar id={fields.id} name={fields.name} value={time} onChange={(e) => setTime(e.value)} timeOnly hourFormat="12" />
+                                            {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
+                                        </div> : null
+                                    }
+                                    {
+                                        fields.fieldType === "date" ? <div className="field">
+                                            <label htmlFor="name">{fields.label}</label>
+                                            <Calendar id={fields.id} name={fields.name} value={new Date(date ? date : product[fields['name']])} onChange={(e) => setDate(e.value)}></Calendar>
+                                            {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
+                                        </div> : null
+                                    }
+                                    {
+                                        fields.fieldType === "number" ? <div className="field">
+                                            <label htmlFor="name">{fields.label}</label>
+                                            <InputNumber id={fields.id} name={fields.name} value={product[fields['name']]} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
+                                            {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
+                                        </div> : null
+                                    }
+                                     {
+                                        fields.fieldType === "select" ? <div className="field">
+                                            <label htmlFor="name">{fields.label}</label>
+                                            <Dropdown id={fields.id} name={fields.name} value={select} options={selectValues} onChange={onSelectChange} optionLabel="name" placeholder="Select" />
+                                            {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
+                                        </div> : null
+                                    }
+                                </>
                             )
                         })
-                    : null
+                        : null
                 }
             </Dialog>
 
