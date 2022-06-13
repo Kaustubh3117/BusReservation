@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
-import { Sidebar } from 'primereact/sidebar';
-import { Button } from 'primereact/button';
-export const SideBar = ()=>{
-    const [visibleLeft, setVisibleLeft] = useState(false);
-
-    return(
-<>
-<Sidebar visible={visibleLeft} onHide={() => setVisibleLeft(false)}>
-                    <h3>Left Sidebar</h3>
-                    <li>UserName</li>
-                    <li>Logout</li>
-                    <li>Dashboard</li>
-                    <li>Bus</li>
-                    <li>Trip Schedule</li>
-                    <li>Boarding Point and Dropping Point</li>
-                    <li>Bus status</li>
-                    <li>Reports</li>
-                </Sidebar>
-                <Button icon="pi pi-arrow-right" onClick={() => setVisibleLeft(true)} className="mr-2" />
-</>
-    )
+import { ProSidebar, SidebarHeader, SidebarFooter, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import { Link } from 'react-router-dom';
+import 'react-pro-sidebar/dist/css/styles.css';
+export const SideBar = () => {
+  return (
+    <>
+      <ProSidebar>
+        <Menu iconShape="square">
+          <MenuItem>Dashboard  <Link to="/agentView" /></MenuItem>
+          <MenuItem>Bus<Link to="/busView" /></MenuItem>
+          <MenuItem>Trip Schedule <Link to="/tripScheduleView" /></MenuItem>
+          <MenuItem>Boarding Point and Dropping Point</MenuItem>
+          <MenuItem>Bus status</MenuItem>
+          <MenuItem>Reports</MenuItem>
+          <SubMenu title="Components">
+            <MenuItem>Add Nested Components</MenuItem>
+          </SubMenu>
+        </Menu>
+        <SidebarFooter className='mb-0'>
+          All rights reserved Giobus 2022
+        </SidebarFooter>
+      </ProSidebar>
+    </>
+  )
 
 }

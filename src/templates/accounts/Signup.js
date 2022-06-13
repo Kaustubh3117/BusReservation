@@ -128,7 +128,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                   </span>
                   <a
                     className="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-                    href={`/login/${USER}`}
+                    href={`/login`}
                   >
                     Sign In!
                   </a>

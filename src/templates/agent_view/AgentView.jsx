@@ -12,8 +12,14 @@ export const AgentView = () => {
     // }, [isAgent])
     return (
         <>
-        <SideBar/>
-             <h1>Agent Home</h1>
+            <div className='grid'>
+                <div className='col-3'>
+                    <SideBar />
+                </div>
+                <div className='col-9'>
+                    <h1>Agent View</h1>                
+                </div>
+            </div>
         </>
     )
 }

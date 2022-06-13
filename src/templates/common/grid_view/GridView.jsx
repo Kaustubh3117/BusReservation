@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios'
 import { classNames } from 'primereact/utils';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -17,6 +18,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { GridViewHelper } from './GridViewHelper';
 // import './DataTableDemo.css';
+import { backendUrl } from '../../../environment/development';
 
 // import from helper
 import { selectValues } from './GridViewHelper';
@@ -179,10 +181,17 @@ export const GridView = (props) => {
 
     const deleteSelectedProducts = () => {
         let _products = products.filter(val => !selectedRowData.includes(val));
-        setProducts(_products);
-        setDeleteProductsDialog(false);
-        setSelectedRowData(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        // setProducts(_products);
+        // setDeleteProductsDialog(false);
+        // setSelectedRowData(null);
+        // toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        axios.get(`${backendUrl}/agent_api/bus_crud/`).then(
+            function (response) {
+                 setProduct(response.data)
+                 setDeleteProductsDialog(false);
+                 setSelectedRowData(null)
+              }
+        )
     }
 
     const onInputChange = (e, name) => {
@@ -265,6 +274,7 @@ export const GridView = (props) => {
     );
     console.log("product...", product)
     console.log("Time....", time)
+    console.log('selected row...', selectedRowData)
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
