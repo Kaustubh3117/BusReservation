@@ -27,6 +27,7 @@ import Facebook from './templates/accounts/Facebook';
 import Google from './templates/accounts/Google';
 import PageNotFound from './templates/404';
 import { TripScheduleView } from './templates/agent_view/components/trip_schedule/TripScheduleView';
+import { BoardingDroppingPoint } from './templates/agent_view/components/boarding_dropping_point/BoardingDroppingPointView';
 
 
 // agent import
@@ -60,6 +61,7 @@ const App = () => (
                     <Route exact path='/agentView' element={<AgentView/>} />
                     <Route exact path='/busView' element={<BusView/>} />
                     <Route exact path='/tripScheduleView' element={<TripScheduleView/>} />
+                    <Route exact path='/boardingDroppingPoint' element={<BoardingDroppingPoint/>} />
                 </Routes>
             </Layout>
         </Router>

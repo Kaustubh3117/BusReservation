@@ -17,3 +17,13 @@ class TripScheduleView(ListAPIView):
     serializer_class = TripscheduleSerializer
     def get_queryset(self):
         return Tripschedule.objects.all()
+
+class BoardingPointView(ListAPIView):
+    serializer_class = BoardingPointSerializer
+    def get_queryset(self):
+        return BoardingPoint.objects.all()
+
+class DroppingPointView(ListAPIView):
+    serializer_class = DroppingPointSerializer
+    def get_queryset(self):
+        return DroppingPoint.objects.all()

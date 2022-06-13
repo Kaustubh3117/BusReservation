@@ -10,7 +10,7 @@ export const SideBar = () => {
           <MenuItem>Dashboard  <Link to="/agentView" /></MenuItem>
           <MenuItem>Bus<Link to="/busView" /></MenuItem>
           <MenuItem>Trip Schedule <Link to="/tripScheduleView" /></MenuItem>
-          <MenuItem>Boarding Point and Dropping Point</MenuItem>
+          <MenuItem>Boarding Point and Dropping Point  <Link to="/boardingDroppingPoint" /></MenuItem>
           <MenuItem>Bus status</MenuItem>
           <MenuItem>Reports</MenuItem>
           <SubMenu title="Components">
