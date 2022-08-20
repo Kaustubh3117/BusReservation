@@ -62,7 +62,7 @@ export const savePassengerData = (payload) => async () => {
   const body = JSON.stringify({ payload });
   try {
       const res = await axios.post(`${backendUrl}/api/passenger_data/`, body, config);
-      if(res.data === "success"){
+      if(res.status === 200){
         ToastMessage(SUCCESS, "Your booking is Successfull");
       }
   } catch (err) {  

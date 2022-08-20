@@ -89,7 +89,7 @@ const Signup = ({ signup, isAuthenticated }) => {
     return <Navigate to="/" />;
   }
   if (accountCreated) {
-    return <Navigate to={`/login/${USER}`} />;
+    return <Navigate to={`/login`} />;
   }
 
   const getFormErrorMessage = (name) => {

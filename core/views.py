@@ -1,11 +1,13 @@
 import random
 import string
+import razorpay
+import re
 
 from re import I
 from django.shortcuts import render
 from rest_framework import generics
 from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TicketSerializer, TripscheduleSerializer, UserInfoSerializer
-from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule, UserInfo, Seat, Bus
+from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule, UserInfo, Seat, Bus, Payment
 from accounts.models import UserAccount
 from django.db.models import Q
 from rest_framework.response import Response
@@ -13,8 +15,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import status
-import re
 from rest_framework.decorators import  renderer_classes
+
 
 def create_ticket_number():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
@@ -90,7 +92,12 @@ class PassengerView(APIView):
         res_passenger_gender = request.data['payload']['passenger_data']['gender']
         res_passenger_age = request.data['payload']['passenger_data']['age']
 
+        #GET USER DATA
         get_user_data = UserAccount.objects.get(pk=res_user_id)
+
+        #PAYMENT DETAILS
+        payment_id = request.data['payload']['payment_data']['order_id']
+        payment_amount = request.data['payload']['payment_data']['amount']
         #split seat number and add passenger data
         converted_seat_number = ""
         passenger_data_arr = []
@@ -122,8 +129,42 @@ class PassengerView(APIView):
         get_bus_instance = Bus.objects.get(pk = res_bus_id)
         seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = get_last_saved_ticket)
         seat_serializer.save()
-        return Response(status="success")
-        # return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        #save payment details
+        save_payment_details = Payment(payment_id= payment_id, user = get_user_data, amount = payment_amount)
+        save_payment_details.save()
+
+        return Response(status=HTTP_200_OK)
+
+class PaymentView(APIView):
+     def post(self, request, format=None):
+         #razorpay
+        global client
+        client = razorpay.Client(auth=("rzp_test_0byzGAVeUBt6CU", "N6J9PAxwcQIDlxID0CwCL4K5"))
+        res_total_price = request.data['amount']
+        data = {"amount" : float(res_total_price), "currency" : "INR"}
+        payment = client.order.create(data=data)
+        print("payment.....*******", payment)
+        return_res_data = {'order_id': payment['id'], 'amount': payment['amount'], 'currency':payment['currency']}
+
+        # return Response()
+        return Response(return_res_data, status=HTTP_200_OK)
+
+# @api_view(['POST'])
+class VerifySignatureView(APIView):
+    def post(self, request, format=None):
+        res = request.data
+        params_dict = {
+            'razorpay_payment_id' : res['razorpay_paymentId'],
+            'razorpay_order_id' : res['razorpay_orderId'],
+            'razorpay_signature' : res['razorpay_signature']
+        }
+        # verifying the signature
+        res = client.utility.verify_payment_signature(params_dict)
+
+        if res == True:
+            return Response({'status':'Payment Successful'})
+        return Response({'status':'Payment Failed'})
 
 class ReservedSeatView(generics.ListAPIView):
     serializer_class = SeatSerializer
