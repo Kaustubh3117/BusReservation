@@ -84,7 +84,7 @@ export const droppingPointFields = [
         errorMessage: 'Please Enter Drop Location'
     },
     {
-        id:"i",
+        id:"trip_schedule_id",
         name: "trip_schedule_id",
         label:"Trip Schedule.",
         fieldType: "select",

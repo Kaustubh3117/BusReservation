@@ -1,7 +1,14 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.decorators import api_view
+
 from core.serializers import BusSerializer, TripscheduleSerializer, TicketSerializer, BoardingPointSerializer, DroppingPointSerializer
 from core.models import Bus, Tripschedule, Ticket, BoardingPoint, DroppingPoint
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
+
+
 
 # Create your views here.
 class BusView(ListAPIView):
@@ -9,9 +16,14 @@ class BusView(ListAPIView):
     def get_queryset(self):
         return Bus.objects.all()
 
-class RetrieveUpdateDeleteBusAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Bus.objects.all()
-    serializer_class = BusSerializer
+@api_view(['POST'])
+def delete_bus(request):
+    payload = request.data['data']
+    if payload != None:
+        for id in payload:
+            bus = get_object_or_404(Bus, pk=id)
+            bus.delete()
+    return Response(status=status.HTTP_202_ACCEPTED) 
 
 class TripScheduleView(ListAPIView):
     serializer_class = TripscheduleSerializer

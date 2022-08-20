@@ -9,14 +9,11 @@ import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 // import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
-import { GridViewHelper } from './GridViewHelper';
 // import './DataTableDemo.css';
 import { backendUrl } from '../../../environment/development';
 
@@ -105,19 +102,7 @@ export const GridView = (props) => {
         setProductDialog(true);
     }
 
-    const confirmDeleteProduct = (product) => {
-        setProduct(product);
-        setDeleteProductDialog(true);
-    }
-
-    const deleteProduct = () => {
-        let _products = products.filter(val => val.id !== product.id);
-        setProducts(_products);
-        setDeleteProductDialog(false);
-        setProduct(emptyProduct);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-    }
-
+   
     const findIndexById = (id) => {
         let index = -1;
         for (let i = 0; i < products.length; i++) {
@@ -175,24 +160,53 @@ export const GridView = (props) => {
         dt.current.exportCSV();
     }
 
+    //delete multiple row
     const confirmDeleteSelected = () => {
         setDeleteProductsDialog(true);
     }
 
     const deleteSelectedProducts = () => {
-        let _products = products.filter(val => !selectedRowData.includes(val));
-        // setProducts(_products);
-        // setDeleteProductsDialog(false);
-        // setSelectedRowData(null);
-        // toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-        axios.get(`${backendUrl}/agent_api/bus_crud/`).then(
+        // let _products = products.filter(val => !selectedRowData.includes(val));
+        const config = {
+            header: {
+              "Content-Type": "application/json",
+            },
+          };
+        const deletePayload = []
+        for(const i in selectedRowData){
+            console.log("i...", i)
+            deletePayload.push(selectedRowData[i].id)
+        }
+        const finalPayload = {data:deletePayload}
+        console.log("deletePayload...", deletePayload)
+        axios.post(`${backendUrl}/agent_api/delete_bus/`, finalPayload, config).then(
             function (response) {
-                 setProduct(response.data)
-                 setDeleteProductsDialog(false);
-                 setSelectedRowData(null)
-              }
+                setProduct(response.data)
+                setDeleteProductsDialog(false);
+                setSelectedRowData(null)
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Bus Deleted', life: 3000 });
+            }
         )
     }
+
+    //!!end delete multiple row
+
+    //delete single row
+    const confirmDeleteProduct = (product) => {
+        setProduct(product);
+        setDeleteProductDialog(true);
+    }
+
+    const deleteProduct = () => {
+        let _products = products.filter(val => val.id !== product.id);
+        setProducts(_products);
+        setDeleteProductDialog(false);
+        setProduct(emptyProduct);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+    }
+
+     //delete single row
+
 
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
@@ -211,11 +225,12 @@ export const GridView = (props) => {
     }
 
     const onSelectChange = (e) => {
+        console.log("e...", e)
         setSelect(e.value);
     }
 
-    
 
+console.log("selected row data", selectedRowData)
 
     const leftToolbarTemplate = () => {
         return (
@@ -244,6 +259,8 @@ export const GridView = (props) => {
             </React.Fragment>
         );
     }
+
+
 
     const header = (
         <div className="table-header">
@@ -275,6 +292,34 @@ export const GridView = (props) => {
     console.log("product...", product)
     console.log("Time....", time)
     console.log('selected row...', selectedRowData)
+
+    //movve logic to helper while converting response as well as for payload
+    const convertResponseTime = (time) => {
+        const d = new Date();
+        if(time !== null && time !== undefined){
+            const myArray = time.split(" ");
+            const t = myArray[0]
+const newArr = t.split(":");
+            d.setHours(newArr[0], newArr[1], 0);
+            return d 
+        }
+console.log("time", time)
+    }
+
+
+    //make it dynamic should work for all select options
+    const getSelectValue = (value) => {
+        //{select === null ? getSelectValue(product[fields['name']]) :
+       selectValues.forEach((obj)=>{
+if(value === obj.value){
+   setSelect(obj.value) 
+}
+       })
+        }
+
+    
+console.log("select", select)
+
     return (
         <div className="datatable-crud-demo">
             <Toast ref={toast} />
@@ -310,7 +355,7 @@ export const GridView = (props) => {
 
             <Dialog visible={productDialog} style={{ width: '450px' }} header={props.title} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 {product.image && <img src={`images/product/${product.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.image} className="product-image block m-auto pb-3" />}
-                <h1>Bus Name for which tripschedule created</h1>
+                {/* <h1>Bus Name for which tripschedule created</h1> */}
                 {
                     !!props.formFields && Array.isArray(props.formFields) && props.formFields.length > 0 ?
                         props.formFields.map((fields) => {
@@ -324,16 +369,18 @@ export const GridView = (props) => {
                                         </div> : null
                                     }
                                     {
-                                        fields.fieldType === "time" ? <div className="field">
-                                            <label htmlFor="name">{fields.label}</label>
-                                            <Calendar id={fields.id} name={fields.name} value={time} onChange={(e) => setTime(e.value)} timeOnly hourFormat="12" />
-                                            {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
-                                        </div> : null
+                                        fields.fieldType === "time" ?
+                                            <div className="field">
+                                                
+                                                <label htmlFor="name">{fields.label}</label>
+                                                <Calendar id={fields.id} name={fields.name} value={time === null ?  convertResponseTime(product[fields['name']]) : time} onChange={(e) => setTime(e.value)} timeOnly hourFormat="12" />
+                                                {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
+                                            </div> : null
                                     }
                                     {
                                         fields.fieldType === "date" ? <div className="field">
                                             <label htmlFor="name">{fields.label}</label>
-                                            <Calendar id={fields.id} name={fields.name} value={new Date(date ? date : product[fields['name']])} onChange={(e) => setDate(e.value)}></Calendar>
+                                            <Calendar id={fields.id} name={fields.name} dateFormat="dd/mm/yy" value={new Date(date ? date : product[fields['name']])} onChange={(e) => setDate(e.value)}></Calendar>
                                             {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
                                         </div> : null
                                     }
@@ -344,10 +391,10 @@ export const GridView = (props) => {
                                             {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
                                         </div> : null
                                     }
-                                     {
+                                    {
                                         fields.fieldType === "select" ? <div className="field">
                                             <label htmlFor="name">{fields.label}</label>
-                                            <Dropdown id={fields.id} name={fields.name} value={select} options={selectValues} onChange={onSelectChange} optionLabel="name" placeholder="Select" />
+                                            <Dropdown id={fields.id} name={fields.name} value={select === null ? getSelectValue(product[fields['name']]) :select} options= {selectValues} onChange={onSelectChange} optionLabel="name" placeholder="Select" />
                                             {submitted && !product.name && <small className="p-error">{fields.errorMessage}</small>}
                                         </div> : null
                                     }

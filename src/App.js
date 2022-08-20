@@ -26,13 +26,13 @@ import ResetPasswordConfirm from './templates/accounts/ResetPasswordConfirm';
 import Facebook from './templates/accounts/Facebook';
 import Google from './templates/accounts/Google';
 import PageNotFound from './templates/404';
-import { TripScheduleView } from './templates/agent_view/components/trip_schedule/TripScheduleView';
-import { BoardingDroppingPoint } from './templates/agent_view/components/boarding_dropping_point/BoardingDroppingPointView';
-
 
 // agent import
 import { AgentView } from './templates/agent_view/AgentView';
 import { BusView } from './templates/agent_view/components/bus/BusView';
+import { BusStatus } from './templates/agent_view/components/bus_status/BusStatusView';
+import { TripScheduleView } from './templates/agent_view/components/trip_schedule/TripScheduleView';
+import { BoardingDroppingPoint } from './templates/agent_view/components/boarding_dropping_point/BoardingDroppingPointView';
 
 
 
@@ -62,6 +62,7 @@ const App = () => (
                     <Route exact path='/busView' element={<BusView/>} />
                     <Route exact path='/tripScheduleView' element={<TripScheduleView/>} />
                     <Route exact path='/boardingDroppingPoint' element={<BoardingDroppingPoint/>} />
+                    <Route exact path='/busStatus' element={<BusStatus/>} />
                 </Routes>
             </Layout>
         </Router>
