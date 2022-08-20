@@ -4,7 +4,6 @@ import { savePassengerData } from "../../../../../../stores/users/actions/UserAc
 import { Button } from "primereact/button";
 import { setShowNextModdal } from "../../../../../../stores/users/actions/UserAction";
 import axios from "axios";
-import { cloneDeep } from "lodash";
 
 export const CheckoutForm = () => {
   const dispatch = useDispatch()
@@ -60,9 +59,6 @@ export const CheckoutForm = () => {
           razorpay_signature
         })
         if (res.data.status === 'Payment Successful') {
-          // send payload
-          const payload = cloneDeep(passengerData)
-          console.log("payload", payload)
           seatData['seatData']['booking_status'] = true
           const data = {
             seat_data: seatData,
@@ -93,8 +89,8 @@ export const CheckoutForm = () => {
   return (
     <>
 
-      <Button onClick={displayRazorpay} className="w-full mt-2 mb-4">Pay</Button>
-      <Button label="Back" className="w-full mt-2 mb-4" onClick={() => { dispatch(setShowNextModdal(false)) }} />
+      <Button label="Proceed To Pay" onClick={displayRazorpay} className="w-full mt-2 mb-4"/>
+      <Button label="<-- Back" className="w-full mt-2 mb-4" onClick={() => { dispatch(setShowNextModdal(false)) }} />
     </>
   )
 };

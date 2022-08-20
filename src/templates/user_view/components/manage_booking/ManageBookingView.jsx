@@ -55,7 +55,7 @@ export const ManageBooking = () => {
         `${backendUrl}/api/cancel_booking_view/${ticket_id}`
       )
       .then(function (response) {
-        if (response.status === "success") {
+        if (response.status === 200) {
           ToastMessage(SUCCESS, "Booking Cancelled Successfully")
         }
       }

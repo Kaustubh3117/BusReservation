@@ -131,7 +131,7 @@ class PassengerView(APIView):
         seat_serializer.save()
 
         #save payment details
-        save_payment_details = Payment(payment_id= payment_id, user = get_user_data, amount = payment_amount)
+        save_payment_details = Payment(payment_id= payment_id, user = get_user_data, amount = payment_amount, ticket_number=ticket_number)
         save_payment_details.save()
 
         return Response(status=HTTP_200_OK)
@@ -144,13 +144,9 @@ class PaymentView(APIView):
         res_total_price = request.data['amount']
         data = {"amount" : float(res_total_price), "currency" : "INR"}
         payment = client.order.create(data=data)
-        print("payment.....*******", payment)
         return_res_data = {'order_id': payment['id'], 'amount': payment['amount'], 'currency':payment['currency']}
-
-        # return Response()
         return Response(return_res_data, status=HTTP_200_OK)
 
-# @api_view(['POST'])
 class VerifySignatureView(APIView):
     def post(self, request, format=None):
         res = request.data
@@ -159,7 +155,6 @@ class VerifySignatureView(APIView):
             'razorpay_order_id' : res['razorpay_orderId'],
             'razorpay_signature' : res['razorpay_signature']
         }
-        # verifying the signature
         res = client.utility.verify_payment_signature(params_dict)
 
         if res == True:
@@ -179,16 +174,19 @@ class ManageBookingView(generics.ListAPIView):
         user_data = UserInfo.objects.filter(user__id__contains = user_id)
         return user_data
 
-# @api_view(['GET', 'PUT', 'DELETE'])
 class CancelBookingView(APIView):
     def post(self, request,  *args, **kwargs):
         tick_id = kwargs.get('ticket_id')
         print("ticket_id....******", tick_id)
-        ticket_data = Seat.objects.filter(ticket_id=tick_id)
-        ticket_data.delete()
+        seat_data = Seat.objects.filter(ticket_id=tick_id)
+        seat_data.delete()
         # update ticket Status
         ticket_data = Ticket.objects.get(id = tick_id)
         ticket_data.booked = False
         ticket_data.canceled = True
         ticket_data.save()
-        return Response(status="success")
+        #update payment data 
+        payment_details = Payment.objects.get(ticket_number = ticket_data.ticket_number)
+        payment_details.refund_issued = True
+        payment_details.save()
+        return Response(None, status=HTTP_200_OK)

@@ -74,7 +74,10 @@ class Payment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.SET_NULL, blank=True, null=True)
     amount = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    ticket_number = models.CharField(max_length=100, null=True, blank=False)
+    refund_issued = models.BooleanField(default=False)
+    refunded = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(editable=True, auto_now_add=True)
 
     def __str__(self):
         return self.user.email
