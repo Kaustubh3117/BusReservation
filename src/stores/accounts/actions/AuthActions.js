@@ -174,7 +174,10 @@ export const login = (email, password) => async dispatch => {
             type: LOGIN_FAIL
         })
         console.log('login error..', err)
-        ToastMessage(ERROR, err.response.data.detail)
+        if(err.response.data.detail !== undefined){
+            ToastMessage(ERROR, "Please check email and password are entered correctly or Please register first.")
+        }
+        
     }
 };
 
@@ -193,7 +196,12 @@ export const signup = (email, password, re_password, is_agent) => async dispatch
         dispatch({
             type: SIGNUP_FAIL
         })
-        ToastMessage(ERROR, err.response.data.detail)
+        if(err.response.data.detail === undefined &&  err.response.data.email !== undefined){
+            ToastMessage(ERROR, err.response.data.email[0])
+        }
+        else{
+            ToastMessage(ERROR, err.response.data.detail)
+        }
     }
 };
 

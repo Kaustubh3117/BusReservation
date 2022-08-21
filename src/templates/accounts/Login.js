@@ -17,6 +17,7 @@ import { USER } from "../../constants/accounts/account_constants";
 
 const Login = ({ login, isAuthenticated, isAgent }) => {
   const [formData, setFormData] = useState({});
+  
   const defaultValues = {
     email: "",
     password: "",
@@ -40,21 +41,21 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
   const continueWithGoogle = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=${process.env.REACT_APP_API_URL}/google`
+        `http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google`
       );
 
       window.location.replace(res.data.authorization_url);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const continueWithFacebook = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/auth/o/facebook/?redirect_uri=${process.env.REACT_APP_API_URL}/facebook`
+        `http://127.0.0.1:8000/auth/o/facebook/?redirect_uri=http://localh3000/facebook`
       );
 
       window.location.replace(res.data.authorization_url);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   if (isAuthenticated) {
@@ -155,6 +156,7 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
                     <div className="grid">
                       <div className="col">
                         <Button
+                          type="button"
                           className="p-button-outlined p-button-secondary mt-3 shadow-2"
                           onClick={continueWithGoogle}
                           style={{ width: "100%" }}
@@ -162,6 +164,27 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
                           <FcGoogle size={20} />
                           <span className="ml-3">Google</span>
                         </Button>
+{/*                         
+                        <GoogleLogin
+                          clientId={"809726732290-r3k61b58bvtkcue1n7cbt2f2vttvpgov.apps.googleusercontent.com"}
+                          buttonText="LOGIN WITH GOOGLE"
+                          className="p-button-outlined p-button-secondary mt-3 shadow-2"
+                          style={{ width: "100%" }}
+                          onSuccess={(response) => handleGoogleLogin(response)}
+                          render={(renderProps) => (
+                            <button
+                              onClick={renderProps.onClick}
+                              disabled={false}
+                              type="button"
+                              className="login-with-google-btn"
+                            > 
+                              Sign in with Google
+                            </button>
+                          )}
+                          onFailure={(err) => console.log("Google Login failed", err)}
+                        /> */}
+
+
                       </div>
                       <div className="col">
                         <Button
