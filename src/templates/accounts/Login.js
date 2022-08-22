@@ -164,27 +164,6 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
                           <FcGoogle size={20} />
                           <span className="ml-3">Google</span>
                         </Button>
-{/*                         
-                        <GoogleLogin
-                          clientId={"809726732290-r3k61b58bvtkcue1n7cbt2f2vttvpgov.apps.googleusercontent.com"}
-                          buttonText="LOGIN WITH GOOGLE"
-                          className="p-button-outlined p-button-secondary mt-3 shadow-2"
-                          style={{ width: "100%" }}
-                          onSuccess={(response) => handleGoogleLogin(response)}
-                          render={(renderProps) => (
-                            <button
-                              onClick={renderProps.onClick}
-                              disabled={false}
-                              type="button"
-                              className="login-with-google-btn"
-                            > 
-                              Sign in with Google
-                            </button>
-                          )}
-                          onFailure={(err) => console.log("Google Login failed", err)}
-                        /> */}
-
-
                       </div>
                       <div className="col">
                         <Button

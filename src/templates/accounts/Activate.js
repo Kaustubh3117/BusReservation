@@ -3,6 +3,7 @@ import { Navigate  } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { verify } from '../../stores/accounts/actions/AuthActions';
 import { useParams } from 'react-router-dom';
+import { Button } from "primereact/button";
 
 const Activate = ({ verify, match }) => {
     const [verified, setVerified] = useState(false);
@@ -19,21 +20,15 @@ const Activate = ({ verify, match }) => {
     }
 
     return (
-        <div className='container'>
-            <div 
-                className='d-flex flex-column justify-content-center align-items-center'
-                style={{ marginTop: '200px' }}
-            >
+        <div className=''>
+            <div className='grid text-center'>
+            <div className="col-4"></div>
+                <div className='col-4 container mt-8 shadow-4'>
                 <h1>Verify your Account:</h1>
-                <button
-                    onClick={verify_account}
-                    style={{ marginTop: '50px' }}
-                    type='button'
-                    className='btn btn-primary'
-                >
-                    Verify
-                </button>
-            </div>
+                <Button type="submit" label="Verify" className='mb-4' onClick={verify_account}/>
+                </div>
+                <div className="col-4"></div>
+               </div>
         </div>
     );
 };

@@ -6,7 +6,6 @@ import queryString from 'query-string';
 
 const Facebook = ({ facebookAuthenticate }) => {
     let location = useLocation();
-
     useEffect(() => {
         const values = queryString.parse(location.search);
         const state = values.state ? values.state : null;

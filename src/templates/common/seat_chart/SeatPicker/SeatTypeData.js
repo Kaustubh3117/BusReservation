@@ -1,9 +1,4 @@
-import React, {useState, useEffect} from "react";
-import { useSelector } from "react-redux";
-import cloneDeep from 'lodash'
-
 export const SeatTypeData = (seatType, busData) =>{
-console.log("busData: ", busData);
 let resBusData = ''
   if(Array.isArray(busData) && busData.length >0){
     busData.forEach((ele)=>{
@@ -12,9 +7,8 @@ let resBusData = ''
     
   }
   const trimBusSeatString = resBusData.substring(1);
-  console.log("bD: ", trimBusSeatString);
     let rows = []
-    if(seatType === 'seater'){
+    if(seatType.toLowerCase() === 'seater'){
         const seater =[
             [
               { id: 1, number: 1, isReserved: false },
@@ -84,7 +78,7 @@ let resBusData = ''
           const getReservedSeat = reserveSeat(seater, trimBusSeatString) 
           rows = getReservedSeat
     }
-    else if (seatType === 'sleeper'){
+    else if (seatType.toLowerCase() === 'sleeper'){
         const sleeper = [
             [
               { id: 1, number: 1, isReserved: false },
