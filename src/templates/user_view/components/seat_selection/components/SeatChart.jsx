@@ -15,12 +15,12 @@ import { SeatSelectionAndPricing } from "./SeatSelectionAndPricing";
 
 class SeatChart extends Component {
   state = {
-    busId:null,
-    loggedInUserId:null,
-    tripScheduleId:null,
+    busId: null,
+    loggedInUserId: null,
+    tripScheduleId: null,
     loading: false,
     price: 0,
-    totalPrice:0,
+    totalPrice: 0,
     modalShow: false,
     selectedSeatCount: 0,
     seatNumber: [],
@@ -30,29 +30,29 @@ class SeatChart extends Component {
     renderKey: false,
   };
 
-  componentDidMount(){
-    const {tripSchedule, authData, isAuthenticated} =this.props
+  componentDidMount() {
+    const { tripSchedule, authData } = this.props
 
-    
 
-if(authData !== undefined && authData.user !== undefined &&  authData.user !== null && authData.user.id !== undefined  &&  authData.user.id !== null){
-  this.setState({busId: tripSchedule.bus_id.id, loggedInUserId: authData.user.id, tripScheduleId:tripSchedule.id, price:tripSchedule.price})
 
-}
-  this.props.setReservedSeatData(tripSchedule.bus_id.id)
+    if (authData !== undefined && authData.user !== undefined && authData.user !== null && authData.user.id !== undefined && authData.user.id !== null) {
+      this.setState({ busId: tripSchedule.bus_id.id, loggedInUserId: authData.user.id, tripScheduleId: tripSchedule.id, price: tripSchedule.price })
+
+    }
+    this.props.setReservedSeatData(tripSchedule.bus_id.id)
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.props.setSeatData({ ...this.props.seatData, seatData: this.state });
     }
-    if(prevProps.reserveSeatData !== this.props.reserveSeatData){
+    if (prevProps.reserveSeatData !== this.props.reserveSeatData) {
       const data = this.props.reserveSeatData
-      this.setState({reservedSeatData: data})
+      this.setState({ reservedSeatData: data })
     }
 
-    if(prevState.reservedSeatData !== this.state.reservedSeatData){
-this.setState({renderKey:true})
+    if (prevState.reservedSeatData !== this.state.reservedSeatData) {
+      this.setState({ renderKey: true })
     }
   }
 
@@ -127,9 +127,9 @@ this.setState({renderKey:true})
   };
 
   render() {
-const { isAuthenticated} = this.props
-    if(!isAuthenticated){
-      window.location.href="/login"
+    const { isAuthenticated } = this.props
+    if (!isAuthenticated) {
+      window.location.href = "/login"
     }
     //send bus types
     const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.state.reservedSeatData);
@@ -142,23 +142,53 @@ const { isAuthenticated} = this.props
             <div style={{ marginTop: "100px" }}>
               <div className="grid">
                 <div className="col-4"><GiSteeringWheel size={40} className="steeringWheel" /></div>
-                <div className="col-6"><SeatColorDetails/></div>
+                <div className="col-6"><SeatColorDetails /></div>
               </div>
-             
+
               <div className="card" style={{ width: "20rem" }}>
-                <SeatPicker
-                  addSeatCallback={this.addSeatCallbackContinousCase}
-                  removeSeatCallback={this.removeSeatCallback}
-                  rows={rows}
-                  maxReservableSeats={6}
-                  alpha
-                  visible
-                  selectedByDefault
-                  loading={loading}
-                  tooltipProps={{ multiline: true }}
-                  continuous
-                  key={this.state.renderKey ?rows.length +1 : rows.length}
-                />
+                {
+                  rows.length === 2 ? <>
+                    {
+                      rows.map((row, index) => {
+                        return (
+                          <>
+                            <div className={index === 1 ? "mt-8" : ''}>
+                              {index === 0 ? <label className="text-center"><b>Lower Deck</b></label> : <label className="text-center"><b>Upper Deck</b></label>}
+                              <SeatPicker
+                                addSeatCallback={this.addSeatCallbackContinousCase}
+                                removeSeatCallback={this.removeSeatCallback}
+                                rows={row}
+                                maxReservableSeats={6}
+                                alpha
+                                visible
+                                selectedByDefault
+                                loading={loading}
+                                tooltipProps={{ multiline: true }}
+                                continuous
+                                key={this.state.renderKey ? rows.length + 1 : rows.length}
+                              />
+                            </div>
+                          </>
+                        )
+                      })
+                    }
+
+                  </> : <>
+                    <SeatPicker
+                      addSeatCallback={this.addSeatCallbackContinousCase}
+                      removeSeatCallback={this.removeSeatCallback}
+                      rows={rows}
+                      maxReservableSeats={6}
+                      alpha
+                      visible
+                      selectedByDefault
+                      loading={loading}
+                      tooltipProps={{ multiline: true }}
+                      continuous
+                      key={this.state.renderKey ? rows.length + 1 : rows.length}
+                    />
+                  </>
+                }
               </div>
             </div>
           </div>
@@ -166,14 +196,14 @@ const { isAuthenticated} = this.props
           <div className="col-4">
             <div className="seatPriceSection">
               <div>
-             
+
                 {/* pricing and booking */}
                 <div className="card">
                   {this.state.showBpDpDetails === true ? (
                     <>
                       <div className="grid">
                         <div className="col my-3 mx-3">
-                          <SeatDetailsConfirmation props={this.props}/>
+                          <SeatDetailsConfirmation props={this.props} />
                         </div>
                         <div className="col">
                           <Button
@@ -193,7 +223,7 @@ const { isAuthenticated} = this.props
                       <hr />
                     </>
                   ) : null}
-                 <SeatSelectionAndPricing {...this.state}/>
+                  <SeatSelectionAndPricing {...this.state} />
                   {this.state.showBpDpDetails ? (
                     <Button
                       label="Continue →"
@@ -208,10 +238,10 @@ const { isAuthenticated} = this.props
                       style={{ width: "100%" }}
                       disabled={
                         this.props.seatData !== null &&
-                        this.props.seatData.point !== undefined &&
-                        this.props.seatData.point.boardingPointRadio.value !==
+                          this.props.seatData.point !== undefined &&
+                          this.props.seatData.point.boardingPointRadio.value !==
                           "" &&
-                        this.props.seatData.point.droppingPointRadio.value !==
+                          this.props.seatData.point.droppingPointRadio.value !==
                           ""
                           ? false
                           : true
