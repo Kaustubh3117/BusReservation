@@ -7,14 +7,15 @@ import { Button } from "primereact/button"
 import { ToastMessage } from '../../../../middleware/ToastMessage';
 import { SUCCESS } from '../../../../constants/common/CrudMessageEnum';
 import { Badge } from 'primereact/badge';
-
+import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 
 export const ManageBooking = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const AuthenticatedUserId = useSelector((state) => state.auth.user !== null ? state.auth.user.id : null);
   const [ticketData, setTicketData] = useState({ ticketData: null })
   const [passengerData, setPassengerData] = useState({ passengerData: null })
-
+  const [displayTicketDetialsModal, setDisplayTicketDetialsModal] = useState(false);
+const[ticketNumber, setTicketNumber] = useState('')
 
   useEffect(() => {
     if (AuthenticatedUserId !== null) {
@@ -25,11 +26,9 @@ export const ManageBooking = () => {
         .then(function (response) {
           const data = response.data
           setPassengerData(data)
-          // let ticketNumber = null
           let newRsData = []
           let count = 0
           data.map((ele, index) => {
-            // ticketNumber = ele.ticket_number
             count++
             const addTicketNumber = {}
             if (data[index - 1]?.ticket_number !== ele.ticket_number && count > 1) {
@@ -62,6 +61,14 @@ export const ManageBooking = () => {
       )
   }
 
+  const onViewDtailsClickHandler = () =>{
+    setDisplayTicketDetialsModal(true)
+
+  }
+
+  const onHide = (name) => {
+    setDisplayTicketDetialsModal(false)
+ }
 
   return (
     <>
@@ -132,7 +139,7 @@ export const ManageBooking = () => {
                     </div>
                   </div>
                 </div>
-                <Button type="submit" label="View Details" />
+                <Button type="submit" label="View Details" onClick={()=>{onViewDtailsClickHandler(); setTicketData(data.ticketNumber)}} />
                 <Button type="Button
                 " label="Cancel Booking" disabled={!data.ticketData.booked && data.ticketData.canceled ? true : false} className="p-button-danger" onClick={(e) => { onCancelBookingClick(data.ticketData.id) }} />
               </Card>
@@ -146,6 +153,8 @@ export const ManageBooking = () => {
             </div>
           </div>
       }
+
+{displayTicketDetialsModal? <ManageTicketView ticketNo={ticketNumber} showDialog={displayTicketDetialsModal} onHide={onHide}/> : null}
     </>
   )
 }

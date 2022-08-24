@@ -70,7 +70,6 @@ export const CheckoutForm = () => {
         else{
           alert(res.data.status)
         }
-       
       },
       prefill: {
         name: "John Doe",
@@ -88,7 +87,6 @@ export const CheckoutForm = () => {
 
   return (
     <>
-
       <Button label="Proceed To Pay" onClick={displayRazorpay} className="w-full mt-2 mb-4"/>
       <Button label="<-- Back" className="w-full mt-2 mb-4" onClick={() => { dispatch(setShowNextModdal(false)) }} />
     </>

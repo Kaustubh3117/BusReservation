@@ -8,6 +8,7 @@ import {
   SET_RESERVE_SEAT_DATA,
   SET_SHOW_NEXT_MODAL
 } from "../../../constants/users/user_constants";
+import { Navigate } from "react-router-dom";
 import { config } from "../../../environment/service";
 import axios from "axios";
 import { backendUrl } from "../../../environment/development";
@@ -64,6 +65,7 @@ export const savePassengerData = (payload) => async () => {
       const res = await axios.post(`${backendUrl}/api/passenger_data/`, body, config);
       if(res.status === 200){
         ToastMessage(SUCCESS, "Your booking is Successfull");
+        //send mail with ticket details
       }
   } catch (err) {  
       ToastMessage(ERROR, 'Your booking was unsuccessfull please contact admin if you are having problem with booking')

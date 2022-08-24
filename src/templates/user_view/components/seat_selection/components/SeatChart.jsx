@@ -50,7 +50,6 @@ class SeatChart extends Component {
       const data = this.props.reserveSeatData
       this.setState({ reservedSeatData: data })
     }
-
     if (prevState.reservedSeatData !== this.state.reservedSeatData) {
       this.setState({ renderKey: true })
     }
