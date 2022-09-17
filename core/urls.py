@@ -3,7 +3,6 @@ from django.urls import path
 from .views import (
    BoardingPointView,
    DroppingPointView,
-#    filter_trip_schedule,
    FilterTripSchedule,
    SeatView,
    PassengerView,
@@ -11,7 +10,8 @@ from .views import (
    ManageBookingView,
    CancelBookingView,
    PaymentView,
-   VerifySignatureView
+   VerifySignatureView,
+   TicketView
 )
 app_name = 'core'
 
@@ -26,5 +26,5 @@ urlpatterns = [
     path('get_seat/<int:bus_id>', ReservedSeatView.as_view(), name='get_seat'),
     path('manage_booking/<int:user>', ManageBookingView.as_view(), name='manage_booking'),
     path('cancel_booking_view/<int:ticket_id>', CancelBookingView.as_view(), name='cancel_booking_view'),
-
+    path('get_ticket/<str:ticket_id>', TicketView.as_view(), name='get_ticket'),
 ]

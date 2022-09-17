@@ -1,8 +1,13 @@
+import React, { useState } from 'react';
 import { Menubar } from 'primereact/menubar';
 import { useSelector } from "react-redux";
 import { connect } from "react-redux";
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import { logout } from "../../../stores/accounts/actions/AuthActions";
 import { USER } from '../../../constants/accounts/account_constants';
+import { ManageTicketView } from '../components/manage_tickets/ManageTicketView';
 
 const NavigationBar = ({ logout }) => {
     const isAuthenticated = useSelector(
@@ -13,8 +18,10 @@ const NavigationBar = ({ logout }) => {
     const userEmail = useSelector(
         (state) => state.auth.user !== null ? state.auth.user.email : null
     );
-    console.log('isAuthenticated...', isAuthenticated)
-    console.log('userEmail...', userEmail)
+
+    const [showTicketDialog, setShowTicketDialog] = useState(false);
+    const [inputTicketNumber, setInputTicketNumber] = useState('');
+    const [displayTicketDetialsModal, setDisplayTicketDetialsModal] = useState(false);
 
     const logoutUser = () => {
         logout()
@@ -28,8 +35,8 @@ const NavigationBar = ({ logout }) => {
                     label: 'Bus Ticket',
                     icon: 'pi pi-fw pi-align-left',
                     command: () => {
-                        window.location.href = '/'
-                    }
+                       setShowTicketDialog(true)
+                    },
                 },
                 {
                     label: 'Manage Booking',
@@ -52,6 +59,35 @@ const NavigationBar = ({ logout }) => {
             ]
         }
     ];
+
+    //ticket modal code
+    const onHide = (name) => {
+        setShowTicketDialog(false)
+        setDisplayTicketDetialsModal(false)
+    }
+    
+    const renderFooter = (name) => {
+        return (
+            <div>
+                <Button label="Cancel" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
+                <Button label="Get Ticket" icon="pi pi-check" onClick={() => {setDisplayTicketDetialsModal(true); setShowTicketDialog(false)}} autoFocus />
+            </div>
+        );
+    }
+
+    const getTicketDetailsModal = ()=>{
+        if(displayTicketDetialsModal){
+            return <ManageTicketView ticketNo={inputTicketNumber} showDialog={displayTicketDetialsModal} onHide={onHide}/>
+        } 
+    }
+
+    const getTicketModal =()=>{
+        return (<Dialog visible={showTicketDialog} footer={renderFooter} onHide={onHide} breakpoints={{'960px': '75vw', '640px': '100vw'}} style={{width: '28vw'}}>
+        <h3>Enter Ticket Number</h3>
+        <InputText value={inputTicketNumber} onChange={(e) => setInputTicketNumber(e.target.value)} className='w-full' />
+    </Dialog>)
+    }
+    // // end of ticket modal code
 
     if (isAuthenticated && userEmail !== null) {
         const authItems = {
@@ -96,6 +132,8 @@ const NavigationBar = ({ logout }) => {
     return (
         <>
             <Menubar model={items} start={start} end={end} />
+            {isAuthenticated && userEmail !== null && showTicketDialog && !displayTicketDetialsModal ? getTicketModal():null}
+            {isAuthenticated && userEmail !== null && !showTicketDialog && displayTicketDetialsModal ? getTicketDetailsModal():null}
         </>
     );
 }

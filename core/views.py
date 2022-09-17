@@ -16,6 +16,8 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import  renderer_classes
+from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView
 
 
 def create_ticket_number():
@@ -42,8 +44,6 @@ class FilterTripSchedule(generics.ListAPIView):
         dropping_list = DroppingPoint.objects.filter(
             Q(drop_location__icontains=dropping_point)
         )
-
-        print("dropping Point...", dropping_list)
         #get boading point
         boarding_list = BoardingPoint.objects.filter(
             Q(pick_location__icontains=boarding_point)
@@ -175,9 +175,8 @@ class ManageBookingView(generics.ListAPIView):
         return user_data
 
 class CancelBookingView(APIView):
-    def post(self, request,  *args, **kwargs):
+    def post(self, **kwargs):
         tick_id = kwargs.get('ticket_id')
-        print("ticket_id....******", tick_id)
         seat_data = Seat.objects.filter(ticket_id=tick_id)
         seat_data.delete()
         # update ticket Status
@@ -190,3 +189,18 @@ class CancelBookingView(APIView):
         payment_details.refund_issued = True
         payment_details.save()
         return Response(None, status=HTTP_200_OK)
+
+class TicketView(generics.ListAPIView):
+    serializer_class = TicketSerializer
+    def get_queryset(self):
+        ticket_id = self.kwargs['ticket_id']
+        return Ticket.objects.filter(ticket_number = ticket_id)
+
+    # def get(**kwargs):
+    #     ticket_id = kwargs.get('ticket_id')
+    #     print("ticket_id....******", ticket_id)
+    #     ticket_data = Ticket.objects.get(ticket_number = ticket_id)
+    #     print("ticket_data....******", ticket_data)
+    #     if ticket_data:
+    #         return ticket_data
+    #     return Response({'status':'No Ticket Available'})
