@@ -1,20 +1,14 @@
 import { FaLightbulb, FaBriefcaseMedical, FaPhoneVolume } from "react-icons/fa";
 import { Card } from "primereact/card";
+import { Image } from 'primereact/image';
 
 export const BusDetailsCard = (props) => {
-  console.log("Available busses props: ", props);
   return (
     <>
       <Card className="shadow-5 mt-4" style={{ width: "100%" }}>
         <div className="grid">
           <div className="col-2">
-            <img
-              src={props.data.bus_id.image}
-              className="mobile_image"
-              height="100px"
-              width="100px"
-              alt="img"
-            />
+            <Image src={props.data.bus_id.image} template="Preview Content" alt="Image Text" />
           </div>
           <div className="col-10">
             <div className="grid">
