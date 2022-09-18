@@ -18,6 +18,8 @@ from rest_framework import status
 from rest_framework.decorators import  renderer_classes
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
 
 
 def create_ticket_number():
@@ -75,7 +77,7 @@ class SeatView(generics.ListAPIView):
             return Response({"message": "No Schedule Available"}, status=HTTP_400_BAD_REQUEST)
 
 class PassengerView(APIView):
-     def post(self, request, format=None):
+    def post(self, request, format=None):
         ticket_number = create_ticket_number()
         res_user_id = request.data['payload']['seat_data']['seatData']['loggedInUserId']
         res_bus_id = request.data['payload']['seat_data']['seatData']['busId']
@@ -137,7 +139,7 @@ class PassengerView(APIView):
         return Response(status=HTTP_200_OK)
 
 class PaymentView(APIView):
-     def post(self, request, format=None):
+    def post(self, request, format=None):
          #razorpay
         global client
         client = razorpay.Client(auth=("rzp_test_0byzGAVeUBt6CU", "N6J9PAxwcQIDlxID0CwCL4K5"))
@@ -191,16 +193,8 @@ class CancelBookingView(APIView):
         return Response(None, status=HTTP_200_OK)
 
 class TicketView(generics.ListAPIView):
-    serializer_class = TicketSerializer
+    serializer_class = UserInfoSerializer
     def get_queryset(self):
         ticket_id = self.kwargs['ticket_id']
-        return Ticket.objects.filter(ticket_number = ticket_id)
-
-    # def get(**kwargs):
-    #     ticket_id = kwargs.get('ticket_id')
-    #     print("ticket_id....******", ticket_id)
-    #     ticket_data = Ticket.objects.get(ticket_number = ticket_id)
-    #     print("ticket_data....******", ticket_data)
-    #     if ticket_data:
-    #         return ticket_data
-    #     return Response({'status':'No Ticket Available'})
+        passenger_data = UserInfo.objects.filter(ticket_number = ticket_id)
+        return passenger_data

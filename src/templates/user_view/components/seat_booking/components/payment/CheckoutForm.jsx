@@ -4,6 +4,8 @@ import { savePassengerData } from "../../../../../../stores/users/actions/UserAc
 import { Button } from "primereact/button";
 import { setShowNextModdal } from "../../../../../../stores/users/actions/UserAction";
 import axios from "axios";
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 export const CheckoutForm = () => {
   const dispatch = useDispatch()
@@ -87,6 +89,23 @@ export const CheckoutForm = () => {
 
   return (
     <>
+<div className="card">
+                <DataTable value={[]} responsiveLayout="scroll">
+                    <Column field="Bus" header="Bus"></Column>
+                    <Column field="Boarding Point" header="Boarding Point"></Column>
+                    <Column field="Dropping Point" header="Dropping Point"></Column>
+                    <Column field="Total Fare" header="Total Fare"></Column>
+                    <Column field="seat number" header="Seat Number"></Column>
+                </DataTable>
+
+                <DataTable value={[]} responsiveLayout="scroll">
+                    <Column field="Bus" header="Name"></Column>
+                    <Column field="Boarding Point" header="Mobile Number"></Column>
+                    <Column field="Dropping Point" header="Gender"></Column>
+                    <Column field="Total Fare" header="Age"></Column>
+                    <Column field="seat number" header="Seat Number"></Column>
+                </DataTable>
+            </div>
       <Button label="Proceed To Pay" onClick={displayRazorpay} className="w-full mt-2 mb-4"/>
       <Button label="<-- Back" className="w-full mt-2 mb-4" onClick={() => { dispatch(setShowNextModdal(false)) }} />
     </>

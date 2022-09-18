@@ -18,14 +18,22 @@ export class PrintTicket extends React.Component {
               <th style={cellStyle}>Giyobus Ticket Number#</th>
               <th style={cellStyle}>Seat Number</th>
               <th style={cellStyle}>Bus Number</th>
+              <th style={cellStyle}>Gender</th>
+              <th style={cellStyle}>Age</th>
             </thead>
             <tbody style={cellStyle}>
-              <tr style={cellStyle}>
-                <td style={cellStyle}>Ganesh</td>
-                <td style={cellStyle}>Ticket Number</td>
-                <td style={cellStyle}>{this.props.ticketData[0].seat_no}</td>
-                <td style={cellStyle}>{this.props.ticketData[0].trip_schedule_id.bus_id.bus_no}</td>
-              </tr>
+              {this.props.passengerData && this.props.passengerData.length>0 ?this.props.passengerData.map((pEle)=>{
+return( <tr style={cellStyle}>
+  <td style={cellStyle}>{pEle.name}</td>
+  <td style={cellStyle}>{this.props.ticketNumber}</td>
+  <td style={cellStyle}>{pEle.seatNumber}</td>
+  <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.bus_id.bus_no}</td>
+  <td style={cellStyle}>{pEle.gender}</td>
+  <td style={cellStyle}>{pEle.age}</td>
+</tr>)
+              })
+             
+    :null}
             </tbody>
           </table>
 
@@ -39,11 +47,11 @@ export class PrintTicket extends React.Component {
             </thead>
             <tbody>
               <tr>
-                <td style={cellStyle}>{this.props.ticketData[0].trip_schedule_id.bus_id.bus_type}</td>
-                <td style={cellStyle}>{this.props.ticketData[0].trip_schedule_id.departure_time} -15min</td>
-                <td style={cellStyle}>{this.props.ticketData[0].boarding_point}</td>
-                <td style={cellStyle}>{this.props.ticketData[0].total_amount}</td>
-                <td style={cellStyle}>{this.props.ticketData[0].trip_schedule_id.departure_time}</td>
+                <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.bus_id.bus_type}</td>
+                <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.departure_time} -15min</td>
+                <td style={cellStyle}>{this.props.ticketData.boarding_point}</td>
+                <td style={cellStyle}>{this.props.ticketData.total_amount}</td>
+                <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.departure_time}</td>
               </tr>
             </tbody>
           </table>

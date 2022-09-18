@@ -125,6 +125,15 @@ class SeatChart extends Component {
     });
   };
 
+  checkIfSeatAlreadyBookedSimultaneously = () =>{
+    // give api call send bus number
+    //filter seat according to bus number
+    // and send status from backend
+    //based on status make below flag true or show toast 
+    //oops seat already booked by someone just now please refresh and try another seat
+    this.setState({ showBpDpDetails: true })
+  }
+
   render() {
     const { isAuthenticated } = this.props
     if (!isAuthenticated) {
@@ -233,7 +242,7 @@ class SeatChart extends Component {
                   ) : (
                     <Button
                       label="Continue →"
-                      onClick={() => this.setState({ showBpDpDetails: true })}
+                      onClick={() => {this.checkIfSeatAlreadyBookedSimultaneously()}}
                       style={{ width: "100%" }}
                       disabled={
                         this.props.seatData !== null &&
