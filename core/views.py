@@ -196,19 +196,18 @@ class TicketView(generics.ListAPIView):
     serializer_class = UserInfoSerializer
     def get_queryset(self):
         ticket_id = self.kwargs['ticket_id']
-        passenger_data = UserInfo.objects.filter(ticket_number = ticket_id)
-        return passenger_data
+        print('ticket_id......',ticket_id)
+        if ticket_id != None and ticket_id != '':
+            passenger_data = UserInfo.objects.filter(ticket_number = ticket_id)
+            return passenger_data
+        else:
+            return Response(None, "No Ticket Found")
 
 class SeatStatusView(APIView):
     def post(self, request):
         request_payload = request.data
         trip_schedule_id = request_payload['tripScheduleId']
         selected_seats = request_payload['seatNumber']
-        # seat_data = None
-        # if selected_seats:
-        #     seat_arr = selected_seats.split(',')
-        #     seat_data = seat_arr
-        dummy_data = '5,9,8'
         filtered_seats_arr = []
         filtered_seat_data = Seat.objects.filter(trip_schedule_id = trip_schedule_id)
         print("filtered data....",filtered_seat_data)

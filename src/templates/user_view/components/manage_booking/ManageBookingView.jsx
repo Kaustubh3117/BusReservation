@@ -63,7 +63,6 @@ const[ticketNumber, setTicketNumber] = useState('')
 
   const onViewDtailsClickHandler = () =>{
     setDisplayTicketDetialsModal(true)
-
   }
 
   const onHide = (name) => {
@@ -126,7 +125,6 @@ const[ticketNumber, setTicketNumber] = useState('')
                       </div>
 
                       <div className="col-3">
-
                         <ul style={{ listStyleType: "none" }}>
                           <li>Date: {data.ticketData.trip_schedule_id.trip_date}</li>
                           <li>INR: {data.ticketData.total_amount} Rs</li>
@@ -139,22 +137,21 @@ const[ticketNumber, setTicketNumber] = useState('')
                     </div>
                   </div>
                 </div>
-                <Button type="submit" label="View Details" onClick={()=>{onViewDtailsClickHandler(); setTicketData(data.ticketNumber)}} />
+                <Button type="submit" label="View Details" onClick={()=>{onViewDtailsClickHandler(); setTicketNumber(data.ticketNumber)}} />
                 <Button type="Button
                 " label="Cancel Booking" disabled={!data.ticketData.booked && data.ticketData.canceled ? true : false} className="p-button-danger" onClick={(e) => { onCancelBookingClick(data.ticketData.id) }} />
               </Card>
             )
           })
-          : <div className="text-center mt-8">
+          : Array.isArray(ticketData) && ticketData.length === 0 ?<div className="text-center mt-8">
             <span className="flex justify-content-center  text-8xl">No Ticket</span>
             <div id="info">
               <h3 className="flex justify-content-center " >No Ticket Available.</h3>
               <a href="/">Please Book your seat</a>
             </div>
-          </div>
+          </div>:null
       }
-
-{displayTicketDetialsModal? <ManageTicketView ticketNo={ticketNumber} showDialog={displayTicketDetialsModal} onHide={onHide}/> : null}
+{displayTicketDetialsModal? <ManageTicketView ticketNo={ticketNumber !== '' ? ticketNumber : 'ab'} showDialog={displayTicketDetialsModal} onHide={onHide}/> : null}
     </>
   )
 }

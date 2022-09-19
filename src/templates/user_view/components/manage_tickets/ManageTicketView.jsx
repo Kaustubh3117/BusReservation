@@ -17,37 +17,40 @@ export const ManageTicketView = (props) => {
     axios
       .get(`${backendUrl}/api/get_ticket/${props.ticketNo}`)
       .then(function (response) {
-        let newRsData = [];
-        let pasengerRecords = [];
-        let count = 0;
-        const resSeatNumber = response.data[0].ticket.seat_no
-        const seatArr = resSeatNumber.split(",");
-        response.data.map((ele, index) => {
-          pasengerRecords.push({
-            name: ele.name,
-            mobileNumber: ele.mobile_number,
-            gender: ele.gender,
-            age: ele.age,
-            seatNumber:seatArr[index]
-          });
-          count++;
-          const addTicketNumber = {};
-          if (
-            response.data[index - 1]?.ticket_number !== ele.ticket_number &&
-            count > 1
-          ) {
-            addTicketNumber["ticketData"] = { ...ele.ticket };
-            addTicketNumber["ticketNumber"] = ele.ticket_number;
-            newRsData.push(addTicketNumber);
-          } else if (count === 1) {
-            addTicketNumber["ticketData"] = { ...ele.ticket };
-            addTicketNumber["ticketNumber"] = ele.ticket_number;
-            newRsData.push(addTicketNumber);
+        if (response.status !== "No Ticket Found") {
+          let newRsData = [];
+          let pasengerRecords = [];
+          let count = 0;
+          if (response.data.length > 0) {
+            const resSeatNumber = response.data[0].ticket.seat_no;
+            const seatArr = resSeatNumber.split(",");
+            response.data.map((ele, index) => {
+              pasengerRecords.push({
+                name: ele.name,
+                mobileNumber: ele.mobile_number,
+                gender: ele.gender,
+                age: ele.age,
+                seatNumber: seatArr[index],
+              });
+              count++;
+              const addTicketNumber = {};
+              if (
+                response.data[index - 1]?.ticket_number !== ele.ticket_number &&
+                count > 1
+              ) {
+                addTicketNumber["ticketData"] = { ...ele.ticket };
+                addTicketNumber["ticketNumber"] = ele.ticket_number;
+                newRsData.push(addTicketNumber);
+              } else if (count === 1) {
+                addTicketNumber["ticketData"] = { ...ele.ticket };
+                addTicketNumber["ticketNumber"] = ele.ticket_number;
+                newRsData.push(addTicketNumber);
+              }
+            });
+            setTicketData(newRsData);
+            setPassengerData(pasengerRecords);
           }
-        });
-        setTicketData(newRsData);
-        setPassengerData(pasengerRecords);
-        // setTicketData(response.data);
+        }
       });
   }, [props.ticketNo]);
 
@@ -72,12 +75,6 @@ export const ManageTicketView = (props) => {
               onClick={() => setPrintTicketModal(false)}
               className="p-button-text"
             />
-            {/* <Button
-            label="Send"
-            icon="pi pi-mail"
-            onClick={() => props.onHide()}
-            className="p-button-warning"
-          /> */}
             <ReactToPrint
               trigger={() => (
                 <Button
