@@ -3,9 +3,9 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import {BusDetailsCard} from "../../../common/BusDetailsCard"
 import { useLocation } from "react-router-dom";
-import { MenuItems } from "./components/MenuItems";
+// import { MenuItems } from "./components/MenuItems";
 import { BreadCrumbs } from "../../../common/BreadCrumbs";
-import { Divider } from "primereact/divider";
+// import { Divider } from "primereact/divider";
 import { changeDateFormat } from "../../UserHelper";
 import { cloneDeep } from "lodash";
 import { backendUrl } from "../../../../environment/development";
@@ -56,7 +56,6 @@ export const AvailableBusses = () => {
             }
           }
         }
-        console.log("data: ", data);
         setAvailableBusses(data);
       });
   }, []);
@@ -66,16 +65,16 @@ export const AvailableBusses = () => {
       <BreadCrumbs />
       <div className="my-5 mx-5">
         <div className="grid">
-          <div className="flex col-4">
+          {/* <div className="flex col-4">
             <div>
               <MenuItems />
             </div>
             <div>
               <Divider layout="vertical" />
             </div>
-          </div>
+          </div> */}
 
-          <div className="col-8">
+          <div className="col">
             {availableBusses !== null && availableBusses.length > 0
               ? availableBusses.map((data) => {
                   return (

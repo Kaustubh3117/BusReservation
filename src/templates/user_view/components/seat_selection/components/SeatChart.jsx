@@ -5,6 +5,7 @@ import { GiSteeringWheel } from "react-icons/gi";
 import { Button } from "primereact/button";
 import { ToastMessage } from "../../../../../middleware/ToastMessage";
 import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
+import { BreadCrumbs } from "../../../../common/BreadCrumbs";
 
 import {
   setReservedSeatData,
@@ -167,7 +168,7 @@ class SeatChart extends Component {
   }
 
   render() {
-    const { isAuthenticated, showPaymentModal } = this.props;
+    const { isAuthenticated } = this.props;
     if (!isAuthenticated) {
       window.location.href = "/login";
     }
@@ -180,9 +181,10 @@ class SeatChart extends Component {
 
     return (
       <>
-        <div className="grid flex justify-content-center">
-          <div className="col-3">
-            <div style={{ marginTop: "100px" }}>
+       <BreadCrumbs />
+       <div className="grid flex justify-content-center">
+          <div className="col-3" style={{ marginTop: "100px", border:'1px solid black' }}>
+            <div style={{ marginTop: "30px" }}>
               <div className="grid">
                 <div className="col-4">
                   <GiSteeringWheel size={40} className="steeringWheel" />
@@ -255,9 +257,9 @@ class SeatChart extends Component {
 
           <div className="col-4">
             <div className="seatPriceSection">
-              <div>
+              <>
                 {/* pricing and booking */}
-                <div className="card">
+                <div className="card mt-4 mb-4">
                   {this.state.showBpDpDetails === true ? (
                     <>
                       <div className="grid">
@@ -310,7 +312,7 @@ class SeatChart extends Component {
                     />
                   )}
                 </div>
-              </div>
+              </>
             </div>
           </div>
         </div>

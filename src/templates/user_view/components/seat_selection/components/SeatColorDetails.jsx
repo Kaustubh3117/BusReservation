@@ -1,7 +1,7 @@
 import { Button } from "primereact/button";
 export const SeatColorDetails = () => {
   return (
-    <div className="card mb-2" style={{ width: "10rem" }}>
+    <div className="card mb-2 flex justify-content-end" style={{ width: "10rem" }}>
       <div className="ml-1">
         <div className="mt-1">
           {" "}
