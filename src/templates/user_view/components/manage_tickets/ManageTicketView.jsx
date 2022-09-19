@@ -4,6 +4,9 @@ import { Button } from "primereact/button";
 import axios from "axios";
 import { Badge } from "primereact/badge";
 import ReactToPrint from "react-to-print";
+import { Divider } from "primereact/divider";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 import { backendUrl } from "../../../../environment/development";
 import { PrintTicket } from "./components/PrintTicket";
@@ -114,9 +117,9 @@ export const ManageTicketView = (props) => {
   return (
     <>
       <Dialog
-        header="Ticket Details"
+        header={ticketData !== null && ticketData.length > 0 ? ticketData[0].ticketData.trip_schedule_id.bus_id.bus_name : ''}
         visible={props.showDialog}
-        style={{ width: "50vw" }}
+        style={{ width: "70vw" }}
         footer={
           ticketData !== null && ticketData.length > 0 ? renderFooter() : null
         }
@@ -138,36 +141,43 @@ export const ManageTicketView = (props) => {
                 <div className="grid">
                   <div className="col-3">
                     <ul style={{ listStyleType: "none" }}>
-                      <li className="text-xl font-medium">
+                      {/* <li className="text-xl font-medium">
                         {
                           ticketData[0].ticketData.trip_schedule_id.bus_id
                             .bus_name
                         }
-                      </li>
-                      <li>{ticketData[0].ticketNumber}</li>
-                      <li>From : {ticketData[0].ticketData.boarding_point}</li>
+                      </li> */}
                       <li>
-                        {
-                          ticketData[0].ticketData.trip_schedule_id.bus_id
-                            .bus_type
-                        }
+                        {" "}
+                        <b>Ticket Number:</b>
+                        <br />
+                        {ticketData[0].ticketNumber}
+                      </li>
+                      <li>
+                        <b>From :</b> {ticketData[0].ticketData.boarding_point}
+                      </li>
+                      <li>
+                        <b>To:</b> {ticketData[0].ticketData.dropping_point}
                       </li>
                     </ul>
                   </div>
 
                   <div className="col-3">
                     <ul style={{ listStyleType: "none" }}>
-                      <li>To: {ticketData[0].ticketData.dropping_point}</li>
                       <li>
-                        Departure time:{" "}
+                        <b>Date:</b>{" "}
+                        {ticketData[0].ticketData.trip_schedule_id.trip_date}
+                      </li>
+                      <li>
+                        <b>Departure time:</b>{" "}
                         {ticketData[0].ticketData.departure_time} P.M
                       </li>
                       <li>
-                        Arrival time: {ticketData[0].ticketData.arrival_time}{" "}
-                        P.M
+                        <b>Arrival time:</b>{" "}
+                        {ticketData[0].ticketData.arrival_time} P.M
                       </li>
                       <li>
-                        Time:{" "}
+                        <b>Time:</b>{" "}
                         {ticketData[0].ticketData.trip_schedule_id.journey_time}{" "}
                         Hrs
                       </li>
@@ -177,29 +187,44 @@ export const ManageTicketView = (props) => {
                   <div className="col-3">
                     <ul style={{ listStyleType: "none" }}>
                       <li>
-                        Date:{" "}
-                        {ticketData[0].ticketData.trip_schedule_id.trip_date}
-                      </li>
-                      <li>INR: {ticketData[0].ticketData.total_amount} Rs</li>
-                      <li>
-                        Bus No:{" "}
+                        <b>Bus No:</b>{" "}
                         {
                           ticketData[0].ticketData.trip_schedule_id.bus_id
                             .bus_no
                         }
                       </li>
                       <li>
-                        Number of Seats:{" "}
+                        <b>Bus Type:</b>
+                        {
+                          ticketData[0].ticketData.trip_schedule_id.bus_id
+                            .bus_type
+                        }
+                      </li>
+                      <li>
+                        <b>Number of Seats:</b>{" "}
                         {ticketData[0].ticketData.number_of_seats}
                       </li>
-                      <li>Seat Number: {ticketData[0].ticketData.seat_no}</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <ul style={{ listStyleType: "none" }}>
+                      <li>
+                        <b>INR:</b> <span className="font-bold"> <Badge value={`${ticketData[0].ticketData.total_amount}Rs`} /></span>
+                      </li>
+                      <br/>
                       <li>
                         {ticketData[0].ticketData.booked &&
                         !ticketData[0].ticketData.canceled ? (
-                          <Badge value="Booked" severity="success" />
+                          <>
+                            <b>Status:</b>{" "}
+                            <Badge value="Booked" severity="success" />
+                          </>
                         ) : !ticketData[0].ticketData.booked &&
                           ticketData[0].ticketData.canceled ? (
-                          <Badge value="Cancelled" severity="danger" />
+                          <>
+                            <b>Status:</b>
+                            <Badge value="Cancelled" severity="danger" />{" "}
+                          </>
                         ) : null}
                       </li>
                     </ul>
@@ -208,28 +233,21 @@ export const ManageTicketView = (props) => {
               </div>
             </div>
 
-            <table style={{ width: "100%" }}>
-              <tr>
-                <th>UserName</th>
-                <th>Mobile Number</th>
-                <th>Gender</th>
-                <th>Age</th>
-                <th>Seat Number</th>
-              </tr>
-              {passengerData && passengerData.length > 0
-                ? passengerData.map((pEle) => {
-                    return (
-                      <tr>
-                        <th>{pEle.name}</th>
-                        <th>{pEle.mobileNumber}</th>
-                        <th>{pEle.gender}</th>
-                        <th>{pEle.age}</th>
-                        <th>{pEle.seatNumber}</th>
-                      </tr>
-                    );
-                  })
-                : null}
-            </table>
+            <Divider align="center">
+              <span className="p-tag">Passenger Data</span>
+            </Divider>
+
+            <DataTable
+              value={
+                passengerData && passengerData.length > 0 ? passengerData : []
+              }
+              responsiveLayout="scroll"
+            >
+              <Column field="name" header="Name"></Column>
+              <Column field="mobileNumber" header="Mobile Number"></Column>
+              <Column field="gender" header="Gender"></Column>
+              <Column field="seatNumber" header="Seat Number"></Column>
+            </DataTable>
           </>
         ) : (
           <div className="text-center mt-8">

@@ -42,16 +42,16 @@ return( <tr style={cellStyle}>
               <th style={cellStyle}>Bus Type</th>
               <th style={cellStyle}>Reporting Time</th>
               <th style={cellStyle}>Boarding Point Address</th>
-              <th style={cellStyle}>Total Fare</th>
               <th style={cellStyle}>Departure Time</th>
+              <th style={cellStyle}>Total Fare</th>
             </thead>
             <tbody>
               <tr>
                 <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.bus_id.bus_type}</td>
                 <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.departure_time} -15min</td>
                 <td style={cellStyle}>{this.props.ticketData.boarding_point}</td>
-                <td style={cellStyle}>{this.props.ticketData.total_amount}</td>
                 <td style={cellStyle}>{this.props.ticketData.trip_schedule_id.departure_time}</td>
+                <td style={cellStyle}>{this.props.ticketData.total_amount}</td>
               </tr>
             </tbody>
           </table>

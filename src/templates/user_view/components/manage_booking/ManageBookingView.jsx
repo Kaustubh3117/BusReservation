@@ -95,26 +95,15 @@ export const ManageBooking = () => {
                             {data.ticketData.trip_schedule_id.bus_id.bus_name}
                           </li>
                           <li>
+                            <b>Ticket Number:</b> {data.ticketNumber} 
+                          </li>
+                          <li>
                             <b>From :</b> {data.ticketData.boarding_point}
                           </li>
                           <li>
                             <b>To:</b> {data.ticketData.dropping_point}
                           </li>
-                         
                         </ul>
-
-                        {/* {passengerData.map((pEle) => {
-                          return pEle.ticket_number === data.ticketNumber ? (
-                            <>
-                              <ul style={{ listStyleType: "none" }}>
-                                <li><b>name:</b> {pEle.name}</li>
-                                <li><b>age:</b> {pEle.age} Rs</li>
-                                <li><b>Gender:</b> {pEle.gender}</li>
-                                <li><b>Number:</b> {pEle.mobile_number}</li>
-                              </ul>
-                            </>
-                          ) : null;
-                        })} */}
                       </div>
 
                       <div className="col-3">
@@ -160,12 +149,10 @@ export const ManageBooking = () => {
                       </div>
                       <div className="col-3">
                         <ul style={{ listStyleType: "none" }}>
-                        <li>
-                            <b>Ticket Number:</b> {data.ticketNumber} Rs
-                          </li>
                           <li>
-                            <b>INR:</b> {data.ticketData.total_amount} Rs
+                            <b>INR:</b> <Badge value={`${data.ticketData.total_amount}Rs`} />
                           </li>
+                          <br/>
                           <li>
                             {data.ticketData.booked &&
                             !data.ticketData.canceled ? (

@@ -6,12 +6,14 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import { logout } from "../../../stores/accounts/actions/AuthActions";
 import { USER } from '../../../constants/accounts/account_constants';
 import { ManageTicketView } from '../components/manage_tickets/ManageTicketView';
 
 const NavigationBar = ({ logout }) => {
+    const navigate = useNavigate();
     const isAuthenticated = useSelector(
         (state) => state.auth.isAuthenticated
     );
@@ -35,6 +37,7 @@ const NavigationBar = ({ logout }) => {
 
     const logoutUser = () => {
         logout()
+        navigate("/");
     }
     const items = [
         {

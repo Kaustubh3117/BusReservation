@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { ToastMessage } from "../../../../../middleware/ToastMessage";
 import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
 import { BreadCrumbs } from "../../../../common/BreadCrumbs";
+import { Divider } from 'primereact/divider';
 
 import {
   setReservedSeatData,
@@ -279,12 +280,12 @@ class SeatChart extends Component {
                           />
                         </div>
                       </div>
-                      <hr />
+                      <Divider type="dashed" />
                     </>
                   ) : this.state.selectedSeatCount > 0 ? (
                     <>
                       <BoardingDroppingPoint bpDpVals={this.props.bpDpArray} />
-                      <hr />
+                      <Divider type="dashed" />
                     </>
                   ) : null}
                   <SeatSelectionAndPricing {...this.state} />
