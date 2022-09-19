@@ -59,10 +59,14 @@ export const AvailableBusses = () => {
         setAvailableBusses(data);
       });
   }, []);
+  
+  const breadCrumbItems = [
+    {label: 'Available Busses', url: '/' }
+];
 
   return (
     <>
-      <BreadCrumbs />
+      <BreadCrumbs items={breadCrumbItems} />
       <div className="my-5 mx-5">
         <div className="grid">
           {/* <div className="flex col-4">

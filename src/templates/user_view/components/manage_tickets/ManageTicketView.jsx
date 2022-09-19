@@ -153,24 +153,6 @@ export const ManageTicketView = (props) => {
                         }
                       </li>
                     </ul>
-
-                    {/* {
-                        passengerData.map((pEle) => {
-                          return (
-                            pEle.ticket_number === data.ticketNumber ?
-
-                              <>
-                                <ul style={{ listStyleType: "none" }}>
-                                  <li>name: {pEle.name}</li>
-                                  <li>age: {pEle.age} Rs</li>
-                                  <li>Gender: {pEle.gender}</li>
-                                  <li>Number: {pEle.mobile_number}</li>
-                                </ul>
-                              </>
-                              : null
-                          )
-                        })
-                      } */}
                   </div>
 
                   <div className="col-3">

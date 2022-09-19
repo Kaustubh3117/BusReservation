@@ -46,16 +46,16 @@ const NavigationBar = ({ logout }) => {
         }
     ];
     if (isAuthenticated && userEmail !== null) {
+        const email = {
+            label: userEmail,
+            icon: 'pi pi-fw pi-user'
+        }
         const authItems = {
             label: 'Logout',
             icon: 'pi pi-fw pi-power-off',
             command: () => {
                 logoutUser();
             }
-        }
-        const email = {
-            label: userEmail,
-            icon: 'pi pi-fw pi-user'
         }
         const manageBooking = {
             label: 'Manage Booking',
@@ -78,8 +78,8 @@ const NavigationBar = ({ logout }) => {
             ]
         }
         items.push(manageBooking)
-        items.push(authItems)
         items.push(email)
+        items.push(authItems)
     }
     else {
         const usersRegistration = {

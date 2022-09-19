@@ -177,8 +177,8 @@ class ManageBookingView(generics.ListAPIView):
         return user_data
 
 class CancelBookingView(APIView):
-    def post(self, **kwargs):
-        tick_id = kwargs.get('ticket_id')
+    def post(self, request, ticket_id):
+        tick_id = ticket_id
         seat_data = Seat.objects.filter(ticket_id=tick_id)
         seat_data.delete()
         # update ticket Status
@@ -196,7 +196,6 @@ class TicketView(generics.ListAPIView):
     serializer_class = UserInfoSerializer
     def get_queryset(self):
         ticket_id = self.kwargs['ticket_id']
-        print('ticket_id......',ticket_id)
         if ticket_id != None and ticket_id != '':
             passenger_data = UserInfo.objects.filter(ticket_number = ticket_id)
             return passenger_data

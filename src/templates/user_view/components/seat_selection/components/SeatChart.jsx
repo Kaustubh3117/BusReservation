@@ -178,12 +178,15 @@ class SeatChart extends Component {
       this.state.reservedSeatData
     );
     const { loading } = this.state;
-
+    const breadCrumbItems = [
+      {label: 'Available Busses', url: '/' },
+      {label: 'Seat Selection',url: '/' }
+  ];
     return (
       <>
-       <BreadCrumbs />
+       <BreadCrumbs items={breadCrumbItems}/>
        <div className="grid flex justify-content-center">
-          <div className="col-3" style={{ marginTop: "100px", border:'1px solid black' }}>
+          <div className="col-3 shadow-3" style={{ marginTop: "100px", border:'1px solid black' }}>
             <div style={{ marginTop: "30px" }}>
               <div className="grid">
                 <div className="col-4">
@@ -256,7 +259,7 @@ class SeatChart extends Component {
           </div>
 
           <div className="col-4">
-            <div className="seatPriceSection">
+            <div className="seatPriceSection shadow-3">
               <>
                 {/* pricing and booking */}
                 <div className="card mt-4 mb-4">

@@ -3,83 +3,84 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { backendUrl } from "../../../../environment/development";
 import { Card } from "primereact/card";
-import { Button } from "primereact/button"
-import { ToastMessage } from '../../../../middleware/ToastMessage';
-import { SUCCESS } from '../../../../constants/common/CrudMessageEnum';
-import { Badge } from 'primereact/badge';
+import { Button } from "primereact/button";
+import { ToastMessage } from "../../../../middleware/ToastMessage";
+import { SUCCESS } from "../../../../constants/common/CrudMessageEnum";
+import { Badge } from "primereact/badge";
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 
 export const ManageBooking = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const AuthenticatedUserId = useSelector((state) => state.auth.user !== null ? state.auth.user.id : null);
-  const [ticketData, setTicketData] = useState({ ticketData: null })
-  const [passengerData, setPassengerData] = useState({ passengerData: null })
-  const [displayTicketDetialsModal, setDisplayTicketDetialsModal] = useState(false);
-const[ticketNumber, setTicketNumber] = useState('')
+  const AuthenticatedUserId = useSelector((state) =>
+    state.auth.user !== null ? state.auth.user.id : null
+  );
+  const [ticketData, setTicketData] = useState({ ticketData: null });
+  const [passengerData, setPassengerData] = useState({ passengerData: null });
+  const [displayTicketDetialsModal, setDisplayTicketDetialsModal] =
+    useState(false);
+  const [ticketNumber, setTicketNumber] = useState("");
+  const [cancelBookingStatus, setCancelBookingStatus] = useState(false);
 
   useEffect(() => {
     if (AuthenticatedUserId !== null) {
       axios
-        .get(
-          `${backendUrl}/api/manage_booking/${AuthenticatedUserId}`
-        )
+        .get(`${backendUrl}/api/manage_booking/${AuthenticatedUserId}`)
         .then(function (response) {
-          const data = response.data
-          setPassengerData(data)
-          let newRsData = []
-          let count = 0
+          const data = response.data;
+          setPassengerData(data);
+          let newRsData = [];
+          let count = 0;
           data.map((ele, index) => {
-            count++
-            const addTicketNumber = {}
-            if (data[index - 1]?.ticket_number !== ele.ticket_number && count > 1) {
-              addTicketNumber['ticketData'] = { ...ele.ticket }
-              addTicketNumber['ticketNumber'] = ele.ticket_number
-              newRsData.push(addTicketNumber)
+            count++;
+            const addTicketNumber = {};
+            if (
+              data[index - 1]?.ticket_number !== ele.ticket_number &&
+              count > 1
+            ) {
+              addTicketNumber["ticketData"] = { ...ele.ticket };
+              addTicketNumber["ticketNumber"] = ele.ticket_number;
+              newRsData.push(addTicketNumber);
+            } else if (count === 1) {
+              addTicketNumber["ticketData"] = { ...ele.ticket };
+              addTicketNumber["ticketNumber"] = ele.ticket_number;
+              newRsData.push(addTicketNumber);
             }
-            else if (count === 1) {
-              addTicketNumber['ticketData'] = { ...ele.ticket }
-              addTicketNumber['ticketNumber'] = ele.ticket_number
-              newRsData.push(addTicketNumber)
-            }
-          })
-          setTicketData(newRsData)
-        })
+          });
+          setTicketData(newRsData);
+        });
     }
-  }, [AuthenticatedUserId, isAuthenticated])
-
+  }, [AuthenticatedUserId, isAuthenticated, cancelBookingStatus]);
 
   const onCancelBookingClick = (ticket_id) => {
     axios
-      .post(
-        `${backendUrl}/api/cancel_booking_view/${ticket_id}`
-      )
+      .post(`${backendUrl}/api/cancel_booking_view/${ticket_id}`)
       .then(function (response) {
         if (response.status === 200) {
-          ToastMessage(SUCCESS, "Booking Cancelled Successfully")
+          ToastMessage(SUCCESS, "Booking Cancelled Successfully");
+          setCancelBookingStatus(true);
         }
-      }
-      )
-  }
+      });
+  };
 
-  const onViewDtailsClickHandler = () =>{
-    setDisplayTicketDetialsModal(true)
-  }
+  const onViewDtailsClickHandler = () => {
+    setDisplayTicketDetialsModal(true);
+  };
 
   const onHide = (name) => {
-    setDisplayTicketDetialsModal(false)
- }
+    setDisplayTicketDetialsModal(false);
+  };
 
   return (
     <>
-      {
-        Array.isArray(ticketData) && ticketData.length > 0 ?
-          ticketData.map((data) => {
-            return (
-              <Card className="shadow-5 mt-4" style={{ width: "100%" }}>
+      {Array.isArray(ticketData) && ticketData.length > 0 ? (
+        ticketData.map((data) => {
+          return (
+            <div className="flex justify-content-center">
+              <Card className="shadow-5 mt-4" style={{ width: "90%" }}>
                 <div className="grid">
                   <div className="col-2">
                     <img
-                      src=''
+                      src=""
                       className="mobile_image"
                       height="100px"
                       width="100px"
@@ -89,70 +90,151 @@ const[ticketNumber, setTicketNumber] = useState('')
                   <div className="col-10">
                     <div className="grid">
                       <div className="col-3">
-
                         <ul style={{ listStyleType: "none" }}>
-                          <li className="text-xl font-medium">{data.ticketData.trip_schedule_id.bus_id.bus_name}</li>
-                          <li>From : {data.ticketData.boarding_point}</li>
-                          <li>{data.ticketData.trip_schedule_id.bus_id.bus_type}</li>
+                          <li className="text-xl font-medium">
+                            {data.ticketData.trip_schedule_id.bus_id.bus_name}
+                          </li>
+                          <li>
+                            <b>From :</b> {data.ticketData.boarding_point}
+                          </li>
+                          <li>
+                            <b>To:</b> {data.ticketData.dropping_point}
+                          </li>
+                         
                         </ul>
 
-                        {
-                          passengerData.map((pEle) => {
-                            return (
-                              pEle.ticket_number === data.ticketNumber ?
-
-                                <>
-                                  <ul style={{ listStyleType: "none" }}>
-                                    <li>name: {pEle.name}</li>
-                                    <li>age: {pEle.age} Rs</li>
-                                    <li>Gender: {pEle.gender}</li>
-                                    <li>Number: {pEle.mobile_number}</li>
-                                  </ul>
-                                </>
-                                : null
-                            )
-                          })
-                        }
+                        {/* {passengerData.map((pEle) => {
+                          return pEle.ticket_number === data.ticketNumber ? (
+                            <>
+                              <ul style={{ listStyleType: "none" }}>
+                                <li><b>name:</b> {pEle.name}</li>
+                                <li><b>age:</b> {pEle.age} Rs</li>
+                                <li><b>Gender:</b> {pEle.gender}</li>
+                                <li><b>Number:</b> {pEle.mobile_number}</li>
+                              </ul>
+                            </>
+                          ) : null;
+                        })} */}
                       </div>
 
                       <div className="col-3">
                         <ul style={{ listStyleType: "none" }}>
-                          <li>To: {data.ticketData.dropping_point}</li>
-                          <li>Departure time: {data.ticketData.departure_time} P.M</li>
-                          <li>Arrival time: {data.ticketData.arrival_time} P.M</li>
-                          <li>Time: {data.ticketData.trip_schedule_id.journey_time} Hrs</li>
+                          <li>
+                            <b>Date:</b>{" "}
+                            {data.ticketData.trip_schedule_id.trip_date}
+                          </li>
+                          <li>
+                            <b>Departure time:</b>{" "}
+                            {data.ticketData.departure_time} P.M
+                          </li>
+                          <li>
+                            <b>Arrival time:</b> {data.ticketData.arrival_time}{" "}
+                            P.M
+                          </li>
+                          <li>
+                            <b> Time:</b>{" "}
+                            {data.ticketData.trip_schedule_id.journey_time} Hrs
+                          </li>
                         </ul>
                       </div>
 
                       <div className="col-3">
                         <ul style={{ listStyleType: "none" }}>
-                          <li>Date: {data.ticketData.trip_schedule_id.trip_date}</li>
-                          <li>INR: {data.ticketData.total_amount} Rs</li>
-                          <li>Bus No: {data.ticketData.trip_schedule_id.bus_id.bus_no}</li>
-                          <li>Number of Seats: {data.ticketData.number_of_seats}</li>
-                          <li>Seat Number: {data.ticketData.seat_no}</li>
-                          <li>{data.ticketData.booked && !data.ticketData.canceled ? <Badge value="Booked" severity="success" /> : !data.ticketData.booked && data.ticketData.canceled ? <Badge value="Cancelled" severity="danger" /> : null}</li>
+                          <li>
+                            <b>Bus No:</b>{" "}
+                            {data.ticketData.trip_schedule_id.bus_id.bus_no}
+                          </li>
+                          <li>
+                            <b>Bus Type:</b>{" "}
+                            {data.ticketData.trip_schedule_id.bus_id.bus_type}
+                          </li>
+                          <li>
+                            <b>Number of Seats:</b>{" "}
+                            {data.ticketData.number_of_seats}
+                          </li>
+                          <li>
+                            {" "}
+                            <b>Seat Number:</b> {data.ticketData.seat_no}
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="col-3">
+                        <ul style={{ listStyleType: "none" }}>
+                        <li>
+                            <b>Ticket Number:</b> {data.ticketNumber} Rs
+                          </li>
+                          <li>
+                            <b>INR:</b> {data.ticketData.total_amount} Rs
+                          </li>
+                          <li>
+                            {data.ticketData.booked &&
+                            !data.ticketData.canceled ? (
+                              <>
+                                <b>Status:</b>{" "}
+                                <Badge value="Booked" severity="success" />
+                              </>
+                            ) : !data.ticketData.booked &&
+                              data.ticketData.canceled ? (
+                              <>
+                                <b>Status:</b>{" "}
+                                <Badge value="Cancelled" severity="danger" />
+                              </>
+                            ) : null}
+                          </li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
-                <Button type="submit" label="View Details" onClick={()=>{onViewDtailsClickHandler(); setTicketNumber(data.ticketNumber)}} />
-                <Button type="Button
-                " label="Cancel Booking" disabled={!data.ticketData.booked && data.ticketData.canceled ? true : false} className="p-button-danger" onClick={(e) => { onCancelBookingClick(data.ticketData.id) }} />
+                <div className="flex justify-content-end">
+                  <Button
+                    type="submit"
+                    className="mr-2"
+                    label="View Details"
+                    onClick={() => {
+                      onViewDtailsClickHandler();
+                      setTicketNumber(data.ticketNumber);
+                    }}
+                  />
+                  <Button
+                    type="Button
+                "
+                    label="Cancel Booking"
+                    disabled={
+                      !data.ticketData.booked && data.ticketData.canceled
+                        ? true
+                        : false
+                    }
+                    className="p-button-danger"
+                    onClick={(e) => {
+                      onCancelBookingClick(data.ticketData.id);
+                    }}
+                  />
+                </div>
               </Card>
-            )
-          })
-          : Array.isArray(ticketData) && ticketData.length === 0 ?<div className="text-center mt-8">
-            <span className="flex justify-content-center  text-8xl">No Ticket</span>
-            <div id="info">
-              <h3 className="flex justify-content-center " >No Ticket Available.</h3>
-              <a href="/">Please Book your seat</a>
             </div>
-          </div>:null
-      }
-{displayTicketDetialsModal? <ManageTicketView ticketNo={ticketNumber !== '' ? ticketNumber : 'ab'} showDialog={displayTicketDetialsModal} onHide={onHide}/> : null}
+          );
+        })
+      ) : Array.isArray(ticketData) && ticketData.length === 0 ? (
+        <div className="text-center mt-8">
+          <span className="flex justify-content-center  text-8xl">
+            No Ticket
+          </span>
+          <div id="info">
+            <h3 className="flex justify-content-center ">
+              No Ticket Available.
+            </h3>
+            <a href="/">Please Book your seat</a>
+          </div>
+        </div>
+      ) : null}
+      {displayTicketDetialsModal ? (
+        <ManageTicketView
+          ticketNo={ticketNumber !== "" ? ticketNumber : "ab"}
+          showDialog={displayTicketDetialsModal}
+          onHide={onHide}
+        />
+      ) : null}
     </>
-  )
-}
-
+  );
+};
