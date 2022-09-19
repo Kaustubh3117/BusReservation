@@ -129,7 +129,7 @@ class PassengerView(APIView):
 
         #save seat
         get_bus_instance = Bus.objects.get(pk = res_bus_id)
-        seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = get_last_saved_ticket)
+        seat_serializer = Seat(seat_no = c_str, bus_no = get_bus_instance, ticket_id = get_last_saved_ticket, trip_schedule_id=get_trip_schedule)
         seat_serializer.save()
 
         #save payment details
@@ -198,3 +198,35 @@ class TicketView(generics.ListAPIView):
         ticket_id = self.kwargs['ticket_id']
         passenger_data = UserInfo.objects.filter(ticket_number = ticket_id)
         return passenger_data
+
+class SeatStatusView(APIView):
+    def post(self, request):
+        request_payload = request.data
+        trip_schedule_id = request_payload['tripScheduleId']
+        selected_seats = request_payload['seatNumber']
+        # seat_data = None
+        # if selected_seats:
+        #     seat_arr = selected_seats.split(',')
+        #     seat_data = seat_arr
+        dummy_data = '5,9,8'
+        filtered_seats_arr = []
+        filtered_seat_data = Seat.objects.filter(trip_schedule_id = trip_schedule_id)
+        print("filtered data....",filtered_seat_data)
+        for filtered_seats_str in filtered_seat_data:
+            if len(filtered_seats_str.seat_no) == 1:
+                filtered_seats_arr.append(filtered_seats_str.seat_no)
+            elif len(filtered_seats_str.seat_no) > 1:
+                seat_str_arr = filtered_seats_str.seat_no.split(',')
+                for st_str in seat_str_arr:
+                    filtered_seats_arr.append(st_str)
+        response_data = []
+        for seat_d in selected_seats:
+            for seat in filtered_seats_arr:
+                if str(seat_d) == seat:
+                    response_data.append(seat_d)
+        if response_data:
+             return Response({'status':'true'})
+        return Response({'status':'false'})
+            
+
+

@@ -1,17 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setReservedSeatData, setSeatData } from "../../../../../stores/users/actions/UserAction";
+import axios from "axios";
+import { GiSteeringWheel } from "react-icons/gi";
+import { Button } from "primereact/button";
+import { ToastMessage } from "../../../../../middleware/ToastMessage";
+import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
+
+import {
+  setReservedSeatData,
+  setSeatData,
+} from "../../../../../stores/users/actions/UserAction";
 import SeatPicker from "../../../../common/seat_chart/index";
 import "../../../../common/seat_chart/seat_style/seat_chart.css";
 import { SeatTypeData } from "../../../../common/seat_chart/SeatPicker/SeatTypeData";
 import { BookingView } from "../../seat_booking/BookingView";
-import { GiSteeringWheel } from "react-icons/gi";
 import { BoardingDroppingPoint } from "../../seat_booking/components/BoardingDroppingPoint";
-import { Button } from "primereact/button";
 import { SeatColorDetails } from "./SeatColorDetails";
 import { SeatDetailsConfirmation } from "./SeatDetailsConfirmation";
 import { SeatSelectionAndPricing } from "./SeatSelectionAndPricing";
-
+import { backendUrl } from "../../../../../environment/development";
 
 class SeatChart extends Component {
   state = {
@@ -31,15 +38,23 @@ class SeatChart extends Component {
   };
 
   componentDidMount() {
-    const { tripSchedule, authData } = this.props
+    const { tripSchedule, authData } = this.props;
 
-
-
-    if (authData !== undefined && authData.user !== undefined && authData.user !== null && authData.user.id !== undefined && authData.user.id !== null) {
-      this.setState({ busId: tripSchedule.bus_id.id, loggedInUserId: authData.user.id, tripScheduleId: tripSchedule.id, price: tripSchedule.price })
-
+    if (
+      authData !== undefined &&
+      authData.user !== undefined &&
+      authData.user !== null &&
+      authData.user.id !== undefined &&
+      authData.user.id !== null
+    ) {
+      this.setState({
+        busId: tripSchedule.bus_id.id,
+        loggedInUserId: authData.user.id,
+        tripScheduleId: tripSchedule.id,
+        price: tripSchedule.price,
+      });
     }
-    this.props.setReservedSeatData(tripSchedule.bus_id.id)
+    this.props.setReservedSeatData(tripSchedule.bus_id.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -47,11 +62,11 @@ class SeatChart extends Component {
       this.props.setSeatData({ ...this.props.seatData, seatData: this.state });
     }
     if (prevProps.reserveSeatData !== this.props.reserveSeatData) {
-      const data = this.props.reserveSeatData
-      this.setState({ reservedSeatData: data })
+      const data = this.props.reserveSeatData;
+      this.setState({ reservedSeatData: data });
     }
     if (prevState.reservedSeatData !== this.state.reservedSeatData) {
-      this.setState({ renderKey: true })
+      this.setState({ renderKey: true });
     }
   }
 
@@ -125,22 +140,46 @@ class SeatChart extends Component {
     });
   };
 
-  checkIfSeatAlreadyBookedSimultaneously = () =>{
-    // give api call send bus number
-    //filter seat according to bus number
-    // and send status from backend
-    //based on status make below flag true or show toast 
-    //oops seat already booked by someone just now please refresh and try another seat
-    this.setState({ showBpDpDetails: true })
-  }
+  checkIfSeatAlreadyBookedSimultaneously = () => {
+    const seatNumber = this.state.seatNumber;
+    const tripScheduleId = this.state.tripScheduleId;
+    const data = {
+      seatNumber: seatNumber,
+      tripScheduleId: tripScheduleId,
+    };
+    axios
+      .post(`${backendUrl}/api/seat_status/`, data)
+      // .then(function (response) {
+      //   if (response.data.status === 'false') {
+      //     this.setShowBPDPFlag()
+      //   }
+      //   else{
+      //     ToastMessage(ERROR, "oops seat already booked by someone just now please refresh and try another seat")
+      //   }
+      // }
+      // )
+      .then((response) => {
+        if (response.data.status === "false") {
+          this.setState({ showBpDpDetails: true });
+        } else {
+          ToastMessage(
+            ERROR,
+            "oops seat already booked by someone just now please refresh and try another seat"
+          );
+        }
+      });
+  };
 
   render() {
-    const { isAuthenticated } = this.props
+    const { isAuthenticated } = this.props;
     if (!isAuthenticated) {
-      window.location.href = "/login"
+      window.location.href = "/login";
     }
     //send bus types
-    const rows = SeatTypeData(this.props.tripSchedule.bus_id.bus_type, this.state.reservedSeatData);
+    const rows = SeatTypeData(
+      this.props.tripSchedule.bus_id.bus_type,
+      this.state.reservedSeatData
+    );
     const { loading } = this.state;
 
     return (
@@ -149,39 +188,56 @@ class SeatChart extends Component {
           <div className="col-3">
             <div style={{ marginTop: "100px" }}>
               <div className="grid">
-                <div className="col-4"><GiSteeringWheel size={40} className="steeringWheel" /></div>
-                <div className="col-6"><SeatColorDetails /></div>
+                <div className="col-4">
+                  <GiSteeringWheel size={40} className="steeringWheel" />
+                </div>
+                <div className="col-6">
+                  <SeatColorDetails />
+                </div>
               </div>
 
               <div className="card" style={{ width: "20rem" }}>
-                {
-                  rows.length === 2 ? <>
-                    {
-                      rows.map((row, index) => {
-                        return (
-                          <>
-                            <div className={index === 1 ? "mt-8" : ''}>
-                              {index === 0 ? <label className="text-center"><b>Lower Deck</b></label> : <label className="text-center"><b>Upper Deck</b></label>}
-                              <SeatPicker
-                                addSeatCallback={this.addSeatCallbackContinousCase}
-                                removeSeatCallback={this.removeSeatCallback}
-                                rows={row}
-                                maxReservableSeats={6}
-                                alpha
-                                visible
-                                selectedByDefault
-                                loading={loading}
-                                tooltipProps={{ multiline: true }}
-                                continuous
-                                key={this.state.renderKey ? rows.length + 1 : rows.length}
-                              />
-                            </div>
-                          </>
-                        )
-                      })
-                    }
-
-                  </> : <>
+                {rows.length === 2 ? (
+                  <>
+                    {rows.map((row, index) => {
+                      return (
+                        <>
+                          <div className={index === 1 ? "mt-8" : ""}>
+                            {index === 0 ? (
+                              <label className="text-center">
+                                <b>Lower Deck</b>
+                              </label>
+                            ) : (
+                              <label className="text-center">
+                                <b>Upper Deck</b>
+                              </label>
+                            )}
+                            <SeatPicker
+                              addSeatCallback={
+                                this.addSeatCallbackContinousCase
+                              }
+                              removeSeatCallback={this.removeSeatCallback}
+                              rows={row}
+                              maxReservableSeats={6}
+                              alpha
+                              visible
+                              selectedByDefault
+                              loading={loading}
+                              tooltipProps={{ multiline: true }}
+                              continuous
+                              key={
+                                this.state.renderKey
+                                  ? rows.length + 1
+                                  : rows.length
+                              }
+                            />
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
                     <SeatPicker
                       addSeatCallback={this.addSeatCallbackContinousCase}
                       removeSeatCallback={this.removeSeatCallback}
@@ -196,7 +252,7 @@ class SeatChart extends Component {
                       key={this.state.renderKey ? rows.length + 1 : rows.length}
                     />
                   </>
-                }
+                )}
               </div>
             </div>
           </div>
@@ -204,7 +260,6 @@ class SeatChart extends Component {
           <div className="col-4">
             <div className="seatPriceSection">
               <div>
-
                 {/* pricing and booking */}
                 <div className="card">
                   {this.state.showBpDpDetails === true ? (
@@ -242,14 +297,16 @@ class SeatChart extends Component {
                   ) : (
                     <Button
                       label="Continue →"
-                      onClick={() => {this.checkIfSeatAlreadyBookedSimultaneously()}}
+                      onClick={() => {
+                        this.checkIfSeatAlreadyBookedSimultaneously();
+                      }}
                       style={{ width: "100%" }}
                       disabled={
                         this.props.seatData !== null &&
-                          this.props.seatData.point !== undefined &&
-                          this.props.seatData.point.boardingPointRadio.value !==
+                        this.props.seatData.point !== undefined &&
+                        this.props.seatData.point.boardingPointRadio.value !==
                           "" &&
-                          this.props.seatData.point.droppingPointRadio.value !==
+                        this.props.seatData.point.droppingPointRadio.value !==
                           ""
                           ? false
                           : true
@@ -277,8 +334,10 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   authData: state.auth,
   seatData: state.user_data.seatData,
-  reserveSeatData: state.user_data.reservedSeatData
+  reserveSeatData: state.user_data.reservedSeatData,
 });
 
 // action in last second parenthesis
-export default connect(mapStateToProps, { setSeatData, setReservedSeatData })(SeatChart);
+export default connect(mapStateToProps, { setSeatData, setReservedSeatData })(
+  SeatChart
+);

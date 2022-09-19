@@ -64,6 +64,7 @@ class Seat(models.Model):
     seat_no = models.CharField(max_length=100, null=True, blank=False)
     bus_no = models.ForeignKey(Bus, on_delete=models.SET_NULL, null=True)
     ticket_id = models.ForeignKey(Ticket, on_delete=models.SET_NULL, null=True)
+    trip_schedule_id = models.ForeignKey(Tripschedule, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.seat_no)
