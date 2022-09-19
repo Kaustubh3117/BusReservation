@@ -18,6 +18,11 @@ const initialState = {
                 ...state,
                 seatData:payload
             }
+        case REMOVE_SEAT_DATA:
+            return {
+                ...state,
+                seatData:null
+            }
         case REQUEST_ADD_BOARDINGPOINT_DATA:
             return{
                 ...state,

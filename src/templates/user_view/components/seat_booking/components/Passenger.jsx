@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Divider } from "primereact/divider";
 import { setPassengerData, setShowNextModdal } from "../../../../../stores/users/actions/UserAction";
+import { Button } from "primereact/button";
 
 export const Passenger = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,10 @@ export const Passenger = () => {
     { name: "Male", value: "1" },
     { name: "Female", value: "2" },
   ];
+
+//   const showCheckoutForm=()=>{
+// <CheckoutForm/>
+//   }
 
   return (
     <>
@@ -90,7 +95,7 @@ export const Passenger = () => {
             <Divider />
           </>
         ))}
-        <button type="submit">Next</button>
+        <Button label="Proceed to Payment" className="w-full mt-2 mb-4"/>
       </form>
     </>
   );

@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 export const SeatDetailsConfirmation = () =>{
-    const point = useSelector(state => state.user_data.seatData.point);
+    const point = useSelector(state => state.user_data.seatData?.point);
     return (
         <>
-          <span className="text-xl font-medium">
+         {point !== undefined ? <><span className="text-xl font-medium">
                             Boarding & Dropping
                           </span>
                           <br />
@@ -21,7 +21,7 @@ export const SeatDetailsConfirmation = () =>{
                             </div>
                             <span className="font-medium">To: </span>
                             {point.droppingPointRadio.name}
-                          </div>
+                          </div></>:null} 
         </>
       
     )

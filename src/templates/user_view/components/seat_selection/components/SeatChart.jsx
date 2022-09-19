@@ -19,6 +19,7 @@ import { SeatColorDetails } from "./SeatColorDetails";
 import { SeatDetailsConfirmation } from "./SeatDetailsConfirmation";
 import { SeatSelectionAndPricing } from "./SeatSelectionAndPricing";
 import { backendUrl } from "../../../../../environment/development";
+import { setShowNextModdal } from "../../../../../stores/users/actions/UserAction";
 
 class SeatChart extends Component {
   state = {
@@ -149,15 +150,6 @@ class SeatChart extends Component {
     };
     axios
       .post(`${backendUrl}/api/seat_status/`, data)
-      // .then(function (response) {
-      //   if (response.data.status === 'false') {
-      //     this.setShowBPDPFlag()
-      //   }
-      //   else{
-      //     ToastMessage(ERROR, "oops seat already booked by someone just now please refresh and try another seat")
-      //   }
-      // }
-      // )
       .then((response) => {
         if (response.data.status === "false") {
           this.setState({ showBpDpDetails: true });
@@ -170,8 +162,12 @@ class SeatChart extends Component {
       });
   };
 
+  closePassengerModal =()=>{
+    this.setState({ modalShow: false})
+  }
+
   render() {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, showPaymentModal } = this.props;
     if (!isAuthenticated) {
       window.location.href = "/login";
     }
@@ -290,7 +286,7 @@ class SeatChart extends Component {
                   {this.state.showBpDpDetails ? (
                     <Button
                       label="Continue →"
-                      onClick={() => this.setState({ modalShow: true })}
+                      onClick={() => {this.setState({ modalShow: true });  this.props.setShowNextModdal(false)}}
                       style={{ width: "100%" }}
                       disabled={this.state.selectedSeatCount > 0 ? false : true}
                     />
@@ -323,6 +319,7 @@ class SeatChart extends Component {
           show={this.state.modalShow}
           onHide={() => this.setState({ modalShow: false })}
           data={this.props}
+          closePassengerModal ={this.closePassengerModal}
         />
       </>
     );
@@ -335,9 +332,10 @@ const mapStateToProps = (state) => ({
   authData: state.auth,
   seatData: state.user_data.seatData,
   reserveSeatData: state.user_data.reservedSeatData,
+  showPaymentModal:state.user_data.showNextModal
 });
 
 // action in last second parenthesis
-export default connect(mapStateToProps, { setSeatData, setReservedSeatData })(
+export default connect(mapStateToProps, { setSeatData, setReservedSeatData, setShowNextModdal })(
   SeatChart
 );

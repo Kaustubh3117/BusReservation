@@ -8,7 +8,6 @@ import {
   SET_RESERVE_SEAT_DATA,
   SET_SHOW_NEXT_MODAL
 } from "../../../constants/users/user_constants";
-import { Navigate } from "react-router-dom";
 import { config } from "../../../environment/service";
 import axios from "axios";
 import { backendUrl } from "../../../environment/development";
@@ -89,5 +88,11 @@ export const setShowNextModdal = (flag) => (dispatch) =>{
   dispatch({
     type: SET_SHOW_NEXT_MODAL,
     payload: flag,
+  });
+}
+
+export const removeSeatData = () => (dispatch) =>{
+  dispatch({
+    type: REMOVE_SEAT_DATA
   });
 }
