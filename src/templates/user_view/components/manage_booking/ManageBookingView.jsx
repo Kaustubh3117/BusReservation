@@ -11,6 +11,7 @@ import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
+import { CancelBookingValidation, ManageBookingApiCall, OnFormSubmitHandler } from "./ManageBookingHelper";
 
 export const ManageBooking = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -27,7 +28,6 @@ export const ManageBooking = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
   } = useForm();
 
   useEffect(() => {
@@ -36,26 +36,8 @@ export const ManageBooking = () => {
         .get(`${backendUrl}/api/manage_booking/${AuthenticatedUserId}`)
         .then(function (response) {
           const data = response.data;
-          // setPassengerData(data);
-          let newRsData = [];
-          let count = 0;
-          data.map((ele, index) => {
-            count++;
-            const addTicketNumber = {};
-            if (
-              data[index - 1]?.ticket_number !== ele.ticket_number &&
-              count > 1
-            ) {
-              addTicketNumber["ticketData"] = { ...ele.ticket };
-              addTicketNumber["ticketNumber"] = ele.ticket_number;
-              newRsData.push(addTicketNumber);
-            } else if (count === 1) {
-              addTicketNumber["ticketData"] = { ...ele.ticket };
-              addTicketNumber["ticketNumber"] = ele.ticket_number;
-              newRsData.push(addTicketNumber);
-            }
-          });
-          setTicketData(newRsData);
+          const responseData = ManageBookingApiCall(data)
+          setTicketData(responseData);
         });
     }
   }, [AuthenticatedUserId, isAuthenticated, cancelBookingStatus]);
@@ -79,46 +61,11 @@ export const ManageBooking = () => {
     setDisplayTicketDetialsModal(false);
   };
 
-  const cancelBookingValidation = (data)=>{
-    const departureTime = data.ticketData.trip_schedule_id.departure_time
-    const departureTimeSplitArr = departureTime.split(':')
-    const today = new Date()
-    const currentTime = today.getHours()
-
-    let bookingFlag = false
-
-    if(!data.ticketData.booked && data.ticketData.canceled){
-      bookingFlag=true
-    }
-
-    if(bookingFlag){
-        return true
-    }
-    else if(!bookingFlag &&  parseInt(currentTime) >= parseInt(departureTimeSplitArr[0])){
-      return true
-    }
-    else{
-      return false
-    }
-  }
-
   const onSubmit = (data, e) => {
-    const filterArr = [];
-    ticketData.map((ticketEle) => {
-      if (
-        data.globalSearch === ticketEle.ticketData.id ||
-        data.globalSearch === ticketEle.ticketData.trip_schedule_id.bus_id.bus_name ||
-        data.globalSearch === ticketEle.ticket_number ||
-        data.globalSearch === ticketEle.ticketData.boarding_point ||
-        data.globalSearch === ticketEle.ticketData.dropping_point
-      ) {
-        filterArr.push(ticketEle)
-      }
-    });
+    const filterArr = OnFormSubmitHandler(data, ticketData)
     setFilteredData(filterArr);
     e.target.reset();
   };
-
 
   const renderHeader1 = () => {
     return (
@@ -269,7 +216,7 @@ export const ManageBooking = () => {
                   <Button
                     type="Button"
                     label="Cancel Booking"
-                    disabled={cancelBookingValidation(data)}
+                    disabled={CancelBookingValidation(data)}
                     className="p-button-danger"
                     onClick={(e) => {
                       alert("Do you want to continue? Amout will be refunded in 6 business days")

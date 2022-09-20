@@ -57,3 +57,10 @@ color: white !important;
 margin-left: 80px;
 margin-top: 8px;
 }
+
+.availableBusButton{
+    float: right;
+    margin-top: -49px !important; 
+    margin-right: 2px !important;
+    text-decoration:none
+}

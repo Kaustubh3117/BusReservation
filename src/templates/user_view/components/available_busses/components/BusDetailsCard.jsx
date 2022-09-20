@@ -41,7 +41,7 @@ export const BusDetailsCard = (props) => {
               <ul style={{ listStyleType: "none" }}>
               <li><b>INR:</b> {props.data.price}</li>
               <br/>
-              <li><b>Amenities: <FaLightbulb /> <FaBriefcaseMedical/> <FaPhoneVolume/> <RiBattery2ChargeFill/></b></li>
+              <li><b>Amenities: <FaLightbulb color="yellow" /> <FaBriefcaseMedical color="blue"/> <FaPhoneVolume color="red"/> <RiBattery2ChargeFill color="green"/></b></li>
                 </ul>
                 </div>
             </div>

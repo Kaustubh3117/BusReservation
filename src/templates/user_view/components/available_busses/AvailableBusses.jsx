@@ -10,13 +10,13 @@ import { changeDateFormat } from "../../UserHelper";
 import { cloneDeep } from "lodash";
 import { backendUrl } from "../../../../environment/development";
 import { Link } from "react-router-dom";
+import { FilterTripScheduleApi } from "./AvailableBusHelper";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
   const { start_location, end_location, date } = state;
   const [availableBusses, setAvailableBusses] = useState(null);
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
-
   const droppingPoint = useSelector((state) => state.user_data.droppingPoint);
 
   useEffect(() => {
@@ -26,37 +26,8 @@ export const AvailableBusses = () => {
         `${backendUrl}/api/filter_trip_schedule/${start_location}/${end_location}/${dateChanged}`
       )
       .then(function (response) {
-        const data = cloneDeep(response.data);
-        if (data !== null && data !== undefined && data.length > 0) {
-          for (let ele = 0; ele < data.length; ele++) {
-            if (
-              (boardingPoint !== null && boardingPoint !== undefined) ||
-              (droppingPoint !== null && droppingPoint !== undefined)
-            ) {
-              for (let bp = 0; bp < boardingPoint.length; bp++) {
-                if (
-                  boardingPoint[bp] !== undefined &&
-                  boardingPoint[bp].trip_schedule_id !== null &&
-                  data[ele].id === boardingPoint[bp].trip_schedule_id
-                ) {
-                  data[ele].fromLocation = boardingPoint[bp].pick_location;
-                  break;
-                }
-              }
-
-              for (let dp = 0; dp < droppingPoint.length; dp++) {
-                if (
-                  droppingPoint[dp] !== undefined &&
-                  data[ele].id === droppingPoint[dp].trip_schedule_id &&
-                  droppingPoint[dp].trip_schedule_id !== null
-                ) {
-                  data[ele].toLocation = droppingPoint[dp].drop_location;
-                }
-              }
-            }
-          }
-        }
-        setAvailableBusses(data);
+        const filterTripScheduleResData = FilterTripScheduleApi(response, boardingPoint, droppingPoint)
+        setAvailableBusses(filterTripScheduleResData);
       });
   }, []);
   
@@ -86,8 +57,7 @@ export const AvailableBusses = () => {
                       <BusDetailsCard data={data} />
                       <Link
                         to={`/seat/${data.id}`}
-                        className="p-button"
-                        style={{ float: "right", marginTop: "-47px" }}
+                        className="p-button availableBusButton"
                       >
                         View Seat
                       </Link>

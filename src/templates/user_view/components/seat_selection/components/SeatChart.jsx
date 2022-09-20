@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { ToastMessage } from "../../../../../middleware/ToastMessage";
 import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
 import { BreadCrumbs } from "../../../../common/BreadCrumbs";
-import { Divider } from 'primereact/divider';
+import { Divider } from "primereact/divider";
 
 import {
   setReservedSeatData,
@@ -150,23 +150,21 @@ class SeatChart extends Component {
       seatNumber: seatNumber,
       tripScheduleId: tripScheduleId,
     };
-    axios
-      .post(`${backendUrl}/api/seat_status/`, data)
-      .then((response) => {
-        if (response.data.status === "false") {
-          this.setState({ showBpDpDetails: true });
-        } else {
-          ToastMessage(
-            ERROR,
-            "oops seat already booked by someone just now please refresh and try another seat"
-          );
-        }
-      });
+    axios.post(`${backendUrl}/api/seat_status/`, data).then((response) => {
+      if (response.data.status === "false") {
+        this.setState({ showBpDpDetails: true });
+      } else {
+        ToastMessage(
+          ERROR,
+          "oops seat already booked by someone just now please refresh and try another seat"
+        );
+      }
+    });
   };
 
-  closePassengerModal =()=>{
-    this.setState({ modalShow: false})
-  }
+  closePassengerModal = () => {
+    this.setState({ modalShow: false });
+  };
 
   render() {
     const { isAuthenticated } = this.props;
@@ -180,153 +178,169 @@ class SeatChart extends Component {
     );
     const { loading } = this.state;
     const breadCrumbItems = [
-      {label: 'Available Busses', url: '/' },
-      {label: 'Seat Selection',url: '/' }
-  ];
+      { label: "Available Busses", url: "/" },
+      { label: "Seat Selection", url: "/" },
+    ];
     return (
       <>
-       <BreadCrumbs items={breadCrumbItems}/>
-       <div className="grid flex justify-content-center">
-          <div className="col-3 shadow-3" style={{ marginTop: "100px", border:'1px solid black' }}>
-            <div style={{ marginTop: "30px" }}>
-              <div className="grid">
-                <div className="col-4">
-                  <GiSteeringWheel size={40} className="steeringWheel" />
-                </div>
-                <div className="col-6">
-                  <SeatColorDetails />
+        {isAuthenticated ? (
+          <>
+            {" "}
+            <BreadCrumbs items={breadCrumbItems} />
+            <div className="grid flex justify-content-center">
+              <div
+                className="col-3 shadow-3"
+                style={{ marginTop: "100px", border: "1px solid black" }}
+              >
+                <div style={{ marginTop: "30px" }}>
+                  <div className="grid">
+                    <div className="col-4">
+                      <GiSteeringWheel size={40} className="steeringWheel" />
+                    </div>
+                    <div className="col-6">
+                      <SeatColorDetails />
+                    </div>
+                  </div>
+
+                  <div className="card" style={{ width: "20rem" }}>
+                    {rows.length === 2 ? (
+                      <>
+                        {rows.map((row, index) => {
+                          return (
+                            <>
+                              <div className={index === 1 ? "mt-8" : ""}>
+                                {index === 0 ? (
+                                  <label className="text-center">
+                                    <b>Lower Deck</b>
+                                  </label>
+                                ) : (
+                                  <label className="text-center">
+                                    <b>Upper Deck</b>
+                                  </label>
+                                )}
+                                <SeatPicker
+                                  addSeatCallback={
+                                    this.addSeatCallbackContinousCase
+                                  }
+                                  removeSeatCallback={this.removeSeatCallback}
+                                  rows={row}
+                                  maxReservableSeats={6}
+                                  alpha
+                                  visible
+                                  selectedByDefault
+                                  loading={loading}
+                                  tooltipProps={{ multiline: true }}
+                                  continuous
+                                  key={
+                                    this.state.renderKey
+                                      ? rows.length + 1
+                                      : rows.length
+                                  }
+                                />
+                              </div>
+                            </>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      <>
+                        <SeatPicker
+                          addSeatCallback={this.addSeatCallbackContinousCase}
+                          removeSeatCallback={this.removeSeatCallback}
+                          rows={rows}
+                          maxReservableSeats={6}
+                          alpha
+                          visible
+                          selectedByDefault
+                          loading={loading}
+                          tooltipProps={{ multiline: true }}
+                          continuous
+                          key={
+                            this.state.renderKey ? rows.length + 1 : rows.length
+                          }
+                        />
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="card" style={{ width: "20rem" }}>
-                {rows.length === 2 ? (
+              <div className="col-4">
+                <div className="seatPriceSection shadow-3">
                   <>
-                    {rows.map((row, index) => {
-                      return (
+                    {/* pricing and booking */}
+                    <div className="card mt-4 mb-4">
+                      {this.state.showBpDpDetails === true ? (
                         <>
-                          <div className={index === 1 ? "mt-8" : ""}>
-                            {index === 0 ? (
-                              <label className="text-center">
-                                <b>Lower Deck</b>
-                              </label>
-                            ) : (
-                              <label className="text-center">
-                                <b>Upper Deck</b>
-                              </label>
-                            )}
-                            <SeatPicker
-                              addSeatCallback={
-                                this.addSeatCallbackContinousCase
-                              }
-                              removeSeatCallback={this.removeSeatCallback}
-                              rows={row}
-                              maxReservableSeats={6}
-                              alpha
-                              visible
-                              selectedByDefault
-                              loading={loading}
-                              tooltipProps={{ multiline: true }}
-                              continuous
-                              key={
-                                this.state.renderKey
-                                  ? rows.length + 1
-                                  : rows.length
-                              }
-                            />
+                          <div className="grid">
+                            <div className="col my-3 mx-3">
+                              <SeatDetailsConfirmation props={this.props} />
+                            </div>
+                            <div className="col">
+                              <Button
+                                label="Change"
+                                className="p-button-link fRight"
+                                onClick={() =>
+                                  this.setState({ showBpDpDetails: false })
+                                }
+                              />
+                            </div>
                           </div>
+                          <Divider type="dashed" />
                         </>
-                      );
-                    })}
+                      ) : this.state.selectedSeatCount > 0 ? (
+                        <>
+                          <BoardingDroppingPoint
+                            bpDpVals={this.props.bpDpArray}
+                          />
+                          <Divider type="dashed" />
+                        </>
+                      ) : null}
+                      <SeatSelectionAndPricing {...this.state} />
+                      {this.state.showBpDpDetails ? (
+                        <Button
+                          label="Continue →"
+                          onClick={() => {
+                            this.setState({ modalShow: true });
+                            this.props.setShowNextModdal(false);
+                          }}
+                          style={{ width: "100%" }}
+                          disabled={
+                            this.state.selectedSeatCount > 0 ? false : true
+                          }
+                        />
+                      ) : (
+                        <Button
+                          label="Continue →"
+                          onClick={() => {
+                            this.checkIfSeatAlreadyBookedSimultaneously();
+                          }}
+                          style={{ width: "100%" }}
+                          disabled={
+                            this.props.seatData !== null &&
+                            this.props.seatData.point !== undefined &&
+                            this.props.seatData.point.boardingPointRadio
+                              .value !== "" &&
+                            this.props.seatData.point.droppingPointRadio
+                              .value !== ""
+                              ? false
+                              : true
+                          }
+                        />
+                      )}
+                    </div>
                   </>
-                ) : (
-                  <>
-                    <SeatPicker
-                      addSeatCallback={this.addSeatCallbackContinousCase}
-                      removeSeatCallback={this.removeSeatCallback}
-                      rows={rows}
-                      maxReservableSeats={6}
-                      alpha
-                      visible
-                      selectedByDefault
-                      loading={loading}
-                      tooltipProps={{ multiline: true }}
-                      continuous
-                      key={this.state.renderKey ? rows.length + 1 : rows.length}
-                    />
-                  </>
-                )}
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="col-4">
-            <div className="seatPriceSection shadow-3">
-              <>
-                {/* pricing and booking */}
-                <div className="card mt-4 mb-4">
-                  {this.state.showBpDpDetails === true ? (
-                    <>
-                      <div className="grid">
-                        <div className="col my-3 mx-3">
-                          <SeatDetailsConfirmation props={this.props} />
-                        </div>
-                        <div className="col">
-                          <Button
-                            label="Change"
-                            className="p-button-link fRight"
-                            onClick={() =>
-                              this.setState({ showBpDpDetails: false })
-                            }
-                          />
-                        </div>
-                      </div>
-                      <Divider type="dashed" />
-                    </>
-                  ) : this.state.selectedSeatCount > 0 ? (
-                    <>
-                      <BoardingDroppingPoint bpDpVals={this.props.bpDpArray} />
-                      <Divider type="dashed" />
-                    </>
-                  ) : null}
-                  <SeatSelectionAndPricing {...this.state} />
-                  {this.state.showBpDpDetails ? (
-                    <Button
-                      label="Continue →"
-                      onClick={() => {this.setState({ modalShow: true });  this.props.setShowNextModdal(false)}}
-                      style={{ width: "100%" }}
-                      disabled={this.state.selectedSeatCount > 0 ? false : true}
-                    />
-                  ) : (
-                    <Button
-                      label="Continue →"
-                      onClick={() => {
-                        this.checkIfSeatAlreadyBookedSimultaneously();
-                      }}
-                      style={{ width: "100%" }}
-                      disabled={
-                        this.props.seatData !== null &&
-                        this.props.seatData.point !== undefined &&
-                        this.props.seatData.point.boardingPointRadio.value !==
-                          "" &&
-                        this.props.seatData.point.droppingPointRadio.value !==
-                          ""
-                          ? false
-                          : true
-                      }
-                    />
-                  )}
-                </div>
-              </>
-            </div>
-          </div>
-        </div>
-
-        <BookingView
-          show={this.state.modalShow}
-          onHide={() => this.setState({ modalShow: false })}
-          data={this.props}
-          closePassengerModal ={this.closePassengerModal}
-        />
+            <BookingView
+              show={this.state.modalShow}
+              onHide={() => this.setState({ modalShow: false })}
+              data={this.props}
+              closePassengerModal={this.closePassengerModal}
+            />
+          </>
+        ) : <h2>Redirecting to login.....</h2>}
       </>
     );
   }
@@ -338,10 +352,12 @@ const mapStateToProps = (state) => ({
   authData: state.auth,
   seatData: state.user_data.seatData,
   reserveSeatData: state.user_data.reservedSeatData,
-  showPaymentModal:state.user_data.showNextModal
+  showPaymentModal: state.user_data.showNextModal,
 });
 
 // action in last second parenthesis
-export default connect(mapStateToProps, { setSeatData, setReservedSeatData, setShowNextModdal })(
-  SeatChart
-);
+export default connect(mapStateToProps, {
+  setSeatData,
+  setReservedSeatData,
+  setShowNextModdal,
+})(SeatChart);
