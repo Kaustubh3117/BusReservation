@@ -83,7 +83,7 @@ class Payment(models.Model):
     def __str__(self):
         return self.user.email
 
-class UserInfo(models.Model):
+class PassengerInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, null=True)
     ticket_number = models.CharField(max_length=100, null=True)

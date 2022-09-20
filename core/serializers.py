@@ -1,6 +1,6 @@
 from dataclasses import field, fields
 from rest_framework import serializers
-from .models import Bus, Tripschedule, Ticket, DroppingPoint, BoardingPoint, Seat, Payment, UserInfo
+from .models import Bus, Tripschedule, Ticket, DroppingPoint, BoardingPoint, Seat, Payment, PassengerInfo
 
 
 class BusSerializer(serializers.ModelSerializer):
@@ -37,10 +37,10 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ['id', 'total_amount', 'number_of_seats', 'seat_no', 'boarding_point', 'dropping_point', 'trip_schedule_id', 'user', 'booked', 'canceled']
 
-class UserInfoSerializer(serializers.ModelSerializer):
+class PassengerInfoSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
     class Meta:
-        model = UserInfo
+        model = PassengerInfo
         fields = ['id', 'user', 'ticket_number', 'name', 'mobile_number', 'gender', 'age', 'ticket']
 
 

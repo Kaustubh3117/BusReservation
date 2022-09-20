@@ -95,7 +95,7 @@ export const ManageBooking = () => {
                             {data.ticketData.trip_schedule_id.bus_id.bus_name}
                           </li>
                           <li>
-                            <b>Ticket Number:</b> {data.ticketNumber} 
+                            <b>Ticket Number:</b> {data.ticketNumber}
                           </li>
                           <li>
                             <b>From :</b> {data.ticketData.boarding_point}
@@ -150,9 +150,12 @@ export const ManageBooking = () => {
                       <div className="col-3">
                         <ul style={{ listStyleType: "none" }}>
                           <li>
-                            <b>INR:</b> <Badge value={`${data.ticketData.total_amount}Rs`} />
+                            <b>INR:</b>{" "}
+                            <Badge
+                              value={`${data.ticketData.total_amount}Rs`}
+                            />
                           </li>
-                          <br/>
+                          <br />
                           <li>
                             {data.ticketData.booked &&
                             !data.ticketData.canceled ? (
@@ -184,8 +187,7 @@ export const ManageBooking = () => {
                     }}
                   />
                   <Button
-                    type="Button
-                "
+                    type="Button"
                     label="Cancel Booking"
                     disabled={
                       !data.ticketData.booked && data.ticketData.canceled

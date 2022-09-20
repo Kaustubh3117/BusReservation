@@ -6,8 +6,8 @@ import re
 from re import I
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TicketSerializer, TripscheduleSerializer, UserInfoSerializer
-from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule, UserInfo, Seat, Bus, Payment
+from .serializers import BoardingPointSerializer, DroppingPointSerializer, SeatSerializer, TicketSerializer, TripscheduleSerializer, PassengerInfoSerializer
+from .models import BoardingPoint, DroppingPoint, Ticket, Tripschedule, PassengerInfo, Seat, Bus, Payment
 from accounts.models import UserAccount
 from django.db.models import Q
 from rest_framework.response import Response
@@ -124,7 +124,7 @@ class PassengerView(APIView):
         #save user info
         get_last_saved_ticket = Ticket.objects.get(ticket_number = ticket_number)
         for data in passenger_data_arr:
-            passenger_serializer = UserInfo(user = get_user_data, ticket_number= ticket_number, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'], ticket = get_last_saved_ticket)
+            passenger_serializer = PassengerInfo(user = get_user_data, ticket_number= ticket_number, name = data['name'], mobile_number = data['mobile_number'], gender = data['gender'], age = data['age'], ticket = get_last_saved_ticket)
             passenger_serializer.save()
 
         #save seat
@@ -170,10 +170,10 @@ class ReservedSeatView(generics.ListAPIView):
         return Seat.objects.filter(bus_no=bus_id)
 
 class ManageBookingView(generics.ListAPIView):
-    serializer_class = UserInfoSerializer
+    serializer_class = PassengerInfoSerializer
     def get_queryset(self):
         user_id = self.kwargs['user']
-        user_data = UserInfo.objects.filter(user__id__contains = user_id)
+        user_data = PassengerInfo.objects.filter(user__id__contains = user_id)
         return user_data
 
 class CancelBookingView(APIView):
@@ -193,11 +193,11 @@ class CancelBookingView(APIView):
         return Response(None, status=HTTP_200_OK)
 
 class TicketView(generics.ListAPIView):
-    serializer_class = UserInfoSerializer
+    serializer_class = PassengerInfoSerializer
     def get_queryset(self):
         ticket_id = self.kwargs['ticket_id']
         if ticket_id != None and ticket_id != '':
-            passenger_data = UserInfo.objects.filter(ticket_number = ticket_id)
+            passenger_data = PassengerInfo.objects.filter(ticket_number = ticket_id)
             return passenger_data
         else:
             return Response(None, "No Ticket Found")
