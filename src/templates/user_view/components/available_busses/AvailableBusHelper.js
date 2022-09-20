@@ -33,3 +33,19 @@ export const FilterTripScheduleApi = (response, boardingPoint, droppingPoint)=>{
     }
     return data
 }
+
+export const OnFormSubmitHandler = (data, ticketData)=>{
+    const filterArr = [];
+    ticketData.map((busses) => {
+      if (
+        data.globalSearch === busses.price.toString()||
+        data.globalSearch === busses.bus_id.bus_name ||
+        data.globalSearch === busses.bus_id.bus_no ||
+        data.globalSearch === busses.bus_id.bus_type ||
+        data.globalSearch === busses.trip_date
+      ) {
+        filterArr.push(busses)
+      }
+    });
+    return filterArr
+}

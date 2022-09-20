@@ -6,7 +6,7 @@ import axios from "axios";
 import { backendUrl } from "../../environment/development";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-
+import { useNavigate } from 'react-router-dom';
 // prime React
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -21,6 +21,7 @@ import { AGENT } from "../../constants/accounts/account_constants";
 
 
 const Signup = ({ signup, isAuthenticated }) => {
+  const navigate = useNavigate();
   const [accountCreated, setAccountCreated] = useState(false);
   const [passwordMatched, setPasswordMatched] = useState(false);
   const [formData, setFormData] = useState({});
@@ -86,10 +87,11 @@ const Signup = ({ signup, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
-    return <Navigate to="/" />;
+    navigate('/');
+
   }
   if (accountCreated) {
-    return <Navigate to={`/login`} />;
+    navigate('/login');
   }
 
   const getFormErrorMessage = (name) => {
@@ -126,12 +128,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                   <span className="text-600 font-medium line-height-3">
                     Already have an account?
                   </span>
-                  <a
-                    className="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-                    href={`/login`}
-                  >
-                    Sign In!
-                  </a>
+                  <Button type="button" label="Sign In!" className="p-button-link" onClick={()=>navigate(`/login`)}/>
                   <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                     <div className="field mt-5">
                       <span className="p-float-label p-input-icon-right">
@@ -259,7 +256,6 @@ const Signup = ({ signup, isAuthenticated }) => {
                     </div>
                     <div className="mt-3">
                       Are you an agent? <Link  to={`/signup/${AGENT}`}>Sign In</Link>
-                      
                     </div>
                   </form>
                 </div>

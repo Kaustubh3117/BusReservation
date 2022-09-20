@@ -4,11 +4,13 @@ import { useParams } from "react-router-dom";
 import { backendUrl } from "../../../../environment/development";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import { getTripScheduleBpDpArray } from "./SeatHelper";
 import { changeKeysNamesFromObjectForRadio } from "./SeatHelper";
 
 export const SeatView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const tripSheduleId = parseInt(id);
   const [tripSchedule, setTripSchedule] = useState(null);
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
@@ -37,7 +39,7 @@ export const SeatView = () => {
       tripSchedule !== undefined &&
       bpDpVals !== null &&
       bpDpVals !== undefined ? (
-        <SeatChart tripSchedule={tripSchedule[0]} bpDpArray={bpDpVals} />
+        <SeatChart tripSchedule={tripSchedule[0]} bpDpArray={bpDpVals} navigate={navigate} />
       ) : null}
     </>
   );

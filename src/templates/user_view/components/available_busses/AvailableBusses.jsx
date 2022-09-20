@@ -5,19 +5,29 @@ import {BusDetailsCard} from "./components/BusDetailsCard"
 import { useLocation } from "react-router-dom";
 // import { MenuItems } from "./components/MenuItems";
 import { BreadCrumbs } from "../../../common/BreadCrumbs";
+import { InputText } from "primereact/inputtext";
+import { useForm } from "react-hook-form";
+import { Button } from "primereact/button";
+import { useNavigate } from 'react-router-dom';
 // import { Divider } from "primereact/divider";
 import { changeDateFormat } from "../../UserHelper";
-import { cloneDeep } from "lodash";
 import { backendUrl } from "../../../../environment/development";
 import { Link } from "react-router-dom";
-import { FilterTripScheduleApi } from "./AvailableBusHelper";
+import { FilterTripScheduleApi, OnFormSubmitHandler } from "./AvailableBusHelper";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { start_location, end_location, date } = state;
   const [availableBusses, setAvailableBusses] = useState(null);
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
   const droppingPoint = useSelector((state) => state.user_data.droppingPoint);
+  const [filteredData, setFilteredData] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+  } = useForm();
 
   useEffect(() => {
     const dateChanged = changeDateFormat(date);
@@ -35,9 +45,55 @@ export const AvailableBusses = () => {
     {label: 'Available Busses', url: '/' }
 ];
 
+const onSubmit = (data, e) => {
+  const filterArr = OnFormSubmitHandler(data, availableBusses)
+  setFilteredData(filterArr);
+  e.target.reset();
+};
+
+const renderHeader1 = () => {
+  return (
+    <div className="flex justify-content-between manageBookingFilter">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+         placeholder="Keyword Search"
+         {...register("globalSearch")}
+        />
+      </span>
+        <Button
+        label="Search"
+       type='submit'
+       className="ml-2"
+     
+      />
+      <Button
+        label="Clear Filter"
+        icon="pi pi-times"
+        onClick={() =>{setFilteredData([]); setValue('globalSearch', '')}}
+        className="p-button-warning ml-4"
+        autoFocus
+      />
+      </form>
+      <Button
+        label="Change Date"
+        icon="pi pi-times"
+        onClick={() =>navigate('/')}
+        className="p-button-warning ml-4"
+        autoFocus
+      />
+    </div>
+  );
+};
+
+const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Array.isArray(availableBusses) && availableBusses.length > 0?  availableBusses : Array.isArray(filteredData) && filteredData.length > 0 ?  filteredData : []
+
   return (
     <>
+   
       <BreadCrumbs items={breadCrumbItems} />
+      {renderHeader1()}
       <div className="my-5 mx-5">
         <div className="grid">
           {/* <div className="flex col-4">
@@ -50,8 +106,8 @@ export const AvailableBusses = () => {
           </div> */}
 
           <div className="col">
-            {availableBusses !== null && availableBusses.length > 0
-              ? availableBusses.map((data) => {
+            {cardData !== null && cardData.length > 0
+              ? cardData.map((data) => {
                   return (
                     <>
                       <BusDetailsCard data={data} />

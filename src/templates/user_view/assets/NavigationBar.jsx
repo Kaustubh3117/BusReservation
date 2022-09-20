@@ -44,7 +44,8 @@ const NavigationBar = ({ logout }) => {
             label: 'Giyobus',
             icon: 'pi pi-home pi-align-left',
             command: () => {
-                window.location.href = '/'
+              
+                navigate('/')
             },
         }
     ];
@@ -75,7 +76,7 @@ const NavigationBar = ({ logout }) => {
                     label: 'Manage Booking',
                     icon: 'pi pi-fw pi-align-right',
                     command: () => {
-                        window.location.href = `/manageBooking/${AuthenticatedUserId}`
+                        navigate(`/manageBooking/${AuthenticatedUserId}`)
                     },
                 },
             ]
@@ -93,14 +94,14 @@ const NavigationBar = ({ logout }) => {
                     label: 'Login',
                     icon: 'pi pi-fw pi-user-plus',
                     command: () => {
-                        window.location.href = '/login'
+                        navigate('/login')
                     }
                 },
                 {
                     label: 'Register',
                     icon: 'pi pi-fw pi-user-minus',
                     command: () => {
-                        window.location.href = `/signup/${USER}`
+                        navigate(`/signup/${USER}`)
                     }
                 },
             ]
@@ -113,7 +114,6 @@ const NavigationBar = ({ logout }) => {
         setShowTicketDialog(false)
         setDisplayTicketDetialsModal(false)
     }
-
 
     const getTicketDetailsModal = () => {
         if (displayTicketDetialsModal) {

@@ -5,6 +5,7 @@ import { login } from "../../stores/accounts/actions/AuthActions";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
 // prime React
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -17,6 +18,7 @@ import { USER } from "../../constants/accounts/account_constants";
 
 const Login = ({ login, isAuthenticated, isAgent }) => {
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
   
   const defaultValues = {
     email: "",
@@ -59,7 +61,7 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
   };
 
   if (isAuthenticated) {
-    return <Navigate to="/" />;
+     navigate('/');
   }
 
   const getFormErrorMessage = (name) => {
@@ -79,14 +81,9 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
                 <div className="my-5 mx-6">
                   <h1>Login</h1>
                   <span className="text-600 font-medium line-height-3">
-                    Don't have an account?
+                    Don't have an account?<Button type="button" label="Create today!" className="p-button-link" onClick={()=>navigate(`/signup/${USER}`)}/>
+
                   </span>
-                  <a
-                    className="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-                    href={`/signup/${USER}`}
-                  >
-                    Create today!
-                  </a>
                   <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                     <div className="field mt-4">
                       <span className="p-float-label p-input-icon-right">

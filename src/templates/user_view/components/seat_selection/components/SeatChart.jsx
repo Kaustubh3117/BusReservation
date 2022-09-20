@@ -8,6 +8,7 @@ import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
 import { BreadCrumbs } from "../../../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
 
+
 import {
   setReservedSeatData,
   setSeatData,
@@ -165,11 +166,10 @@ class SeatChart extends Component {
   closePassengerModal = () => {
     this.setState({ modalShow: false });
   };
-
   render() {
     const { isAuthenticated } = this.props;
     if (!isAuthenticated) {
-      window.location.href = "/login";
+      this.props.navigate('/login')
     }
     //send bus types
     const rows = SeatTypeData(

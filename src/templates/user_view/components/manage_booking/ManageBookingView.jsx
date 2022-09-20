@@ -9,11 +9,13 @@ import { SUCCESS } from "../../../../constants/common/CrudMessageEnum";
 import { Badge } from "primereact/badge";
 import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 import { CancelBookingValidation, ManageBookingApiCall, OnFormSubmitHandler } from "./ManageBookingHelper";
 
 export const ManageBooking = () => {
+  const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const AuthenticatedUserId = useSelector((state) =>
     state.auth.user !== null ? state.auth.user.id : null
@@ -96,9 +98,13 @@ export const ManageBooking = () => {
     );
   };
   const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Array.isArray(ticketData) && ticketData.length > 0?  ticketData : Array.isArray(filteredData) && filteredData.length > 0 ?  filteredData : []
+  if(AuthenticatedUserId === null || AuthenticatedUserId === undefined){
+    navigate('/login');
+  }
+  
   return (
     <>
-    {renderHeader1()}
+    {AuthenticatedUserId?<>{renderHeader1()}
       {Array.isArray(cardData) && cardData.length > 0 ? (
         cardData.map((data) => {
           return (
@@ -248,6 +254,7 @@ export const ManageBooking = () => {
           onHide={onHide}
         />
       ) : null}
+      </>: <h2>You are logged out please login</h2> }
     </>
   );
 };
