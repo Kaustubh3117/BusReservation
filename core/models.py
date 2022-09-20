@@ -22,7 +22,7 @@ class Tripschedule(models.Model):
     price = models.FloatField()
     journey_time = models.CharField(max_length=25, null=True)
     bus_id = models.ForeignKey(Bus, on_delete=models.SET_NULL, null=True, related_name='bus')
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.bus_id.bus_name

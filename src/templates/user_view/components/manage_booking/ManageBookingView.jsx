@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { SUCCESS } from "../../../../constants/common/CrudMessageEnum";
 import { Badge } from "primereact/badge";
+
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 
 export const ManageBooking = () => {
@@ -70,6 +71,29 @@ export const ManageBooking = () => {
     setDisplayTicketDetialsModal(false);
   };
 
+  const cancelBookingValidation = (data)=>{
+    const departureTime = data.ticketData.trip_schedule_id.departure_time
+    const departureTimeSplitArr = departureTime.split(':')
+    const today = new Date()
+    const currentTime = today.getHours()
+
+    let bookingFlag = false
+
+    // if(!data.ticketData.booked && data.ticketData.canceled){
+    //   bookingFlag=true
+    // }
+
+    // if(bookingFlag){
+    //     return true
+    // }
+    // else if(!bookingFlag &&  parseInt(currentTime) >= parseInt(departureTimeSplitArr[0])){
+    //   return true
+    // }
+    // else{
+      return false
+    // }
+  }
+
   return (
     <>
       {Array.isArray(ticketData) && ticketData.length > 0 ? (
@@ -114,10 +138,10 @@ export const ManageBooking = () => {
                           </li>
                           <li>
                             <b>Departure time:</b>{" "}
-                            {data.ticketData.departure_time} P.M
+                            {data.ticketData.trip_schedule_id.departure_time} P.M
                           </li>
                           <li>
-                            <b>Arrival time:</b> {data.ticketData.arrival_time}{" "}
+                            <b>Arrival time:</b> {data.ticketData.trip_schedule_id.arrival_time}{" "}
                             P.M
                           </li>
                           <li>
@@ -189,14 +213,11 @@ export const ManageBooking = () => {
                   <Button
                     type="Button"
                     label="Cancel Booking"
-                    disabled={
-                      !data.ticketData.booked && data.ticketData.canceled
-                        ? true
-                        : false
-                    }
+                    disabled={cancelBookingValidation(data)}
                     className="p-button-danger"
                     onClick={(e) => {
-                      onCancelBookingClick(data.ticketData.id);
+                      alert("Do you want to continue? Amout will be refunded in 6 business days")
+                      onCancelBookingClick(data.ticketData.id)
                     }}
                   />
                 </div>
