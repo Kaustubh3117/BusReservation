@@ -52,3 +52,8 @@ color: white !important;
         min-width: 0;
     }
 }
+
+.manageBookingFilter{
+margin-left: 80px;
+margin-top: 8px;
+}

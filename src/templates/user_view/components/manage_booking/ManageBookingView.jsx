@@ -7,6 +7,8 @@ import { Button } from "primereact/button";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { SUCCESS } from "../../../../constants/common/CrudMessageEnum";
 import { Badge } from "primereact/badge";
+import { InputText } from "primereact/inputtext";
+import { useForm } from "react-hook-form";
 
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 
@@ -16,11 +18,17 @@ export const ManageBooking = () => {
     state.auth.user !== null ? state.auth.user.id : null
   );
   const [ticketData, setTicketData] = useState({ ticketData: null });
-  const [passengerData, setPassengerData] = useState({ passengerData: null });
   const [displayTicketDetialsModal, setDisplayTicketDetialsModal] =
     useState(false);
   const [ticketNumber, setTicketNumber] = useState("");
   const [cancelBookingStatus, setCancelBookingStatus] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (AuthenticatedUserId !== null) {
@@ -28,7 +36,7 @@ export const ManageBooking = () => {
         .get(`${backendUrl}/api/manage_booking/${AuthenticatedUserId}`)
         .then(function (response) {
           const data = response.data;
-          setPassengerData(data);
+          // setPassengerData(data);
           let newRsData = [];
           let count = 0;
           data.map((ele, index) => {
@@ -79,25 +87,73 @@ export const ManageBooking = () => {
 
     let bookingFlag = false
 
-    // if(!data.ticketData.booked && data.ticketData.canceled){
-    //   bookingFlag=true
-    // }
+    if(!data.ticketData.booked && data.ticketData.canceled){
+      bookingFlag=true
+    }
 
-    // if(bookingFlag){
-    //     return true
-    // }
-    // else if(!bookingFlag &&  parseInt(currentTime) >= parseInt(departureTimeSplitArr[0])){
-    //   return true
-    // }
-    // else{
+    if(bookingFlag){
+        return true
+    }
+    else if(!bookingFlag &&  parseInt(currentTime) >= parseInt(departureTimeSplitArr[0])){
+      return true
+    }
+    else{
       return false
-    // }
+    }
   }
 
+  const onSubmit = (data, e) => {
+    const filterArr = [];
+    ticketData.map((ticketEle) => {
+      if (
+        data.globalSearch === ticketEle.ticketData.id ||
+        data.globalSearch === ticketEle.ticketData.trip_schedule_id.bus_id.bus_name ||
+        data.globalSearch === ticketEle.ticket_number ||
+        data.globalSearch === ticketEle.ticketData.boarding_point ||
+        data.globalSearch === ticketEle.ticketData.dropping_point
+      ) {
+        filterArr.push(ticketEle)
+      }
+    });
+    setFilteredData(filterArr);
+    e.target.reset();
+  };
+
+
+  const renderHeader1 = () => {
+    return (
+      <div className="flex justify-content-between manageBookingFilter">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+           placeholder="Keyword Search"
+           {...register("globalSearch")}
+          />
+        </span>
+          <Button
+          label="Search"
+         type='submit'
+         className="ml-2"
+       
+        />
+        <Button
+          label="Clear Filter"
+          icon="pi pi-times"
+          onClick={() =>{setFilteredData([]); setValue('globalSearch', '')}}
+          className="p-button-warning ml-4"
+          autoFocus
+        />
+        </form>
+      </div>
+    );
+  };
+  const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Array.isArray(ticketData) && ticketData.length > 0?  ticketData : Array.isArray(filteredData) && filteredData.length > 0 ?  filteredData : []
   return (
     <>
-      {Array.isArray(ticketData) && ticketData.length > 0 ? (
-        ticketData.map((data) => {
+    {renderHeader1()}
+      {Array.isArray(cardData) && cardData.length > 0 ? (
+        cardData.map((data) => {
           return (
             <div className="flex justify-content-center">
               <Card className="shadow-5 mt-4" style={{ width: "90%" }}>

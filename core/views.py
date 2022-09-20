@@ -173,7 +173,7 @@ class ManageBookingView(generics.ListAPIView):
     serializer_class = PassengerInfoSerializer
     def get_queryset(self):
         user_id = self.kwargs['user']
-        user_data = PassengerInfo.objects.filter(user__id__contains = user_id)
+        user_data = PassengerInfo.objects.filter(user__id__contains = user_id)[::-1]
         return user_data
 
 class CancelBookingView(APIView):

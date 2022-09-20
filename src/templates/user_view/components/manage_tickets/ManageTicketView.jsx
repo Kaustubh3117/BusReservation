@@ -15,6 +15,7 @@ export const ManageTicketView = (props) => {
   const [ticketData, setTicketData] = useState(null);
   const [passengerData, setPassengerData] = useState(null);
   const [printTicketModal, setPrintTicketModal] = useState(false);
+  
   let componentRef = useRef();
   useEffect(() => {
     axios
@@ -94,6 +95,8 @@ export const ManageTicketView = (props) => {
       ) : null}
     </>
   );
+
+  
 
   const renderFooter = () => {
     return (
