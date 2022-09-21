@@ -6,19 +6,19 @@ export const CancelBookingValidation = (data) =>{
 
     let bookingFlag = false
 
-    if(!data.ticketData.booked && data.ticketData.canceled){
-      bookingFlag=true
-    }
+    // if(!data.ticketData.booked && data.ticketData.canceled){
+    //   bookingFlag=true
+    // }
 
-    if(bookingFlag){
-        return true
-    }
-    else if(!bookingFlag &&  parseInt(currentTime) >= parseInt(departureTimeSplitArr[0])){
-      return true
-    }
-    else{
+    // if(bookingFlag){
+    //     return true
+    // }
+    // else if(!bookingFlag &&  parseInt(currentTime) >= parseInt(departureTimeSplitArr[0])){
+    //   return true
+    // }
+    // else{
       return false
-    }
+    // }
 }
 
 export const ManageBookingApiCall = (data)=>{

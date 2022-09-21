@@ -16,7 +16,7 @@ import { Card } from "primereact/card";
 import { useForm, Controller } from "react-hook-form";
 import { USER } from "../../constants/accounts/account_constants";
 
-const Login = ({ login, isAuthenticated, isAgent }) => {
+const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
   
@@ -53,16 +53,21 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
   const continueWithFacebook = async () => {
     try {
       const res = await axios.get(
-        `http://127.0.0.1:8000/auth/o/facebook/?redirect_uri=http://localh3000/facebook`
+        `http://127.0.0.1:8000/auth/o/facebook/?redirect_uri=http://localhost:3000/facebook`
       );
 
       window.location.replace(res.data.authorization_url);
     } catch (err) { }
   };
-
-  if (isAuthenticated) {
-     navigate('/');
+ useEffect(()=>{
+  if (isAuthenticated && isAgent !== undefined && isAgent !== null && isAgent ) {
+    navigate('/agentView');
   }
+  else if(isAuthenticated){
+    navigate('/');
+  }
+ }, [loadUser])
+  
 
   const getFormErrorMessage = (name) => {
     return (
@@ -191,7 +196,8 @@ const Login = ({ login, isAuthenticated, isAgent }) => {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  isAgent: state?.auth?.user?.is_agent
+  isAgent: state?.auth?.user?.is_agent,
+  loadUser: state?.auth?.user
 });
 
 export default connect(mapStateToProps, { login })(Login);

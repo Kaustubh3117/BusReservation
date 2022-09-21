@@ -63,8 +63,7 @@ export const savePassengerData = (payload) => async () => {
   try {
       const res = await axios.post(`${backendUrl}/api/passenger_data/`, body, config);
       if(res.status === 200){
-        ToastMessage(SUCCESS, "Your booking is Successfull");
-        //send mail with ticket details
+        ToastMessage(SUCCESS, "Your booking is Successfull. we have sent email with booking details.");
       }
   } catch (err) {  
       ToastMessage(ERROR, 'Your booking was unsuccessfull please contact admin if you are having problem with booking')

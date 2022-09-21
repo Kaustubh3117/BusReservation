@@ -6,7 +6,7 @@ import axios from "axios";
 import { backendUrl } from "../../environment/development";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 // prime React
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -14,20 +14,27 @@ import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
+import { FileUpload } from "primereact/fileupload";
+import { Checkbox } from "primereact/checkbox";
 // react hook form
 import { useForm, Controller } from "react-hook-form";
-import {USER} from "../../constants/accounts/account_constants"
-import { AGENT } from "../../constants/accounts/account_constants";
 
+import { USER } from "../../constants/accounts/account_constants";
+import { AGENT } from "../../constants/accounts/account_constants";
 
 const Signup = ({ signup, isAuthenticated }) => {
   const navigate = useNavigate();
   const [accountCreated, setAccountCreated] = useState(false);
   const [passwordMatched, setPasswordMatched] = useState(false);
   const [formData, setFormData] = useState({});
+  const [checked, setChecked] = useState(false);
 
   const defaultValues = {
     email: "",
+    mobileNumber: "",
+    city: "",
+    pancardNumber: "",
+    organizationName: "",
     password: "",
     re_password: "",
   };
@@ -42,11 +49,11 @@ const Signup = ({ signup, isAuthenticated }) => {
     setFormData(e);
   };
 
+  const url = window.location.pathname;
+  const urlSplit = url.split("/");
+  const userType = urlSplit.pop();
+
   useEffect(() => {
-    const url = window.location.pathname
-    const urlSplit = url.split('/')
-    const userType = urlSplit.pop()
-    
     if (
       Object.values(formData).length > 0 &&
       formData.password === formData.re_password
@@ -55,7 +62,11 @@ const Signup = ({ signup, isAuthenticated }) => {
         formData.email,
         formData.password,
         formData.re_password,
-        userType === "AGENT" ? "True" : "False"
+        userType === "AGENT" ? "True" : "False",
+        formData.mobileNumber,
+        formData.city,
+        formData.pancardNumber,
+        formData.organizationName
       );
       setAccountCreated(true);
     } else if (
@@ -87,11 +98,10 @@ const Signup = ({ signup, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
-    navigate('/');
-
+    navigate("/");
   }
   if (accountCreated) {
-    navigate('/login');
+    navigate("/login");
   }
 
   const getFormErrorMessage = (name) => {
@@ -122,13 +132,22 @@ const Signup = ({ signup, isAuthenticated }) => {
           <div className="grid">
             <div className="col-4"></div>
             <div className="col-4">
-              <Card className="shadow-4">
+              <div className="sign-up shadow-4">
                 <div className="my-5 mx-6">
-                  <h1>Registration</h1>
+                  {userType === "AGENT" ? (
+                    <h1>Agent Registration</h1>
+                  ) : (
+                    <h1>Registration</h1>
+                  )}
                   <span className="text-600 font-medium line-height-3">
                     Already have an account?
                   </span>
-                  <Button type="button" label="Sign In!" className="p-button-link" onClick={()=>navigate(`/login`)}/>
+                  <Button
+                    type="button"
+                    label="Sign In!"
+                    className="p-button-link"
+                    onClick={() => navigate(`/login`)}
+                  />
                   <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                     <div className="field mt-5">
                       <span className="p-float-label p-input-icon-right">
@@ -165,6 +184,39 @@ const Signup = ({ signup, isAuthenticated }) => {
                       </span>
                       {getFormErrorMessage("email")}
                     </div>
+                    {userType === "AGENT" ? (
+                      <div className="field mt-5">
+                        <span className="p-float-label p-input-icon-right">
+                          <i className="pi pi-mobile" />
+                          <Controller
+                            name="mobileNumber"
+                            control={control}
+                            rules={{
+                              required: "Mobile Number is required.",
+                            }}
+                            render={({ field, fieldState }) => (
+                              <InputText
+                                id={field.name}
+                                {...field}
+                                name="mobileNumber"
+                                className={classNames({
+                                  "p-invalid": fieldState.invalid,
+                                })}
+                              />
+                            )}
+                          />
+                          <label
+                            htmlFor="mobileNumber"
+                            className={classNames({
+                              "p-error": !!errors.mobileNumber,
+                            })}
+                          >
+                            Mobile Number*
+                          </label>
+                        </span>
+                        {getFormErrorMessage("email")}
+                      </div>
+                    ) : null}
                     <div className="field mt-5">
                       <span className="p-float-label">
                         <Controller
@@ -229,37 +281,180 @@ const Signup = ({ signup, isAuthenticated }) => {
                         </small>
                       ) : null}
                     </div>
-
-                    <Button type="submit" label="Register" className="mt-2" />
-
-                    <div className="grid">
-                      <div className="col">
-                        <Button
-                          className="p-button-outlined p-button-secondary mt-3 shadow-2"
-                          onClick={continueWithGoogle}
-                          style={{ width: "100%" }}
-                        >
-                          <FcGoogle size={20} />
-                          <span className="ml-3">Google</span>
-                        </Button>
+                    {userType === "AGENT" ? (
+                      <div className="field mt-5">
+                        <span className="p-float-label p-input-icon-right">
+                          <i className="pi pi-mobile" />
+                          <Controller
+                            name="organizationName"
+                            control={control}
+                            rules={{
+                              required: "Organization Name is required.",
+                            }}
+                            render={({ field, fieldState }) => (
+                              <InputText
+                                id={field.name}
+                                {...field}
+                                name="organizationName"
+                                className={classNames({
+                                  "p-invalid": fieldState.invalid,
+                                })}
+                              />
+                            )}
+                          />
+                          <label
+                            htmlFor="organizationName"
+                            className={classNames({
+                              "p-error": !!errors.organizationName,
+                            })}
+                          >
+                            Organization Name*
+                          </label>
+                        </span>
+                        {getFormErrorMessage("email")}
                       </div>
-                      <div className="col">
-                        <Button
-                          className="p-button-outlined p-button-secondary mt-3 shadow-2"
-                          onClick={continueWithFacebook}
-                          style={{ width: "100%" }}
-                        >
-                          <BsFacebook size={20} />
-                          <span className="ml-3">Facebook</span>
-                        </Button>
+                    ) : null}
+                    {userType === "AGENT" ? (
+                      <div className="field mt-5">
+                        <span className="p-float-label p-input-icon-right">
+                          <i className="pi pi-mobile" />
+                          <Controller
+                            name="city"
+                            control={control}
+                            rules={{
+                              required: "City is required.",
+                            }}
+                            render={({ field, fieldState }) => (
+                              <InputText
+                                id={field.name}
+                                {...field}
+                                name="city"
+                                className={classNames({
+                                  "p-invalid": fieldState.invalid,
+                                })}
+                              />
+                            )}
+                          />
+                          <label
+                            htmlFor="city"
+                            className={classNames({ "p-error": !!errors.city })}
+                          >
+                            City*
+                          </label>
+                        </span>
+                        {getFormErrorMessage("email")}
                       </div>
-                    </div>
-                    <div className="mt-3">
-                      Are you an agent? <Link  to={`/signup/${AGENT}`}>Sign In</Link>
-                    </div>
+                    ) : null}
+                    {userType === "AGENT" ? (
+                      <div className="field mt-5">
+                        <span className="p-float-label p-input-icon-right">
+                          <i className="pi pi-mobile" />
+                          <Controller
+                            name="pancardNumber"
+                            control={control}
+                            rules={{
+                              required: "Pan card Number is required.",
+                            }}
+                            render={({ field, fieldState }) => (
+                              <InputText
+                                id={field.name}
+                                {...field}
+                                name="pancardNumber"
+                                className={classNames({
+                                  "p-invalid": fieldState.invalid,
+                                })}
+                              />
+                            )}
+                          />
+                          <label
+                            htmlFor="pancardNumber"
+                            className={classNames({
+                              "p-error": !!errors.pancardNumber,
+                            })}
+                          >
+                            Pancard Number*
+                          </label>
+                        </span>
+                        {getFormErrorMessage("email")}
+                      </div>
+                    ) : null}
+                    {userType === "AGENT" ? (
+                      <FileUpload
+                        name="demo[]"
+                        chooseLabel="Upload Pancard Copy"
+                        url="https://primefaces.org/primereact/showcase/upload.php"
+                        onUpload={() => null}
+                        accept="image/*"
+                        maxFileSize={1000000}
+                        emptyTemplate={
+                          <p className="m-0">
+                            Drag and drop files to here to upload.
+                          </p>
+                        }
+                      />
+                    ) : null}
+                    {userType === "AGENT" ? (
+                      <div className="field-checkbox">
+                        <Checkbox
+                          inputId="binary"
+                          checked={checked}
+                          onChange={(e) => setChecked(e.checked)}
+                        />
+                        <label htmlFor="binary">
+                          I accept all Terms & Conditions
+                        </label>
+                      </div>
+                    ) : null}
+
+                    {userType === "AGENT" ? (
+                      <Button
+                        type="submit"
+                        label="Register"
+                        className="mt-2"
+                        disabled={checked ? false : true}
+                      />
+                    ) : (
+                      <Button type="submit" label="Register" className="mt-2" />
+                    )}
+
+                    {userType === "USER" ? (
+                      <div className="grid">
+                        <div className="col">
+                          <Button
+                            className="p-button-outlined p-button-secondary mt-3 shadow-2"
+                            onClick={continueWithGoogle}
+                            style={{ width: "100%" }}
+                          >
+                            <FcGoogle size={20} />
+                            <span className="ml-3">Google</span>
+                          </Button>
+                        </div>
+                        <div className="col">
+                          <Button
+                            className="p-button-outlined p-button-secondary mt-3 shadow-2"
+                            onClick={continueWithFacebook}
+                            style={{ width: "100%" }}
+                          >
+                            <BsFacebook size={20} />
+                            <span className="ml-3">Facebook</span>
+                          </Button>
+                        </div>
+                      </div>
+                    ) : null}
+                    {userType === "AGENT" ? (
+                      <div className="mt-3">
+                        Go to user Sign Up?{" "}
+                        <Link to={`/signup/${USER}`}>Sign Up</Link>
+                      </div>
+                    ) : (
+                      <div className="mt-3">
+                        Are you an agent?{" "}
+                        <Link to={`/signup/${AGENT}`}>Sign Up</Link>
+                      </div>
+                    )}
                   </form>
                 </div>
-              </Card>
+              </div>
             </div>
             <div className="col-4"></div>
           </div>

@@ -5,7 +5,7 @@ import 'react-pro-sidebar/dist/css/styles.css';
 export const SideBar = () => {
   return (
     <>
-      <ProSidebar>
+      <ProSidebar style={{height:'100vh'}}>
         <Menu iconShape="square">
           <MenuItem>Dashboard  <Link to="/agentView" /></MenuItem>
           <MenuItem>Bus<Link to="/busView" /></MenuItem>
