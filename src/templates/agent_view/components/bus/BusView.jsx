@@ -15,6 +15,18 @@ export const BusView = () => {
         )
     }, [])
 
+    const onFormSubmitHandler = (values)=>{
+        axios.get(`${backendUrl}/agent_api/bus/`).then(()=>{
+
+        })
+        .catch((error)=>{
+
+        })
+           
+            
+        
+    }
+
     return (
         <>
             {/* <div className='grid'> */}
@@ -23,7 +35,7 @@ export const BusView = () => {
                 {/* </div> */}
                 {/* <div className='col-9'> */}
                 <h1>Manage bus</h1>
-                    <GridView columns={dataTableColums} data={data} formFields={busFields} />
+                    <GridView columns={dataTableColums} data={data} formFields={busFields} onFormSubmitHandler ={onFormSubmitHandler()}/>
                 {/* </div> */}
             {/* </div> */}
         </>

@@ -189,7 +189,7 @@ class SeatChart extends Component {
             <BreadCrumbs items={breadCrumbItems} />
             <div className="grid flex justify-content-center">
               <div
-                className="col-3 shadow-3"
+                className="col-4 shadow-3"
                 style={{ marginTop: "100px", border: "1px solid black" }}
               >
                 <div style={{ marginTop: "30px" }}>

@@ -8,10 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { getTripScheduleBpDpArray } from "./SeatHelper";
 import { changeKeysNamesFromObjectForRadio } from "./SeatHelper";
 
-export const SeatView = () => {
-  const { id } = useParams();
+export const SeatView = (props) => {
+  // const { id } = useParams();
   const navigate = useNavigate();
-  const tripSheduleId = parseInt(id);
+  const tripSheduleId = parseInt(props.id);
   const [tripSchedule, setTripSchedule] = useState(null);
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
 
@@ -28,7 +28,7 @@ export const SeatView = () => {
   };
 
   useEffect(() => {
-    axios.get(`${backendUrl}/api/view_seat/${id}`).then(function (response) {
+    axios.get(`${backendUrl}/api/view_seat/${props.id}`).then(function (response) {
       setTripSchedule(response.data);
     });
   }, []);

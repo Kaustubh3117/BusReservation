@@ -9,20 +9,24 @@ import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
 import { Button } from "primereact/button";
 import { useNavigate } from 'react-router-dom';
+import { Dialog } from 'primereact/dialog';
 // import { Divider } from "primereact/divider";
 import { changeDateFormat } from "../../UserHelper";
 import { backendUrl } from "../../../../environment/development";
 import { Link } from "react-router-dom";
 import { FilterTripScheduleApi, OnFormSubmitHandler } from "./AvailableBusHelper";
+import { SeatView } from "../seat_selection/SeatView";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [displayBasic, setDisplayBasic] = useState(false);
   const { start_location, end_location, date } = state;
   const [availableBusses, setAvailableBusses] = useState(null);
   const boardingPoint = useSelector((state) => state.user_data.boardingPoint);
   const droppingPoint = useSelector((state) => state.user_data.droppingPoint);
   const [filteredData, setFilteredData] = useState([]);
+  const [viewSeatId, setViewSeatId] = useState(null)
   const {
     register,
     handleSubmit,
@@ -87,6 +91,19 @@ const renderHeader1 = () => {
   );
 };
 
+const onHide = (name) => {
+setDisplayBasic(false)
+}
+
+// const renderFooter = (name) => {
+//   return (
+//       <div>
+//           <Button label="No" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
+//           <Button label="Yes" icon="pi pi-check" onClick={() => onHide(name)} autoFocus />
+//       </div>
+//   );
+// }
+
 const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Array.isArray(availableBusses) && availableBusses.length > 0?  availableBusses : Array.isArray(filteredData) && filteredData.length > 0 ?  filteredData : []
 
   return (
@@ -111,12 +128,13 @@ const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Arr
                   return (
                     <>
                       <BusDetailsCard data={data} />
-                      <Link
+                      {/* <Link
                         to={`/seat/${data.id}`}
                         className="p-button availableBusButton"
                       >
                         View Seat
-                      </Link>
+                      </Link> */}
+                      <Button label="View Seat" onClick={() => {setDisplayBasic(true); setViewSeatId(data.id)}} className="p-button availableBusButton" />
                     </>
                   );
                 })
@@ -126,6 +144,9 @@ const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Arr
       </div>
 
       <div className="col-12"></div>
+      <Dialog header="Seat View" visible={displayBasic} style={{ width: '70vw' }} onHide={() => onHide('displayBasic')}>
+    <SeatView id={viewSeatId}/>
+</Dialog>
     </>
   );
 };
