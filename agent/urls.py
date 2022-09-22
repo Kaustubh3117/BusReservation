@@ -4,7 +4,8 @@ app_name = 'agent'
 
 urlpatterns = [
     path('bus/', BusView.as_view(), name='bus'),
-    path('bus_crud/<int:pk>', BusCrudView.as_view(), name='bus_crud'),
+    path('bus_crud/', BusCrudView.as_view(), name='bus_crud'),
+     path('bus_crud/<int:pk>', BusCrudView.as_view(), name="bus_crud"),
     path("delete_bus/", delete_bus, name="delete_bus"),
     #tripschedule
     path('tripschedule/', TripScheduleView.as_view(), name='tripschedule'),

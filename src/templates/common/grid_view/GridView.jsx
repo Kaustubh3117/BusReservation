@@ -39,6 +39,7 @@ export const GridView = (props) => {
 
   useEffect(() => {
     setProducts(props.data);
+    setSubmitted(false);
   }, [props.data]);
 
   const openNew = () => {
@@ -62,26 +63,13 @@ export const GridView = (props) => {
 
   const saveProduct = () => {
     setSubmitted(true);
-
-    // if (product.name.trim()) {
-      let _products = [...products];
       let _product = { ...product };
       if (product.id) {
-        const index = findIndexById(product.id);
-
-        _products[index] = _product;
         props.onFormSubmitHandler(_product, product.id)
       } else {
-        // _product.id = createId();
-        // _product.image = "product-placeholder.svg";
-        _products.push(_product);
         props.onFormSubmitHandler(_product, null)
       }
-
-      setProducts(_products);
       setProductDialog(false);
-      setProduct(emptyProduct);
-    // }
   };
 
   const editProduct = (product) => {
@@ -89,27 +77,33 @@ export const GridView = (props) => {
     setProductDialog(true);
   };
 
-  const findIndexById = (id) => {
-    let index = -1;
-    for (let i = 0; i < products.length; i++) {
-      if (products[i].id === id) {
-        index = i;
-        break;
-      }
-    }
+   //delete multiple row
+   const confirmDeleteSelected = () => {
+    setDeleteProductsDialog(true);
+  };
+  const deleteSelectedProducts = () => {
+    props.onDeleteClickHandler(selectedRowData)
+  };
+  //!!end delete multiple row
 
-    return index;
+  //delete single row
+  const confirmDeleteProduct = (product) => {
+    setProduct(product);
+    setDeleteProductDialog(true);
   };
 
-  // const createId = () => {
-  //   let id = "";
-  //   let chars =
-  //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  //   for (let i = 0; i < 5; i++) {
-  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
-  //   }
-  //   return id;
-  // };
+  const deleteProduct = () => {
+    let _products = products.filter((val) => val.id !== product.id);
+    setProducts(_products);
+    setDeleteProductDialog(false);
+    setProduct(emptyProduct);
+    toast.current.show({
+      severity: "success",
+      summary: "Successful",
+      detail: "Product Deleted",
+      life: 3000,
+    });
+  };
 
   const importCSV = (e) => {
     const file = e.files[0];
@@ -151,59 +145,6 @@ export const GridView = (props) => {
     dt.current.exportCSV();
   };
 
-  //delete multiple row
-  const confirmDeleteSelected = () => {
-    setDeleteProductsDialog(true);
-  };
-
-  const deleteSelectedProducts = () => {
-    // let _products = products.filter(val => !selectedRowData.includes(val));
-    const config = {
-      header: {
-        "Content-Type": "application/json",
-      },
-    };
-    const deletePayload = [];
-    for (const i in selectedRowData) {
-      console.log("i...", i);
-      deletePayload.push(selectedRowData[i].id);
-    }
-    const finalPayload = { data: deletePayload };
-    axios
-      .post(`${backendUrl}/agent_api/delete_bus/`, finalPayload, config)
-      .then(function (response) {
-        setProduct(response.data);
-        setDeleteProductsDialog(false);
-        setSelectedRowData(null);
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Bus Deleted",
-          life: 3000,
-        });
-      });
-  };
-  //!!end delete multiple row
-
-  //delete single row
-  const confirmDeleteProduct = (product) => {
-    setProduct(product);
-    setDeleteProductDialog(true);
-  };
-
-  const deleteProduct = () => {
-    let _products = products.filter((val) => val.id !== product.id);
-    setProducts(_products);
-    setDeleteProductDialog(false);
-    setProduct(emptyProduct);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Product Deleted",
-      life: 3000,
-    });
-  };
-
   //delete single row
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || "";
@@ -220,6 +161,13 @@ export const GridView = (props) => {
 
     setProduct(_product);
   };
+  const handleImageChange = (e, name) => {
+    const val =  e.target.files[0] || '';
+    let _product = { ...product };
+    _product[`${name}`] = val;
+
+    setProduct(_product);
+  };
 
   const onSelectChange = (e, name) => {
     let _product = { ...product };
@@ -231,14 +179,6 @@ export const GridView = (props) => {
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
-        {/* <Button label="Add" className="p-button-raised p-button-secondary mr-2" onClick={openNew} />
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRowData || !selectedRowData.length} /> */}
-        {/* <div className="flex align-items-center export-buttons">
-            <Button type="button" icon="pi pi-plus" onClick={openNew} className="mr-2" data-pr-tooltip="CSV" />
-            <Button type="button" icon="pi pi-trash" onClick={confirmDeleteSelected} className="p-button-success mr-2" data-pr-tooltip="XLS" />
-            <Button type="button" icon="pi pi-upload"  className="p-button-warning mr-2" data-pr-tooltip="PDF" />
-            <Button type="button" icon="pi pi-file-excel" onClick={exportCSV} className="p-button-info ml-auto" data-pr-tooltip="Selection Only" /> */}
-        {/* </div> */}
         {header}
       </React.Fragment>
     );
@@ -247,8 +187,6 @@ export const GridView = (props) => {
   const rightToolbarTemplate = () => {
     return (
       <React.Fragment>
-        {/* <FileUpload mode="basic" name="demo[]" auto url="https://primefaces.org/primereact/showcase/upload.php" accept=".csv" chooseLabel="Import" className="mr-2 inline-block" onUpload={importCSV} />
-                <Button label="Export" icon="pi pi-upload" className="p-button-raised p-button-secondary mr-2" onClick={exportCSV} /> */}
         <div className="flex align-items-center export-buttons">
           <Button
             type="button"
@@ -287,12 +225,12 @@ export const GridView = (props) => {
       <React.Fragment>
         <Button
           icon="pi pi-pencil"
-          className="p-button-rounded p-button-success mr-2"
+          className="p-button-rounded p-button-success mr-2 p-button-sm"
           onClick={() => editProduct(rowData)}
         />
         <Button
           icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
+          className="p-button-rounded p-button-warning p-button-sm"
           onClick={() => confirmDeleteProduct(rowData)}
         />
       </React.Fragment>
@@ -426,14 +364,15 @@ export const GridView = (props) => {
                 header={ele.header}
                 body={ele.body}
                 sortable={ele.sortable}
-                style={{ minWidth: "12rem" }}
+                style={{ maxWidth: "12rem" }}
+                className='white-space-nowrap overflow-hidden text-overflow-ellipsis'
               ></Column>
             );
           })}
           <Column
             body={actionBodyTemplate}
             exportable={false}
-            style={{ minWidth: "8rem" }}
+            style={{ minWidth: "9rem" }}
           ></Column>
         </DataTable>
       </div>
@@ -485,6 +424,12 @@ export const GridView = (props) => {
                       )}
                     </div>
                   ) : null}
+                  {fields.fieldType === 'fileupload'?<>
+                <input type="file"
+                   id="image"
+                   accept="image/png, image/jpeg, image/jpg" onChange={(e)=>handleImageChange(e, fields.name)} required/>
+                   
+                </>:null}
                   {fields.fieldType === "time" ? (
                     <div className="field">
                       <label htmlFor="name">{fields.label}</label>

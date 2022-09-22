@@ -9,7 +9,7 @@ export const BusDetailsCard = (props) => {
       <Card className="shadow-5 mt-4" style={{ width: "100%" }}>
         <div className="grid">
           <div className="col-2">
-            <Image src={props.data.bus_id.image} template="Preview Content" alt="Image Text" />
+            <Image src={props.data.bus_id.image} template="Preview Content" alt="Image Text" width="250" />
           </div>
           <div className="col-10">
             <div className="grid">

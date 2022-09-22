@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import api_view
@@ -12,8 +13,6 @@ from accounts.models import UserAccount
 from core.serializers import BusSerializer, TripscheduleSerializer, TicketSerializer, BoardingPointSerializer, DroppingPointSerializer
 from core.models import Bus, Tripschedule, Ticket, BoardingPoint, DroppingPoint
 
-
-
 # Create your views here.
 class BusView(ListAPIView):
     serializer_class = BusSerializer
@@ -21,12 +20,10 @@ class BusView(ListAPIView):
             return Bus.objects.all()
 
 class BusCrudView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
     def post(self, request, format=None):
         print("request data ******", request.data)
-        # agent_id = request.data.agent_id
-        # agent = UserAccount.objects.get(pk=agent_id)
         serializer = BusSerializer(data=request.data)
-        # serializer.data.agent = agent
         print("serialkizer......", serializer)
         if serializer.is_valid():
             serializer.save()
@@ -41,6 +38,11 @@ class BusCrudView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    #  def delete(self,request, pk=None, format=None):
+    #     student = get_object_or_404(Student, id=pk)
+    #     student.delete()
+    #     return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
 
 
 

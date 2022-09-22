@@ -19,8 +19,19 @@ export const BusView = () => {
 
     const onFormSubmitHandler = (values, id)=>{
         values.agent = agentId
+        let form_data = new FormData();
+        if (typeof values.image === 'object')
+            form_data.append("image", values.image, values.image.name);
+        form_data.append("id", values.id);
+        form_data.append("bus_name", values.bus_name);
+        form_data.append("bus_no", values.bus_no);
+        form_data.append("bus_type", values.bus_type);
+        form_data.append("capacity", values.capacity);
+        form_data.append("agent", values.agent);
         if(id !== null){
-            axios.put(`${backendUrl}/agent_api/bus_crud/${id}`, values).then((response)=>{
+            axios.put(`${backendUrl}/agent_api/bus_crud/${id}`, form_data,{headers: {
+                'content-type': 'multipart/form-data'
+              }}).then((response)=>{
                 setRefreshData(!refreshData)
                         })
                         .catch((error)=>{
@@ -28,13 +39,35 @@ export const BusView = () => {
                         })
         }
         else{
-            axios.post(`${backendUrl}/agent_api/bus_crud/`, values).then((response)=>{
+            axios.post(`${backendUrl}/agent_api/bus_crud/`, form_data, {headers: {
+                'content-type': 'multipart/form-data'
+              }}).then((response)=>{
                 setRefreshData(!refreshData)
                         })
                         .catch((error)=>{
                 
                         })
         } 
+    }
+
+    const deleteClickHandler = (selectedRowData) =>{
+        const config = {
+            header: {
+              "Content-Type": "application/json",
+            },
+          };
+          const deletePayload = [];
+          for (const i in selectedRowData) {
+            console.log("i...", i);
+            deletePayload.push(selectedRowData[i].id);
+          }
+          const finalPayload = { data: deletePayload };
+          axios
+            .post(`${backendUrl}/agent_api/delete_bus/`, finalPayload, config)
+            .then((response)=> {
+                setRefreshData(!refreshData)
+                alert('data deleted')
+            });
     }
 
     return (
@@ -45,7 +78,7 @@ export const BusView = () => {
                 {/* </div> */}
                 {/* <div className='col-9'> */}
                 <h1>Manage bus</h1>
-                    <GridView columns={dataTableColums} data={data} formFields={busFields} onFormSubmitHandler ={onFormSubmitHandler}/>
+                    <GridView columns={dataTableColums} data={data} formFields={busFields} onFormSubmitHandler ={onFormSubmitHandler} onDeleteClickHandler ={deleteClickHandler}/>
                 {/* </div> */}
             {/* </div> */}
         </>

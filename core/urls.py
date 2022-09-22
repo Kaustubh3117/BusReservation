@@ -29,5 +29,4 @@ urlpatterns = [
     path('cancel_booking_view/<int:ticket_id>', CancelBookingView.as_view(), name='cancel_booking_view'),
     path('get_ticket/<str:ticket_id>', TicketView.as_view(), name='get_ticket'),
     path('seat_status/', SeatStatusView.as_view(), name='seat_status'),
-
 ]

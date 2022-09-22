@@ -5,19 +5,13 @@ export const dataTableColums = [{
     sortable: true
 },
 {
-    field: "image",
-    header: "Image",
-    sortable: true,
-    body: ''
-},
-{
     field: "bus_name",
     header: "Name",
     sortable: true
 },
 {
     field: "bus_no",
-    header: "Bu No.",
+    header: "Bus No.",
     sortable: false,
     body: ''
 },
@@ -31,18 +25,16 @@ export const dataTableColums = [{
     header: "Type",
     sortable: true
 },
+{
+    field: "image",
+    header: "Image",
+    sortable: true,
+    body: ''
+},
 ]
 
 
 export const busFields = [
-    {
-        id:"image",
-        name: "image",
-        label:"Image",
-        fieldType: "fileupload",
-        value:'',
-        errorMessage: 'Please Enter Trip Date'
-    },
     {
         id:"bus_name",
         name: "bus_name",
@@ -70,6 +62,14 @@ export const busFields = [
         name: "bus_type",
         label:"Bus Type",
         fieldType: "select",
+        errorMessage: 'Please Enter Trip Date'
+    },
+    {
+        id:"image",
+        name: "image",
+        label:"Image",
+        fieldType: "fileupload",
+        value:'',
         errorMessage: 'Please Enter Trip Date'
     },
 ]

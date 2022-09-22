@@ -4,6 +4,7 @@ from .models import Bus, Tripschedule, Ticket, DroppingPoint, BoardingPoint, Sea
 
 
 class BusSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False)
     class Meta:
         model = Bus
         fields = ['id', 'bus_name', 'bus_no', 'capacity', 'bus_type', 'image', 'agent']
