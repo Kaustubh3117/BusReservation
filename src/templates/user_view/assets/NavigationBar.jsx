@@ -17,6 +17,9 @@ const NavigationBar = ({ logout }) => {
     const isAuthenticated = useSelector(
         (state) => state.auth.isAuthenticated
     );
+    const isAgent = useSelector(
+        (state) => state?.auth?.user?.is_agent
+    );
     const AuthenticatedUserId = useSelector((state) => state.auth.user !== null ? state.auth.user.id : null);
 
     const userEmail = useSelector(
@@ -61,27 +64,31 @@ const NavigationBar = ({ logout }) => {
                 logoutUser();
             }
         }
-        const manageBooking = {
-            label: 'Manage Booking',
-            icon: 'pi pi-fw pi-ticket',
-            items: [
-                {
-                    label: 'Show My Ticket',
-                    icon: 'pi pi-fw pi-align-left',
-                    command: () => {
-                        setShowTicketDialog(true)
+
+        if(!isAgent){
+            const manageBooking = {
+                label: 'Manage Booking',
+                icon: 'pi pi-fw pi-ticket',
+                items: [
+                    {
+                        label: 'Show My Ticket',
+                        icon: 'pi pi-fw pi-align-left',
+                        command: () => {
+                            setShowTicketDialog(true)
+                        },
                     },
-                },
-                {
-                    label: 'Manage Booking',
-                    icon: 'pi pi-fw pi-align-right',
-                    command: () => {
-                        navigate(`/manageBooking/${AuthenticatedUserId}`)
+                    {
+                        label: 'Manage Booking',
+                        icon: 'pi pi-fw pi-align-right',
+                        command: () => {
+                            navigate(`/manageBooking/${AuthenticatedUserId}`)
+                        },
                     },
-                },
-            ]
+                ]
+            }
+            items.push(manageBooking)
         }
-        items.push(manageBooking)
+       
         items.push(email)
         items.push(authItems)
     }

@@ -17,14 +17,14 @@ export const TripScheduleView = () => {
 
     return (
         <>
-            <div className='grid'>
-                <div className='col-3'>
+            {/* <div className='grid'> */}
+                {/* <div className='col-3'>
                     <SideBar />
                 </div>
-                <div className='col-9'>
-                <GridView title={"Manage bus"} columns={dataTableColums} data={data} formFields={tripScheduleFields} />
-                </div>
-            </div>
+                <div className='col-9'> */}
+                <GridView  columns={dataTableColums} data={data} formFields={tripScheduleFields} />
+                {/* </div> */}
+            {/* </div> */}
         </>
     );
 }

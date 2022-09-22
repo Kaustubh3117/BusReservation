@@ -178,7 +178,6 @@ export const GridView = (props) => {
             deletePayload.push(selectedRowData[i].id)
         }
         const finalPayload = {data:deletePayload}
-        console.log("deletePayload...", deletePayload)
         axios.post(`${backendUrl}/agent_api/delete_bus/`, finalPayload, config).then(
             function (response) {
                 setProduct(response.data)
@@ -225,7 +224,6 @@ export const GridView = (props) => {
     }
 
     const onSelectChange = (e) => {
-        console.log("e...", e)
         setSelect(e.value);
     }
 
@@ -235,8 +233,15 @@ console.log("selected row data", selectedRowData)
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRowData || !selectedRowData.length} />
+                {/* <Button label="Add" className="p-button-raised p-button-secondary mr-2" onClick={openNew} />
+                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRowData || !selectedRowData.length} /> */}
+                {/* <div className="flex align-items-center export-buttons">
+            <Button type="button" icon="pi pi-plus" onClick={openNew} className="mr-2" data-pr-tooltip="CSV" />
+            <Button type="button" icon="pi pi-trash" onClick={confirmDeleteSelected} className="p-button-success mr-2" data-pr-tooltip="XLS" />
+            <Button type="button" icon="pi pi-upload"  className="p-button-warning mr-2" data-pr-tooltip="PDF" />
+            <Button type="button" icon="pi pi-file-excel" onClick={exportCSV} className="p-button-info ml-auto" data-pr-tooltip="Selection Only" /> */}
+        {/* </div> */}
+        {header}
             </React.Fragment>
         )
     }
@@ -244,8 +249,14 @@ console.log("selected row data", selectedRowData)
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <FileUpload mode="basic" name="demo[]" auto url="https://primefaces.org/primereact/showcase/upload.php" accept=".csv" chooseLabel="Import" className="mr-2 inline-block" onUpload={importCSV} />
-                <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+                {/* <FileUpload mode="basic" name="demo[]" auto url="https://primefaces.org/primereact/showcase/upload.php" accept=".csv" chooseLabel="Import" className="mr-2 inline-block" onUpload={importCSV} />
+                <Button label="Export" icon="pi pi-upload" className="p-button-raised p-button-secondary mr-2" onClick={exportCSV} /> */}
+             <div className="flex align-items-center export-buttons">
+            <Button type="button" icon="pi pi-plus" onClick={openNew} className="mr-2" data-pr-tooltip="CSV" />
+            <Button type="button" icon="pi pi-trash" onClick={confirmDeleteSelected} className="p-button-success mr-2" data-pr-tooltip="XLS" />
+            <Button type="button" icon="pi pi-upload"  className="p-button-warning mr-2" data-pr-tooltip="PDF" />
+            <Button type="button" icon="pi pi-file-excel" onClick={exportCSV} className="p-button-info ml-auto" data-pr-tooltip="Selection Only" />
+        </div>
             </React.Fragment>
         )
     }
@@ -325,12 +336,15 @@ console.log("select", select)
             <Toast ref={toast} />
 
             <div className="card">
-                <Toolbar className="mb-4"
+                <Toolbar className=""
                     left={leftToolbarTemplate}
-                    right={rightToolbarTemplate}>
+                    right={rightToolbarTemplate}
+                    style={{width:'100%', borderRadius:'0px'}}
+                    >    
                 </Toolbar>
 
                 <DataTable ref={dt}
+                    style={{width:'100%'}}
                     value={props.data}
                     selection={selectedRowData}
                     onSelectionChange={(e) => setSelectedRowData(e.value)}
@@ -339,7 +353,9 @@ console.log("select", select)
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
                     globalFilter={globalFilter}
-                    header={header}
+                    // header={header}
+                    showGridlines 
+                    stripedRows 
                     responsiveLayout="scroll">
                     <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
                     {props.columns.map((ele) => {

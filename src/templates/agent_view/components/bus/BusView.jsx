@@ -17,14 +17,15 @@ export const BusView = () => {
 
     return (
         <>
-            <div className='grid'>
-                <div className='col-3'>
-                    <SideBar />
-                </div>
-                <div className='col-9'>
-                    <GridView title={"Manage bus"} columns={dataTableColums} data={data} formFields={busFields} />
-                </div>
-            </div>
+            {/* <div className='grid'> */}
+                {/* <div className='col-3'> */}
+                    {/* <SideBar /> */}
+                {/* </div> */}
+                {/* <div className='col-9'> */}
+                <h1>Manage bus</h1>
+                    <GridView columns={dataTableColums} data={data} formFields={busFields} />
+                {/* </div> */}
+            {/* </div> */}
         </>
     );
 }

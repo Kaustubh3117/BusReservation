@@ -17,9 +17,9 @@ export const SideBar = () => {
             <MenuItem>Add Nested Components</MenuItem>
           </SubMenu>
         </Menu>
-        <SidebarFooter className='mb-0'>
+        {/* <SidebarFooter className='mb-0'>
           All rights reserved Giobus 2022
-        </SidebarFooter>
+        </SidebarFooter> */}
       </ProSidebar>
     </>
   )
