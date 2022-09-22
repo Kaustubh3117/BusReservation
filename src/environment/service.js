@@ -3,3 +3,9 @@ export const config = {
         'Content-Type': 'application/json'
     }
 };
+
+export const multiPartConfig = {
+    headers: {
+        "content-type": "multipart/form-data",
+      },
+}

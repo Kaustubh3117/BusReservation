@@ -63,11 +63,11 @@ export const GridView = (props) => {
 
   const saveProduct = () => {
     setSubmitted(true);
-      let _product = { ...product };
+      // let _product = { ...product };
       if (product.id) {
-        props.onFormSubmitHandler(_product, product.id)
+        props.onFormSubmitHandler(product, product.id)
       } else {
-        props.onFormSubmitHandler(_product, null)
+        props.onFormSubmitHandler(product, null)
       }
       setProductDialog(false);
   };
@@ -93,18 +93,19 @@ export const GridView = (props) => {
   };
 
   const deleteProduct = () => {
-    let _products = products.filter((val) => val.id !== product.id);
-    setProducts(_products);
+    props.onDeleteClickHandler(product)
+    // let _products = products.filter((val) => val.id !== product.id);
+    // setProducts(_products);
     setDeleteProductDialog(false);
-    setProduct(emptyProduct);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Product Deleted",
-      life: 3000,
-    });
+    // setProduct(emptyProduct);
+    // toast.current.show({
+    //   severity: "success",
+    //   summary: "Successful",
+    //   detail: "Product Deleted",
+    //   life: 3000,
+    // });
   };
-
+    // end delete single row
   const importCSV = (e) => {
     const file = e.files[0];
     const reader = new FileReader();
@@ -145,7 +146,6 @@ export const GridView = (props) => {
     dt.current.exportCSV();
   };
 
-  //delete single row
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || "";
     let _product = { ...product };

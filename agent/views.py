@@ -38,13 +38,6 @@ class BusCrudView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    #  def delete(self,request, pk=None, format=None):
-    #     student = get_object_or_404(Student, id=pk)
-    #     student.delete()
-    #     return Response({'msg': 'done'}, status=status.HTTP_204_NO_CONTENT)
-
-
 
 @api_view(['POST'])
 def delete_bus(request):
