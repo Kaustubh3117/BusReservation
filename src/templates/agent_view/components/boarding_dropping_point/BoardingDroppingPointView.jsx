@@ -25,6 +25,25 @@ export const BoardingDroppingPoint = () => {
         )
     }, [])
 
+    const onFormSubmitHandler = (values, id)=>{
+        if(id !== null){
+            axios.put(`${backendUrl}/agent_api/boading_point_crud/${id}`, values).then((response)=>{
+                alert("data")
+                        })
+                        .catch((error)=>{
+                
+                        })
+        }
+        else{
+            axios.post(`${backendUrl}/agent_api/boading_point_crud/`, values).then((response)=>{
+                alert("data")
+                        })
+                        .catch((error)=>{
+                
+                        })
+        } 
+    }
+
     return (
         <>
             {/* <div className='grid'>
@@ -34,10 +53,10 @@ export const BoardingDroppingPoint = () => {
                 <div className='col-9'> */}
                  <TabView>
                     <TabPanel header="Boarding Point">
-                    <GridView columns={boardingDataTableColums} data={boardingPoint} formFields={boardingPointFields} />
+                    <GridView columns={boardingDataTableColums} data={boardingPoint} formFields={boardingPointFields} onFormSubmitHandler ={onFormSubmitHandler} />
                     </TabPanel>
                     <TabPanel header="Dropping Point">
-                    <GridView columns={droppingDataTableColums} data={droppingPoint} formFields={droppingPointFields} />
+                    <GridView columns={droppingDataTableColums} data={droppingPoint} formFields={droppingPointFields} onFormSubmitHandler ={onFormSubmitHandler} />
                     </TabPanel>
                 </TabView>
 

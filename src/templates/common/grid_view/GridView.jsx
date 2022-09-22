@@ -18,20 +18,11 @@ import { Dropdown } from "primereact/dropdown";
 import { backendUrl } from "../../../environment/development";
 
 // import from helper
-import { selectValues } from "./GridViewHelper";
+import { selectValues, SetInitialValues} from "./GridViewHelper";
 
 export const GridView = (props) => {
-  let emptyProduct = {
-    id: null,
-    name: "",
-    image: null,
-    description: "",
-    category: null,
-    price: 0,
-    quantity: 0,
-    rating: 0,
-    inventoryStatus: "INSTOCK",
-  };
+  const initialValues = SetInitialValues(props.formFields)
+  let emptyProduct = initialValues;
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [products, setProducts] = useState(null);
@@ -72,36 +63,25 @@ export const GridView = (props) => {
   const saveProduct = () => {
     setSubmitted(true);
 
-    if (product.name.trim()) {
+    // if (product.name.trim()) {
       let _products = [...products];
       let _product = { ...product };
       if (product.id) {
         const index = findIndexById(product.id);
 
         _products[index] = _product;
-        // toast.current.show({
-        //   severity: "success",
-        //   summary: "Successful",
-        //   detail: "Product Updated",
-        //   life: 3000,
-        // });
+        props.onFormSubmitHandler(_product, product.id)
       } else {
-        _product.id = createId();
-        _product.image = "product-placeholder.svg";
+        // _product.id = createId();
+        // _product.image = "product-placeholder.svg";
         _products.push(_product);
-        // toast.current.show({
-        //   severity: "success",
-        //   summary: "Successful",
-        //   detail: "Product Created",
-        //   life: 3000,
-        // });
+        props.onFormSubmitHandler(_product, null)
       }
 
       setProducts(_products);
-      props.onFormSubmitHandler(_products)
       setProductDialog(false);
       setProduct(emptyProduct);
-    }
+    // }
   };
 
   const editProduct = (product) => {
@@ -121,15 +101,15 @@ export const GridView = (props) => {
     return index;
   };
 
-  const createId = () => {
-    let id = "";
-    let chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  };
+  // const createId = () => {
+  //   let id = "";
+  //   let chars =
+  //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  //   for (let i = 0; i < 5; i++) {
+  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
+  //   }
+  //   return id;
+  // };
 
   const importCSV = (e) => {
     const file = e.files[0];
@@ -156,7 +136,7 @@ export const GridView = (props) => {
           return obj;
         }, {});
 
-        processedData["id"] = createId();
+        // processedData["id"] = createId();
         return processedData;
       });
 
@@ -241,7 +221,10 @@ export const GridView = (props) => {
     setProduct(_product);
   };
 
-  const onSelectChange = (e) => {
+  const onSelectChange = (e, name) => {
+    let _product = { ...product };
+    _product[`${name}`] = e.value;
+    setProduct(_product);
     setSelect(e.value);
   };
 
@@ -490,7 +473,7 @@ export const GridView = (props) => {
                         id={fields.id}
                         name={fields.name}
                         value={product[fields["name"]]}
-                        onChange={(e) => onInputChange(e, "name")}
+                        onChange={(e) => onInputChange(e, fields.name)}
                         required
                         autoFocus
                         className={classNames({
@@ -545,7 +528,7 @@ export const GridView = (props) => {
                         name={fields.name}
                         value={product[fields["name"]]}
                         onValueChange={(e) =>
-                          onInputNumberChange(e, "quantity")
+                          onInputNumberChange(e, fields.name)
                         }
                         integeronly
                       />
@@ -566,7 +549,7 @@ export const GridView = (props) => {
                             : select
                         }
                         options={selectValues}
-                        onChange={onSelectChange}
+                        onChange={(e)=>{onSelectChange(e, fields.name)}}
                         optionLabel="name"
                         placeholder="Select"
                       />

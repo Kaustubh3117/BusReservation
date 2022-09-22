@@ -4,6 +4,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import api_view
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework import viewsets
+from accounts.models import UserAccount
 
 from core.serializers import BusSerializer, TripscheduleSerializer, TicketSerializer, BoardingPointSerializer, DroppingPointSerializer
 from core.models import Bus, Tripschedule, Ticket, BoardingPoint, DroppingPoint
@@ -14,7 +18,31 @@ from core.models import Bus, Tripschedule, Ticket, BoardingPoint, DroppingPoint
 class BusView(ListAPIView):
     serializer_class = BusSerializer
     def get_queryset(self):
-        return Bus.objects.all()
+            return Bus.objects.all()
+
+class BusCrudView(APIView):
+    def post(self, request, format=None):
+        print("request data ******", request.data)
+        # agent_id = request.data.agent_id
+        # agent = UserAccount.objects.get(pk=agent_id)
+        serializer = BusSerializer(data=request.data)
+        # serializer.data.agent = agent
+        print("serialkizer......", serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        print('pk***********', pk)
+        snippet = Bus.objects.get(pk=pk)
+        serializer = BusSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['POST'])
 def delete_bus(request):
@@ -35,6 +63,28 @@ class BoardingPointView(ListAPIView):
     def get_queryset(self):
         return BoardingPoint.objects.all()
 
+class BoardingPointCrudView(APIView):
+    def post(self, request, format=None):
+        serializer = BoardingPointSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = BoardingPointSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+   
 class DroppingPointView(ListAPIView):
     serializer_class = DroppingPointSerializer
     def get_queryset(self):

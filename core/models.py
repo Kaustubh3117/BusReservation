@@ -6,7 +6,7 @@ class Bus(models.Model):
     bus_no = models.CharField(max_length=50)
     capacity = models.IntegerField(default=48)
     bus_type = models.CharField(max_length=50, default="Seater", null=True)
-    image = models.ImageField()
+    image = models.ImageField(null=True, blank=True)
     agent = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
