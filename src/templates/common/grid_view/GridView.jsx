@@ -322,6 +322,15 @@ export const GridView = (props) => {
     });
   };
 
+  const representativeBodyTemplate = (rowData) => {
+    const representative = rowData;
+    return (
+        <React.Fragment>
+            <img alt={representative.name} src={representative.image} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} width={80} style={{ verticalAlign: 'middle' }} />
+        </React.Fragment>
+    );
+}
+
   return (
     <div className="datatable-crud-demo">
       <Toast ref={toast} />
@@ -362,7 +371,7 @@ export const GridView = (props) => {
               <Column
                 field={ele.field}
                 header={ele.header}
-                body={ele.body}
+                body={ele.header === 'Image' ? representativeBodyTemplate : ele.body}
                 sortable={ele.sortable}
                 style={{ maxWidth: "12rem" }}
                 className='white-space-nowrap overflow-hidden text-overflow-ellipsis'
@@ -389,13 +398,14 @@ export const GridView = (props) => {
       >
         {product.image && (
           <img
-            src={`images/product/${product.image}`}
+            src={product.image}
             onError={(e) =>
               (e.target.src =
                 "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
             }
             alt={product.image}
             className="product-image block m-auto pb-3"
+            width='150px'
           />
         )}
         {/* <h1>Bus Name for which tripschedule created</h1> */}

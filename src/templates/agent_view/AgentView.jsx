@@ -11,11 +11,11 @@ export const AgentView = () => {
     const isAgent = useSelector((state) => state?.auth?.user?.is_agent)
     const [activeIndex, setActiveIndex] = useState(0);
     const navigate = useNavigate()
-    // useEffect(() => {
-    //     if (isAgent === undefined || !isAgent) {
-    //         window.location.href="/"
-    //     }
-    // }, [isAgent])
+    useEffect(() => {
+        if (isAgent === undefined || !isAgent) {
+            navigate('/login')
+        }
+    }, [isAgent])
 
     const items = [
         {
@@ -28,8 +28,6 @@ export const AgentView = () => {
             label: 'Boarding/Dropping Point',
         },
     ];
-
-
 
     return (
         <>

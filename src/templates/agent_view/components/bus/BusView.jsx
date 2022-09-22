@@ -38,7 +38,7 @@ export const BusView = () => {
           setRefreshData(!refreshData);
         })
         .catch((error) => {
-          ToastMessage(SUCCESS, "Something went Wrong.");
+          ToastMessage(ERROR, "Something went Wrong.");
         });
     } else {
       axios
