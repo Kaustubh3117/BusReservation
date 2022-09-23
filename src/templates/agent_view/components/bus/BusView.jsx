@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { GridView } from "../../../common/grid_view/GridView";
 import { dataTableColums, busFields } from "./components/BusFields";
 import { backendUrl } from "../../../../environment/development";
 import { SideBar } from "../../assets/SideBar";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { ERROR, SUCCESS } from "../../../../constants/common/CrudMessageEnum";
+
 import { config, multiPartConfig } from "../../../../environment/service";
 
 export const BusView = () => {
   const agentId = useSelector((state) => state?.auth?.user?.id);
   const [data, setData] = useState([]);
   const [refreshData, setRefreshData] = useState(false);
+
+  const navigate = useNavigate()
   useEffect(() => {
-    axios.get(`${backendUrl}/agent_api/bus/`).then(function (response) {
+      if (agentId === undefined || !agentId) {
+          navigate('/login')
+      }
+  }, [agentId])
+
+  useEffect(() => {
+    axios.get(`${backendUrl}/agent_api/bus/${agentId}`).then(function (response) {
       setData(response.data);
     });
   }, [refreshData]);

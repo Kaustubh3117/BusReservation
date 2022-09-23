@@ -18,7 +18,7 @@ import { Dropdown } from "primereact/dropdown";
 import { backendUrl } from "../../../environment/development";
 
 // import from helper
-import { selectValues, SetInitialValues} from "./GridViewHelper";
+import {SetInitialValues} from "./GridViewHelper";
 
 export const GridView = (props) => {
   const initialValues = SetInitialValues(props.formFields)
@@ -313,9 +313,9 @@ export const GridView = (props) => {
   };
 
   //make it dynamic should work for all select options
-  const getSelectValue = (value) => {
+  const getSelectValue = (dropDownVals, value) => {
     //{select === null ? getSelectValue(product[fields['name']]) :
-    selectValues.forEach((obj) => {
+    dropDownVals.forEach((obj) => {
       if (value === obj.value) {
         setSelect(obj.value);
       }
@@ -500,10 +500,10 @@ export const GridView = (props) => {
                         name={fields.name}
                         value={
                           select === null
-                            ? getSelectValue(product[fields["name"]])
+                            ? getSelectValue(fields.dropDownValues, product[fields["name"]])
                             : select
                         }
-                        options={selectValues}
+                        options={fields.dropDownValues}
                         onChange={(e)=>{onSelectChange(e, fields.name)}}
                         optionLabel="name"
                         placeholder="Select"

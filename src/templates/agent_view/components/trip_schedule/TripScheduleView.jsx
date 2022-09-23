@@ -5,7 +5,7 @@ import { backendUrl } from "../../../../environment/development";
 import { GridView } from "../../../common/grid_view/GridView";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { ERROR, SUCCESS } from "../../../../constants/common/CrudMessageEnum";
-import { config, multiPartConfig } from "../../../../environment/service";
+import { config } from "../../../../environment/service";
 
 import {
   dataTableColums,
@@ -18,32 +18,35 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .get(`${backendUrl}/agent_api/tripschedule/`)
+      .get(`${backendUrl}/agent_api/tripschedule/${agentId}`)
       .then(function (response) {
         setData(response.data);
       });
   }, [refreshData]);
 
+
+  const getDropDownValues=()=>{
+    const dropDownArr = []
+    data.map((dataEle) => {
+      dropDownArr.push({name:dataEle.bus_id.bus_name, value:dataEle.bus_id.bus_name})
+    })
+    return dropDownArr
+  }
+
+  // tripScheduleFields(getDropDownValues())
+
   const onFormSubmitHandler = (values, id) => {
     values.agent = agentId;
-    let form_data = new FormData();
-    if (typeof values.image === "object")
-      form_data.append("image", values.image, values.image.name);
-    form_data.append("id", values.id);
-    form_data.append("bus_name", values.bus_name);
-    form_data.append("bus_no", values.bus_no);
-    form_data.append("bus_type", values.bus_type);
-    form_data.append("capacity", values.capacity);
-    form_data.append("agent", values.agent);
+    
     if (id !== null) {
       axios
         .put(
           `${backendUrl}/agent_api/bus_crud/${id}`,
-          form_data,
-          multiPartConfig
+          values,
+          config
         )
         .then((response) => {
-          ToastMessage(SUCCESS, "Bus added successfully.");
+          ToastMessage(SUCCESS, "Trip Schedule added successfully.");
           setRefreshData(!refreshData);
         })
         .catch((error) => {
@@ -51,7 +54,7 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
         });
     } else {
       axios
-        .post(`${backendUrl}/agent_api/bus_crud/`, form_data, multiPartConfig)
+        .post(`${backendUrl}/agent_api/bus_crud/`, values, config)
         .then((response) => {
           setRefreshData(!refreshData);
         })
@@ -76,7 +79,7 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
       .post(`${backendUrl}/agent_api/delete_bus/`, finalPayload, config)
       .then((response) => {
         setRefreshData(!refreshData);
-        ToastMessage(SUCCESS, "Buss deleted Successfully.");
+        ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
       })
       .catch((err) => {
         ToastMessage(ERROR, "Something went Wrong.");
@@ -88,7 +91,7 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
       <GridView
         columns={dataTableColums}
         data={data}
-        formFields={tripScheduleFields}
+        formFields={tripScheduleFields(getDropDownValues())}
         onFormSubmitHandler={onFormSubmitHandler}
         onDeleteClickHandler={deleteClickHandler}
       />

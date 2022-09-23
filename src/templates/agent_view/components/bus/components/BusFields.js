@@ -1,4 +1,8 @@
-
+const selectValues = [
+    { name: 'Seater', value: 'seater'},
+    { name: 'Sleeper', value: 'sleeper' },
+    { name: 'Semi Sleeper', value: 'semi_sleeper' },
+];
 export const dataTableColums = [{
     field: "id",
     header: "id",
@@ -62,6 +66,7 @@ export const busFields = [
         name: "bus_type",
         label:"Bus Type",
         fieldType: "select",
+        dropDownValues:selectValues,
         errorMessage: 'Please Enter Trip Date'
     },
     {
