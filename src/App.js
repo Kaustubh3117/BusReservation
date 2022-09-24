@@ -30,9 +30,9 @@ import PageNotFound from './templates/404';
 // agent import
 import { AgentView } from './templates/agent_view/AgentView';
 import { BusView } from './templates/agent_view/components/bus/BusView';
-import { BusStatus } from './templates/agent_view/components/bus_status/BusStatusView';
+import { BusStatusView } from './templates/agent_view/components/bus_status/BusStatusView';
 import { TripScheduleView } from './templates/agent_view/components/trip_schedule/TripScheduleView';
-import { BoardingDroppingPoint } from './templates/agent_view/components/boarding_dropping_point/BoardingDroppingPointView';
+import { BoardingDroppingPointView } from './templates/agent_view/components/boarding_dropping_point/BoardingDroppingPointView';
 
 
 
@@ -61,8 +61,8 @@ const App = () => (
                     <Route exact path='/agentView' element={<AgentView/>} />
                     <Route exact path='/busView' element={<BusView/>} />
                     <Route exact path='/tripScheduleView' element={<TripScheduleView/>} />
-                    <Route exact path='/boardingDroppingPoint' element={<BoardingDroppingPoint/>} />
-                    <Route exact path='/busStatus' element={<BusStatus/>} />
+                    <Route exact path='/boardingDroppingPoint' element={<BoardingDroppingPointView/>} />
+                    <Route exact path='/busStatus' element={<BusStatusView/>} />
                 </Routes>
             </Layout>
         </Router>

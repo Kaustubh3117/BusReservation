@@ -17,7 +17,7 @@ import {
   ConvertToDropDownFormat,
 } from "./BoardingDroppingPointHelper";
 
-export const BoardingDroppingPoint = () => {
+export const BoardingDroppingPointView = () => {
   const agentId = useSelector((state) => state?.auth?.user?.id);
   const [boardingPoint, setBoardingPoint] = useState([]);
   const [droppingPoint, setDroppingPoint] = useState([]);

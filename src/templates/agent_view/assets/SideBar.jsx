@@ -12,10 +12,12 @@ export const SideBar = () => {
           <MenuItem>Trip Schedule <Link to="/tripScheduleView" /></MenuItem>
           <MenuItem>Boarding Point and Dropping Point  <Link to="/boardingDroppingPoint" /></MenuItem>
           <MenuItem>Bus status <Link to="/busStatus" /></MenuItem>
-          <MenuItem>Reports</MenuItem>
-          <SubMenu title="Components">
+          <MenuItem>Help</MenuItem>
+          <MenuItem>Terms and Conditions</MenuItem>
+          <MenuItem>Contact Admin</MenuItem>
+          {/* <SubMenu title="Components">
             <MenuItem>Add Nested Components</MenuItem>
-          </SubMenu>
+          </SubMenu> */}
         </Menu>
         {/* <SidebarFooter className='mb-0'>
           All rights reserved Giobus 2022

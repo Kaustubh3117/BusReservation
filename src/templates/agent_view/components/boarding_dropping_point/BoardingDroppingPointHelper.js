@@ -14,7 +14,7 @@
 export const ConvertToDropDownFormat = (response)=>{
     const resDataArr = []
     response.data.map((data) => {
-        resDataArr.push({name: data.bus_id.bus_name, value:data.bus_id.id})
+        resDataArr.push({name: data.bus_id.bus_name, value:data.id})
       });
     return resDataArr
 }
