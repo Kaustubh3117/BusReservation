@@ -23,7 +23,7 @@ import { SetInitialValues } from "./GridViewHelper";
 export const GridView = (props) => {
   const initialValues = SetInitialValues(props.formFields);
   let emptyProduct = initialValues;
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [products, setProducts] = useState(null);
   const [productDialog, setProductDialog] = useState(false);
@@ -44,8 +44,9 @@ export const GridView = (props) => {
 
   const openNew = () => {
     if(select !== null){
-setSelect(null)
+      setSelect(null)
     }
+    // setDate(new Date())
     setProduct(emptyProduct);
     setSubmitted(false);
     setProductDialog(true);
@@ -66,13 +67,13 @@ setSelect(null)
 
   const saveProduct = () => {
     setSubmitted(true);
-    // let _product = { ...product };
     if (product.id) {
       props.onFormSubmitHandler(product, product.id);
     } else {
       props.onFormSubmitHandler(product, null);
     }
     setProductDialog(false);
+    setProduct(emptyProduct);
   };
 
   const editProduct = (product) => {
@@ -110,7 +111,6 @@ setSelect(null)
     reader.onload = (e) => {
       const csv = e.target.result;
       const data = csv.split("\n");
-
       // Prepare DataTable
       const cols = data[0].replace(/['"]+/g, "").split(",");
       data.shift();
@@ -128,7 +128,6 @@ setSelect(null)
           (c === "price" || c === "rating") && (obj[c] = parseFloat(obj[c]));
           return obj;
         }, {});
-
         // processedData["id"] = createId();
         return processedData;
       });
@@ -185,7 +184,7 @@ setSelect(null)
     let _product = { ...product };
     _product[`${name}`] = e.value;
     setProduct(_product);
-    setDate(null);
+    // setDate(null);
   };
 
   const leftToolbarTemplate = () => {
@@ -462,7 +461,13 @@ setSelect(null)
                         accept="image/png, image/jpeg, image/jpg"
                         onChange={(e) => handleImageChange(e, fields.name)}
                         required
+                        className={classNames({
+                          "p-invalid": submitted && !product.name,
+                        })}
                       />
+                       {submitted && !product.name && (
+                        <small className="p-error">{fields.errorMessage}</small>
+                      )}
                     </>
                   ) : null}
                   {fields.fieldType === "time" ? (
@@ -480,6 +485,10 @@ setSelect(null)
                         timeOnly
                         hourFormat="12"
                         placeholder="00:00"
+                        required
+                        className={classNames({
+                          "p-invalid": submitted && !product.name,
+                        })}
                       />
                       {submitted && !product.name && (
                         <small className="p-error">{fields.errorMessage}</small>
@@ -492,15 +501,16 @@ setSelect(null)
                       <Calendar
                         id={fields.id}
                         name={fields.name}
+                        placeholder="dd/mm/yyyy"
                         dateFormat="dd/mm/yy"
-                        value={
-                          new Date(
-                            date === null ? product[fields["name"]] : date
-                          )
-                        }
+                        value={product[fields["name"]] === null ? new Date() : new Date(product[fields["name"]])}
                         onChange={(e) => onDateChange(e, fields.name)}
+                        required
+                        className={classNames({
+                          "p-invalid": submitted && !product.name,
+                        })}
                       ></Calendar>
-                      {submitted && product.name === null && product.name === '' && product.name === undefined && (
+                      {submitted && !product.name && (
                         <small className="p-error">{fields.errorMessage}</small>
                       )}
                     </div>
@@ -516,6 +526,10 @@ setSelect(null)
                           onInputNumberChange(e, fields.name)
                         }
                         integeronly
+                        required
+                        className={classNames({
+                          "p-invalid": submitted && !product.name,
+                        })}
                       />
                       {submitted && !product.name && (
                         <small className="p-error">{fields.errorMessage}</small>
@@ -542,8 +556,12 @@ setSelect(null)
                         }}
                         optionLabel="name"
                         placeholder="Select"
+                        required
+                        className={classNames({
+                          "p-invalid": submitted && !product.name,
+                        })}
                       />
-                      {submitted && product.name === null && product.name === '' && product.name === undefined  && (
+                      {submitted && !product.name  && (
                         <small className="p-error">{fields.errorMessage}</small>
                       )}
                     </div>

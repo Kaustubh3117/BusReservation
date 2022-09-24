@@ -21,7 +21,14 @@ export const ConvertReponseData = (response) =>{
             }
           })
         } else {
-          resObj[key] = value;
+          if(key === 'trip_date'){
+            const [day, month, year] = value.split('/');
+            const result = [year, month, day].join('/');
+            resObj[key] = result
+          }else{
+            resObj[key] = value;
+
+          }
         }
       });
       resDataArr.push(resObj)

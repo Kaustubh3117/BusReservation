@@ -44,6 +44,10 @@ class FilterTripSchedule(generics.ListAPIView):
         boarding_point = self.kwargs['boarding_point']
         dropping_point = self.kwargs['dropping_point']
         trip_date = self.kwargs['date']
+        coverted_trip_date = trip_date.replace('-', '/')
+
+       
+
         #get dropping point
         dropping_list = DroppingPoint.objects.filter(
             Q(drop_location__icontains=dropping_point)
@@ -61,7 +65,7 @@ class FilterTripSchedule(generics.ListAPIView):
         for dropping_list in dropping_list:
             dropping_trip_schedule_id.append(dropping_list.trip_schedule_id.pk)
 
-        object_list = self.queryset.filter(Q(pk__in=boarding_trip_schedule_id) & Q(pk__in=dropping_trip_schedule_id) & Q(trip_date=trip_date))
+        object_list = self.queryset.filter(Q(pk__in=boarding_trip_schedule_id) & Q(pk__in=dropping_trip_schedule_id) & Q(trip_date=coverted_trip_date))
         if object_list is not None:
             return object_list
         else:

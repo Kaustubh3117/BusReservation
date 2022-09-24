@@ -49,6 +49,7 @@ export const TripScheduleView = () => {
       axios
         .post(`${backendUrl}/agent_api/trip_schedule_crud/`, values)
         .then((response) => {
+          ToastMessage(SUCCESS, "Trip Schedule added successfully.");
           setRefreshData(!refreshData);
         })
         .catch((error) => {

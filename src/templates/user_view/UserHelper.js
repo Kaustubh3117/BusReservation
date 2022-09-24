@@ -21,7 +21,7 @@ export const changeDateFormat = (date) =>{
     const monthWithZero = (month < 10 ? '0' : '') + month;
     const dayWithZero = (day < 10 ? '0' : '') + day;
   
-  const finalDate = year+'-'+monthWithZero+'-'+dayWithZero;
+  const finalDate = dayWithZero+'-'+monthWithZero+'-'+year;
   console.log("finalDate: ", finalDate);
   return finalDate
 }
