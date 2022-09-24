@@ -5,18 +5,18 @@ export const dataTableColums = [{
     sortable: true
 },
 {
-    field: "bus_id.image",
+    field: "image",
     header: "Image",
     sortable: true
 },
 {
-    field: "bus_id.bus_name",
+    field: "bus_name",
     header: "Bus",
     sortable: false,
     body: ''
 },
 {
-    field: "bus_id.bus_no",
+    field: "bus_no",
     header: "Bus No.",
     sortable: true
 },

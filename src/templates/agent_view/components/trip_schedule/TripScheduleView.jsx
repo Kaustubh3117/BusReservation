@@ -6,6 +6,7 @@ import { GridView } from "../../../common/grid_view/GridView";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { ERROR, SUCCESS } from "../../../../constants/common/CrudMessageEnum";
 import { config } from "../../../../environment/service";
+import { GetDropDownValues, ConvertReponseData, ManageCreateEditTripSchedulePayload, ManageDeletePayload } from "./TripScheduleHelper";
 
 import {
   dataTableColums,
@@ -13,38 +14,30 @@ import {
 } from "./components/TripScheduleFields";
 
 export const TripScheduleView = () => {
-const agentId = useSelector((state) => state?.auth?.user?.id);
+  const agentId = useSelector((state) => state?.auth?.user?.id);
   const [refreshData, setRefreshData] = useState(false);
   const [data, setData] = useState([]);
+  const [busList, setBusList] = useState([]);
+  
   useEffect(() => {
     axios
       .get(`${backendUrl}/agent_api/tripschedule/${agentId}`)
       .then(function (response) {
-        setData(response.data);
+        const resDataArr = ConvertReponseData(response);
+        setData(resDataArr);
+      });
+    axios
+      .get(`${backendUrl}/agent_api/bus/${agentId}`)
+      .then(function (response) {
+        setBusList(response.data);
       });
   }, [refreshData]);
 
-
-  const getDropDownValues=()=>{
-    const dropDownArr = []
-    data.map((dataEle) => {
-      dropDownArr.push({name:dataEle.bus_id.bus_name, value:dataEle.bus_id.bus_name})
-    })
-    return dropDownArr
-  }
-
-  // tripScheduleFields(getDropDownValues())
-
   const onFormSubmitHandler = (values, id) => {
-    values.agent = agentId;
-    
+    ManageCreateEditTripSchedulePayload(values, agentId)
     if (id !== null) {
       axios
-        .put(
-          `${backendUrl}/agent_api/bus_crud/${id}`,
-          values,
-          config
-        )
+        .put(`${backendUrl}/agent_api/trip_schedule_crud/${id}`, values)
         .then((response) => {
           ToastMessage(SUCCESS, "Trip Schedule added successfully.");
           setRefreshData(!refreshData);
@@ -54,7 +47,7 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
         });
     } else {
       axios
-        .post(`${backendUrl}/agent_api/bus_crud/`, values, config)
+        .post(`${backendUrl}/agent_api/trip_schedule_crud/`, values)
         .then((response) => {
           setRefreshData(!refreshData);
         })
@@ -65,18 +58,9 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
   };
 
   const deleteClickHandler = (data) => {
-    const deletePayload = [];
-    if (Array.isArray(data) && data.length > 0) {
-      for (const i in data) {
-        deletePayload.push(data[i].id);
-      }
-    } else {
-      deletePayload.push(data.id);
-    }
-
-    const finalPayload = { data: deletePayload };
+  const payload = ManageDeletePayload(data)
     axios
-      .post(`${backendUrl}/agent_api/delete_bus/`, finalPayload, config)
+      .post(`${backendUrl}/agent_api/delete_trip_schedule/`, payload)
       .then((response) => {
         setRefreshData(!refreshData);
         ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
@@ -91,7 +75,7 @@ const agentId = useSelector((state) => state?.auth?.user?.id);
       <GridView
         columns={dataTableColums}
         data={data}
-        formFields={tripScheduleFields(getDropDownValues())}
+        formFields={tripScheduleFields(GetDropDownValues(busList))}
         onFormSubmitHandler={onFormSubmitHandler}
         onDeleteClickHandler={deleteClickHandler}
       />

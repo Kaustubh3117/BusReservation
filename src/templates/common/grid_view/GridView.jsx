@@ -18,12 +18,12 @@ import { Dropdown } from "primereact/dropdown";
 import { backendUrl } from "../../../environment/development";
 
 // import from helper
-import {SetInitialValues} from "./GridViewHelper";
+import { SetInitialValues } from "./GridViewHelper";
 
 export const GridView = (props) => {
-  const initialValues = SetInitialValues(props.formFields)
+  const initialValues = SetInitialValues(props.formFields);
   let emptyProduct = initialValues;
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(null);
   const [products, setProducts] = useState(null);
   const [productDialog, setProductDialog] = useState(false);
@@ -43,6 +43,9 @@ export const GridView = (props) => {
   }, [props.data]);
 
   const openNew = () => {
+    if(select !== null){
+setSelect(null)
+    }
     setProduct(emptyProduct);
     setSubmitted(false);
     setProductDialog(true);
@@ -63,26 +66,30 @@ export const GridView = (props) => {
 
   const saveProduct = () => {
     setSubmitted(true);
-      // let _product = { ...product };
-      if (product.id) {
-        props.onFormSubmitHandler(product, product.id)
-      } else {
-        props.onFormSubmitHandler(product, null)
-      }
-      setProductDialog(false);
+    // let _product = { ...product };
+    if (product.id) {
+      props.onFormSubmitHandler(product, product.id);
+    } else {
+      props.onFormSubmitHandler(product, null);
+    }
+    setProductDialog(false);
   };
 
   const editProduct = (product) => {
+    if (select !== null) {
+      setSelect(null);
+    }
+    setSubmitted(false);
     setProduct({ ...product });
     setProductDialog(true);
   };
 
-   //delete multiple row
-   const confirmDeleteSelected = () => {
+  //delete multiple row
+  const confirmDeleteSelected = () => {
     setDeleteProductsDialog(true);
   };
   const deleteSelectedProducts = () => {
-    props.onDeleteClickHandler(selectedRowData)
+    props.onDeleteClickHandler(selectedRowData);
   };
   //!!end delete multiple row
 
@@ -93,19 +100,10 @@ export const GridView = (props) => {
   };
 
   const deleteProduct = () => {
-    props.onDeleteClickHandler(product)
-    // let _products = products.filter((val) => val.id !== product.id);
-    // setProducts(_products);
+    props.onDeleteClickHandler(product);
     setDeleteProductDialog(false);
-    // setProduct(emptyProduct);
-    // toast.current.show({
-    //   severity: "success",
-    //   summary: "Successful",
-    //   detail: "Product Deleted",
-    //   life: 3000,
-    // });
   };
-    // end delete single row
+  // end delete single row
   const importCSV = (e) => {
     const file = e.files[0];
     const reader = new FileReader();
@@ -162,7 +160,7 @@ export const GridView = (props) => {
     setProduct(_product);
   };
   const handleImageChange = (e, name) => {
-    const val =  e.target.files[0] || '';
+    const val = e.target.files[0] || "";
     let _product = { ...product };
     _product[`${name}`] = val;
 
@@ -176,12 +174,22 @@ export const GridView = (props) => {
     setSelect(e.value);
   };
 
+  const onTimeChange = (e, name) => {
+    let _product = { ...product };
+    _product[`${name}`] = e.value;
+    setProduct(_product);
+    setTime(e.value);
+  };
+
+  const onDateChange = (e, name) => {
+    let _product = { ...product };
+    _product[`${name}`] = e.value;
+    setProduct(_product);
+    setDate(null);
+  };
+
   const leftToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        {header}
-      </React.Fragment>
-    );
+    return <React.Fragment>{header}</React.Fragment>;
   };
 
   const rightToolbarTemplate = () => {
@@ -201,6 +209,7 @@ export const GridView = (props) => {
             onClick={confirmDeleteSelected}
             className="p-button-success mr-2"
             data-pr-tooltip="XLS"
+            disabled={selectedRowData ? false : true}
           />
           <Button
             type="button"
@@ -325,11 +334,20 @@ export const GridView = (props) => {
   const representativeBodyTemplate = (rowData) => {
     const representative = rowData;
     return (
-        <React.Fragment>
-            <img alt={representative.name} src={representative.image} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} width={80} style={{ verticalAlign: 'middle' }} />
-        </React.Fragment>
+      <React.Fragment>
+        <img
+          alt={representative.name}
+          src={representative.image}
+          onError={(e) =>
+            (e.target.src =
+              "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
+          }
+          width={80}
+          style={{ verticalAlign: "middle" }}
+        />
+      </React.Fragment>
     );
-}
+  };
 
   return (
     <div className="datatable-crud-demo">
@@ -371,10 +389,12 @@ export const GridView = (props) => {
               <Column
                 field={ele.field}
                 header={ele.header}
-                body={ele.header === 'Image' ? representativeBodyTemplate : ele.body}
+                body={
+                  ele.header === "Image" ? representativeBodyTemplate : ele.body
+                }
                 sortable={ele.sortable}
                 style={{ maxWidth: "12rem" }}
-                className='white-space-nowrap overflow-hidden text-overflow-ellipsis'
+                className="white-space-nowrap overflow-hidden text-overflow-ellipsis"
               ></Column>
             );
           })}
@@ -405,7 +425,7 @@ export const GridView = (props) => {
             }
             alt={product.image}
             className="product-image block m-auto pb-3"
-            width='150px'
+            width="150px"
           />
         )}
         {/* <h1>Bus Name for which tripschedule created</h1> */}
@@ -434,12 +454,17 @@ export const GridView = (props) => {
                       )}
                     </div>
                   ) : null}
-                  {fields.fieldType === 'fileupload'?<>
-                <input type="file"
-                   id="image"
-                   accept="image/png, image/jpeg, image/jpg" onChange={(e)=>handleImageChange(e, fields.name)} required/>
-                   
-                </>:null}
+                  {fields.fieldType === "fileupload" ? (
+                    <>
+                      <input
+                        type="file"
+                        id="image"
+                        accept="image/png, image/jpeg, image/jpg"
+                        onChange={(e) => handleImageChange(e, fields.name)}
+                        required
+                      />
+                    </>
+                  ) : null}
                   {fields.fieldType === "time" ? (
                     <div className="field">
                       <label htmlFor="name">{fields.label}</label>
@@ -447,13 +472,14 @@ export const GridView = (props) => {
                         id={fields.id}
                         name={fields.name}
                         value={
-                          time === null
+                          typeof product[fields["name"]] === "string"
                             ? convertResponseTime(product[fields["name"]])
-                            : time
+                            : product[fields["name"]]
                         }
-                        onChange={(e) => setTime(e.value)}
+                        onChange={(e) => onTimeChange(e, fields.name)}
                         timeOnly
                         hourFormat="12"
+                        placeholder="00:00"
                       />
                       {submitted && !product.name && (
                         <small className="p-error">{fields.errorMessage}</small>
@@ -467,10 +493,14 @@ export const GridView = (props) => {
                         id={fields.id}
                         name={fields.name}
                         dateFormat="dd/mm/yy"
-                        value={new Date(date ? date : product[fields["name"]])}
-                        onChange={(e) => setDate(e.value)}
+                        value={
+                          new Date(
+                            date === null ? product[fields["name"]] : date
+                          )
+                        }
+                        onChange={(e) => onDateChange(e, fields.name)}
                       ></Calendar>
-                      {submitted && !product.name && (
+                      {submitted && product.name === null && product.name === '' && product.name === undefined && (
                         <small className="p-error">{fields.errorMessage}</small>
                       )}
                     </div>
@@ -500,15 +530,20 @@ export const GridView = (props) => {
                         name={fields.name}
                         value={
                           select === null
-                            ? getSelectValue(fields.dropDownValues, product[fields["name"]])
+                            ? getSelectValue(
+                                fields.dropDownValues,
+                                product[fields["name"]]
+                              )
                             : select
                         }
                         options={fields.dropDownValues}
-                        onChange={(e)=>{onSelectChange(e, fields.name)}}
+                        onChange={(e) => {
+                          onSelectChange(e, fields.name);
+                        }}
                         optionLabel="name"
                         placeholder="Select"
                       />
-                      {submitted && !product.name && (
+                      {submitted && product.name === null && product.name === '' && product.name === undefined  && (
                         <small className="p-error">{fields.errorMessage}</small>
                       )}
                     </div>

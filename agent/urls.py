@@ -11,7 +11,7 @@ urlpatterns = [
     path('tripschedule/<int:user_id>', TripScheduleView.as_view(), name='tripschedule'),
     path('trip_schedule_crud/', TripScheduleCrudView.as_view(), name='trip_schedule_crud'),
     path('trip_schedule_crud/<int:pk>', TripScheduleCrudView.as_view(), name="trip_schedule_crud"),
-    path("delete_bus/", delete_trip_schedule, name="delete_bus"),
+    path("delete_trip_schedule/", delete_trip_schedule, name="delete_trip_schedule"),
 
     #boarding Point
     path('boading_point/', BoardingPointView.as_view(), name='boading_point'),

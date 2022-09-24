@@ -14,7 +14,7 @@ class Bus(models.Model):
 
 
 class Tripschedule(models.Model):
-    trip_date = models.DateField()
+    trip_date = models.CharField(max_length=20, null=True, blank=True)
     departure_time = models.CharField(max_length=20, null=True, blank=True)
     arrival_time = models.CharField(max_length=20, null=True, blank=True)
     available_seat = models.IntegerField(default=48, null=True)

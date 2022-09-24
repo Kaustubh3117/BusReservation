@@ -60,29 +60,50 @@ class TripScheduleView(ListAPIView):
 class TripScheduleCrudView(APIView):
     def post(self, request, format=None):
         print("request data ******", request.data)
-        serializer = TripscheduleSerializer(data=request.data)
-        print("serialkizer......", serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        trip_date = request.data['trip_date']
+        departure_time = request.data['departure_time']
+        arrival_time = request.data['arrival_time']
+        available_seat = request.data['available_seat']
+        journey_time = request.data['journey_time']
+        price = request.data['price']
+        bus_id = request.data['bus_id']
+        agent = request.data['agent']
+        bus = Bus.objects.get(pk=bus_id)
+        # agent = UserAccount.objects.get(pk = agent)
+        trip_schedule = Tripschedule(trip_date=trip_date, departure_time=departure_time,arrival_time=arrival_time,available_seat=available_seat,price=price,journey_time=journey_time,bus_id=bus, status=True)
+        trip_schedule.save()
+        return Response(None, status=status.HTTP_201_CREATED)
 
     def put(self, request, pk, format=None):
         print('pk***********', pk)
-        snippet = Tripschedule.objects.get(pk=pk)
-        serializer = TripscheduleSerializer(snippet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        trip_date = request.data['trip_date']
+        departure_time = request.data['departure_time']
+        arrival_time = request.data['arrival_time']
+        available_seat = request.data['available_seat']
+        journey_time = request.data['journey_time']
+        price = request.data['price']
+        
+        bus_id = request.data['bus_id']
+        bus = Bus.objects.get(pk=bus_id)
+
+        trip_schedule = Tripschedule.objects.get(pk = pk)
+        trip_schedule.trip_date = trip_date
+        trip_schedule.departure_time=departure_time
+        trip_schedule.arrival_time=arrival_time
+        trip_schedule.available_seat=available_seat
+        trip_schedule.price=price
+        trip_schedule.journey_time=journey_time
+        trip_schedule.bus_id=bus
+        trip_schedule.save()
+        return Response(None, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 def delete_trip_schedule(request):
     payload = request.data['data']
     if payload != None:
         for id in payload:
-            bus = get_object_or_404(Bus, pk=id)
-            bus.delete()
+            trip_schedule = get_object_or_404(Tripschedule, pk=id)
+            trip_schedule.delete()
     return Response(status=status.HTTP_202_ACCEPTED)
 #boarding point
 class BoardingPointView(ListAPIView):
