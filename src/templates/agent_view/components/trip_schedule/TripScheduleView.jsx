@@ -6,7 +6,12 @@ import { GridView } from "../../../common/grid_view/GridView";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { ERROR, SUCCESS } from "../../../../constants/common/CrudMessageEnum";
 import { config } from "../../../../environment/service";
-import { GetDropDownValues, ConvertReponseData, ManageCreateEditTripSchedulePayload, ManageDeletePayload } from "./TripScheduleHelper";
+import {
+  GetDropDownValues,
+  ConvertReponseData,
+  ManageCreateEditTripSchedulePayload,
+  ManageDeletePayload,
+} from "./TripScheduleHelper";
 
 import {
   dataTableColums,
@@ -18,23 +23,25 @@ export const TripScheduleView = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [data, setData] = useState([]);
   const [busList, setBusList] = useState([]);
-  
+
   useEffect(() => {
-    axios
-      .get(`${backendUrl}/agent_api/tripschedule/${agentId}`)
-      .then(function (response) {
-        const resDataArr = ConvertReponseData(response);
-        setData(resDataArr);
-      });
-    axios
-      .get(`${backendUrl}/agent_api/bus/${agentId}`)
-      .then(function (response) {
-        setBusList(response.data);
-      });
+    if (agentId) {
+      axios
+        .get(`${backendUrl}/agent_api/tripschedule/${agentId}`)
+        .then(function (response) {
+          const resDataArr = ConvertReponseData(response);
+          setData(resDataArr);
+        });
+      axios
+        .get(`${backendUrl}/agent_api/bus/${agentId}`)
+        .then(function (response) {
+          setBusList(response.data);
+        });
+    }
   }, [refreshData]);
 
   const onFormSubmitHandler = (values, id) => {
-    ManageCreateEditTripSchedulePayload(values, agentId)
+    ManageCreateEditTripSchedulePayload(values, agentId);
     if (id !== null) {
       axios
         .put(`${backendUrl}/agent_api/trip_schedule_crud/${id}`, values)
@@ -53,10 +60,12 @@ export const TripScheduleView = () => {
           setRefreshData(!refreshData);
         })
         .catch((error) => {
-          if(error.response.status === 500){
-            ToastMessage(ERROR, "TripSchedule is active for this bus. Please close status and try again.");
-          }
-          else{
+          if (error.response.status === 500) {
+            ToastMessage(
+              ERROR,
+              "TripSchedule is active for this bus. Please close status and try again."
+            );
+          } else {
             ToastMessage(ERROR, "Something went Wrong.");
           }
         });
@@ -64,7 +73,7 @@ export const TripScheduleView = () => {
   };
 
   const deleteClickHandler = (data) => {
-  const payload = ManageDeletePayload(data)
+    const payload = ManageDeletePayload(data);
     axios
       .post(`${backendUrl}/agent_api/delete_trip_schedule/`, payload)
       .then((response) => {

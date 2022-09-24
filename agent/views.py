@@ -119,7 +119,9 @@ def delete_trip_schedule(request):
 class BoardingPointView(ListAPIView):
     serializer_class = BoardingPointSerializer
     def get_queryset(self):
-        return BoardingPoint.objects.all()
+        agent_id = self.kwargs['user_id']
+        boarding_point = BoardingPoint.objects.filter(trip_schedule_id__bus_id__agent = agent_id)
+        return boarding_point
 
 class BoardingPointCrudView(APIView):
     def post(self, request, format=None):
@@ -137,9 +139,28 @@ class BoardingPointCrudView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def delete_boarding_points(request):
+    payload = request.data['data']
+    if payload != None:
+        for id in payload:
+            boarding_point = get_object_or_404(BoardingPoint, pk=id)
+            boarding_point.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)
 
 #dropping point
 class DroppingPointView(ListAPIView):
     serializer_class = DroppingPointSerializer
     def get_queryset(self):
-        return DroppingPoint.objects.all()
+        agent_id = self.kwargs['user_id']
+        dropping_point = DroppingPoint.objects.filter(trip_schedule_id__bus_id__agent = agent_id)
+        return dropping_point
+
+@api_view(['POST'])
+def delete_dropping_points(request):
+    payload = request.data['data']
+    if payload != None:
+        for id in payload:
+            dropping_point = get_object_or_404(DroppingPoint, pk=id)
+            dropping_point.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)

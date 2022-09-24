@@ -331,7 +331,7 @@ export const GridView = (props) => {
   //make it dynamic should work for all select options
   const getSelectValue = (dropDownVals, value) => {
     //{select === null ? getSelectValue(product[fields['name']]) :
-    dropDownVals.forEach((obj) => {
+    dropDownVals?.forEach((obj) => {
       if (value === obj.value) {
         setSelect(obj.value);
       }

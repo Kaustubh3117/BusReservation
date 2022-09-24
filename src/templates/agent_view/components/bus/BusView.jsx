@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { GridView } from "../../../common/grid_view/GridView";
 import { dataTableColums, busFields } from "./components/BusFields";
 import { backendUrl } from "../../../../environment/development";
@@ -16,17 +16,21 @@ export const BusView = () => {
   const [data, setData] = useState([]);
   const [refreshData, setRefreshData] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
-      if (agentId === undefined || !agentId) {
-          navigate('/login')
-      }
-  }, [agentId])
+    if (agentId === undefined || !agentId) {
+      navigate("/login");
+    }
+  }, [agentId]);
 
   useEffect(() => {
-    axios.get(`${backendUrl}/agent_api/bus/${agentId}`).then(function (response) {
-      setData(response.data);
-    });
+    if (agentId) {
+      axios
+        .get(`${backendUrl}/agent_api/bus/${agentId}`)
+        .then(function (response) {
+          setData(response.data);
+        });
+    }
   }, [refreshData]);
 
   const onFormSubmitHandler = (values, id) => {
@@ -42,7 +46,11 @@ export const BusView = () => {
     form_data.append("agent", values.agent);
     if (id !== null) {
       axios
-        .put(`${backendUrl}/agent_api/bus_crud/${id}`, form_data, multiPartConfig)
+        .put(
+          `${backendUrl}/agent_api/bus_crud/${id}`,
+          form_data,
+          multiPartConfig
+        )
         .then((response) => {
           ToastMessage(SUCCESS, "Bus added successfully.");
           setRefreshData(!refreshData);
