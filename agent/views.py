@@ -156,6 +156,23 @@ class DroppingPointView(ListAPIView):
         dropping_point = DroppingPoint.objects.filter(trip_schedule_id__bus_id__agent = agent_id)
         return dropping_point
 
+class DroppingPointCrudView(APIView):
+    def post(self, request, format=None):
+        serializer = DroppingPointSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = DroppingPointSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 def delete_dropping_points(request):
     payload = request.data['data']

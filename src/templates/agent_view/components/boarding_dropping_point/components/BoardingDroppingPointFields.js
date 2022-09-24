@@ -20,7 +20,8 @@ export const boardingDataTableColums = [{
 ]
 
 
-export const boardingPointFields = [
+export const boardingPointFields = (dropDownVals)=>{
+const fields =[
     {
         id:"id",
         name: "id",
@@ -42,12 +43,15 @@ export const boardingPointFields = [
         name: "trip_schedule_id",
         label:"Trip Schedule.",
         fieldType: "select",
+        dropDownValues:dropDownVals,
         errorMessage: 'Please Select Trip Schedule'
     },
 ]
+return fields
+} 
 
 //dropping point fields
-export const droppingDataTableColums = [{
+export const droppingDataTableColums =  [{
     field: "id",
     header: "id",
     sortable: true
@@ -66,7 +70,9 @@ export const droppingDataTableColums = [{
 }
 ]
 
-export const droppingPointFields = [
+
+export const droppingPointFields = (dropDownVals)=>{ 
+    const fields = [
     {
         id:"id",
         name: "id",
@@ -88,6 +94,9 @@ export const droppingPointFields = [
         name: "trip_schedule_id",
         label:"Trip Schedule.",
         fieldType: "select",
+        dropDownValues:dropDownVals,
         errorMessage: 'Please Select Trip Schedule'
     },
 ]
+return fields
+}

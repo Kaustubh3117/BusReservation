@@ -48,7 +48,6 @@ export const GridView = (props) => {
     if (select !== null) {
       setSelect(null);
     }
-    // setDate(new Date())
     setProduct(emptyProduct);
     setSubmitted(false);
     setProductDialog(true);

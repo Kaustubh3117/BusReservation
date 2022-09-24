@@ -10,3 +10,11 @@
     const finalPayload = { data: deletePayload };
     return finalPayload
 }
+
+export const ConvertToDropDownFormat = (response)=>{
+    const resDataArr = []
+    response.data.map((data) => {
+        resDataArr.push({name: data.bus_id.bus_name, value:data.bus_id.id})
+      });
+    return resDataArr
+}
