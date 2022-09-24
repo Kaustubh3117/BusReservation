@@ -7,9 +7,12 @@ import { Column } from "primereact/column";
 import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+import axios from "axios";
+import { backendUrl } from "../../environment/development";
 
 export const AgentView = () => {
   const isAgent = useSelector((state) => state?.auth?.user?.is_agent);
+  const agentId = useSelector((state) => state?.auth?.user?.id);
   const [products, setProducts] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
   const toast = useRef(null);
@@ -19,6 +22,15 @@ export const AgentView = () => {
     if (isAgent === undefined || !isAgent) {
       navigate("/login");
     }
+
+    if (agentId) {
+        axios
+          .get(`${backendUrl}/agent_api/dash_board_view/${agentId}`)
+          .then(function (response) {
+            alert('data')
+            // setData(response.data);
+          });
+      }
   }, [isAgent]);
 
   useEffect(() => {

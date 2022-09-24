@@ -1,8 +1,9 @@
-from agent.views import TripScheduleView, TripScheduleCrudView, delete_boarding_points, delete_trip_schedule, BusView, BusCrudView, delete_bus, BoardingPointView, delete_boarding_points, BoardingPointCrudView, DroppingPointView, delete_dropping_points,DroppingPointCrudView
+from agent.views import DashBoardView, TripScheduleView, TripScheduleCrudView, delete_boarding_points, delete_trip_schedule, BusView, BusCrudView, delete_bus, BoardingPointView, delete_boarding_points, BoardingPointCrudView, DroppingPointView, delete_dropping_points,DroppingPointCrudView
 from django.urls import path
 app_name = 'agent'
 
 urlpatterns = [
+    path('dash_board_view/<int:user_id>', DashBoardView.as_view(), name='dash_board_view'),
     path('bus/<int:user_id>', BusView.as_view(), name='bus'),
     path('bus_crud/', BusCrudView.as_view(), name='bus_crud'),
     path('bus_crud/<int:pk>', BusCrudView.as_view(), name="bus_crud"),

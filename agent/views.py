@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+import copy
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
@@ -12,6 +13,33 @@ from accounts.models import UserAccount
 
 from core.serializers import BusSerializer, TripscheduleSerializer, TicketSerializer, BoardingPointSerializer, DroppingPointSerializer
 from core.models import Bus, Tripschedule, Ticket, BoardingPoint, DroppingPoint
+
+#get all data to dashboard
+class DashBoardView(APIView):
+    def get(self, request, format=None, **kwargs):
+        agent_id = self.kwargs['user_id']
+        busses = Bus.objects.filter(agent = agent_id).values()
+        bus_list = list(busses)
+        res = []
+        for bus in bus_list:
+            trip_schedule = Tripschedule.objects.filter(bus_id = bus['id']).values()
+            trip_schedule_list = list(trip_schedule)
+            bus['tripSchedule'] = trip_schedule_list
+            for schedule in trip_schedule_list:
+                boarding_point = BoardingPoint.objects.filter(trip_schedule_id = schedule['id']).values()
+                dropping_point = DroppingPoint.objects.filter(trip_schedule_id = schedule['id']).values()
+                ticket = Ticket.objects.filter(trip_schedule_id = schedule['id']).values()
+                schedule['boarding_point'] = list(boarding_point)
+                schedule['dropping_point'] = list(dropping_point)
+                schedule['ticket'] = list(ticket)
+            res.append(bus)
+
+        return Response(res)
+        # return Response({
+        #     'cart': cart_serializer.data,
+        #     'another': another_serializer.data,
+        #     'yet_another_field': 'yet another value',
+        # })
 
 # bus
 class BusView(ListAPIView):
