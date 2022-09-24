@@ -3,6 +3,8 @@ import axios from "axios";
 import { classNames } from "primereact/utils";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Checkbox } from "primereact/checkbox";
+import { Badge } from "primereact/badge";
 // import { ProductService } from '../service/ProductService';
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
@@ -43,8 +45,8 @@ export const GridView = (props) => {
   }, [props.data]);
 
   const openNew = () => {
-    if(select !== null){
-      setSelect(null)
+    if (select !== null) {
+      setSelect(null);
     }
     // setDate(new Date())
     setProduct(emptyProduct);
@@ -185,6 +187,12 @@ export const GridView = (props) => {
     _product[`${name}`] = e.value;
     setProduct(_product);
     // setDate(null);
+  };
+
+  const onCheckboxChecked = (e, name) => {
+    let _product = { ...product };
+    _product[`${name}`] = e.checked;
+    setProduct(_product);
   };
 
   const leftToolbarTemplate = () => {
@@ -348,6 +356,22 @@ export const GridView = (props) => {
     );
   };
 
+  const statusTemplate = (rowData) => {
+    return (
+      <>
+        {rowData.status ? (
+          <>
+            <b>Status:</b> <Badge value="Active" severity="success" />
+          </>
+        ) : (
+          <>
+            <b>Status:</b> <Badge value="Cancelled" severity="danger" />
+          </>
+        )}
+      </>
+    );
+  };
+
   return (
     <div className="datatable-crud-demo">
       <Toast ref={toast} />
@@ -389,7 +413,11 @@ export const GridView = (props) => {
                 field={ele.field}
                 header={ele.header}
                 body={
-                  ele.header === "Image" ? representativeBodyTemplate : ele.body
+                  ele.header === "Image"
+                    ? representativeBodyTemplate
+                    : ele.header === "Status"
+                    ? statusTemplate
+                    : ele.body
                 }
                 sortable={ele.sortable}
                 style={{ maxWidth: "12rem" }}
@@ -465,7 +493,7 @@ export const GridView = (props) => {
                           "p-invalid": submitted && !product.name,
                         })}
                       />
-                       {submitted && !product.name && (
+                      {submitted && !product.name && (
                         <small className="p-error">{fields.errorMessage}</small>
                       )}
                     </>
@@ -503,7 +531,11 @@ export const GridView = (props) => {
                         name={fields.name}
                         placeholder="dd/mm/yyyy"
                         dateFormat="dd/mm/yy"
-                        value={product[fields["name"]] === null ? new Date() : new Date(product[fields["name"]])}
+                        value={
+                          product[fields["name"]] === null
+                            ? new Date()
+                            : new Date(product[fields["name"]])
+                        }
                         onChange={(e) => onDateChange(e, fields.name)}
                         required
                         className={classNames({
@@ -561,7 +593,26 @@ export const GridView = (props) => {
                           "p-invalid": submitted && !product.name,
                         })}
                       />
-                      {submitted && !product.name  && (
+                      {submitted && !product.name && (
+                        <small className="p-error">{fields.errorMessage}</small>
+                      )}
+                    </div>
+                  ) : null}
+                  {fields.fieldType === "checkbox" ? (
+                    <div className="field">
+                      <label htmlFor="name">{fields.label}</label>
+                      <Checkbox
+                        id={fields.id}
+                        name={fields.name}
+                        value=""
+                        onChange={(e) => onCheckboxChecked(e, fields.name)}
+                        checked={product[fields["name"]]}
+                        className={classNames({
+                          "p-invalid": submitted && !product.name,
+                        })}
+                        required
+                      ></Checkbox>
+                      {submitted && !product.name && (
                         <small className="p-error">{fields.errorMessage}</small>
                       )}
                     </div>

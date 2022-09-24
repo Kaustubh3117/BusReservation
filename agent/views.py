@@ -67,35 +67,45 @@ class TripScheduleCrudView(APIView):
         journey_time = request.data['journey_time']
         price = request.data['price']
         bus_id = request.data['bus_id']
-        agent = request.data['agent']
+    
         bus = Bus.objects.get(pk=bus_id)
+        validate_trip_schedule = Tripschedule.objects.filter(bus_id__id = bus_id)
+        schedule_active = False
+        for data in validate_trip_schedule:
+            if data.status == True:
+                schedule_active = True
         # agent = UserAccount.objects.get(pk = agent)
-        trip_schedule = Tripschedule(trip_date=trip_date, departure_time=departure_time,arrival_time=arrival_time,available_seat=available_seat,price=price,journey_time=journey_time,bus_id=bus, status=True)
-        trip_schedule.save()
-        return Response(None, status=status.HTTP_201_CREATED)
+        if schedule_active == False:
+            trip_schedule = Tripschedule(trip_date=trip_date, departure_time=departure_time,arrival_time=arrival_time,available_seat=available_seat,price=price,journey_time=journey_time,bus_id=bus, status=True)
+            trip_schedule.save()
+            return Response(None, status=status.HTTP_201_CREATED)
+        else:
+             return Response(None, status=500)
+       
 
     def put(self, request, pk, format=None):
-        print('pk***********', pk)
-        trip_date = request.data['trip_date']
-        departure_time = request.data['departure_time']
-        arrival_time = request.data['arrival_time']
-        available_seat = request.data['available_seat']
-        journey_time = request.data['journey_time']
+        trip_date = request.data['trip_date']          
+        departure_time = request.data['departure_time']           
+        arrival_time = request.data['arrival_time']            
+        available_seat = request.data['available_seat']           
+        journey_time = request.data['journey_time']           
         price = request.data['price']
-        
+        status = request.data['status']
         bus_id = request.data['bus_id']
+        
         bus = Bus.objects.get(pk=bus_id)
-
         trip_schedule = Tripschedule.objects.get(pk = pk)
         trip_schedule.trip_date = trip_date
-        trip_schedule.departure_time=departure_time
-        trip_schedule.arrival_time=arrival_time
-        trip_schedule.available_seat=available_seat
-        trip_schedule.price=price
-        trip_schedule.journey_time=journey_time
-        trip_schedule.bus_id=bus
+        trip_schedule.departure_time = departure_time
+        trip_schedule.arrival_time = arrival_time        
+        trip_schedule.available_seat = available_seat
+        trip_schedule.price = price
+        trip_schedule.journey_time = journey_time
+        trip_schedule.bus_id = bus
+        trip_schedule.status = status
         trip_schedule.save()
-        return Response(None, status=status.HTTP_201_CREATED)
+        
+        return Response(None)
 
 @api_view(['POST'])
 def delete_trip_schedule(request):
@@ -127,10 +137,6 @@ class BoardingPointCrudView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        snippet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 #dropping point
 class DroppingPointView(ListAPIView):

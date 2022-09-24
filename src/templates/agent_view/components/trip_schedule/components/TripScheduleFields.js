@@ -10,6 +10,12 @@ export const dataTableColums = [{
     sortable: true
 },
 {
+    field: "status",
+    header: "Status",
+    sortable: true,
+    body: ''
+},
+{
     field: "bus_name",
     header: "Bus",
     sortable: false,
@@ -49,12 +55,6 @@ export const dataTableColums = [{
     sortable: true,
     body: ''
 },
-{
-    field: "status",
-    header: "Status",
-    sortable: true,
-    body: ''
-}
 ]
 
 
@@ -89,6 +89,7 @@ export const tripScheduleFields = (dropDownVals)=>{
             name: "available_seat",
             label:"Available Seat",
             fieldType: "number",
+            value:'',
             errorMessage: 'Please Enter Trip Date'
         },
         {
@@ -112,6 +113,13 @@ export const tripScheduleFields = (dropDownVals)=>{
             fieldType: "select",
             dropDownValues:dropDownVals,
             errorMessage: 'Please Enter Trip Date'
+        },
+        {
+            id:"status",
+            name: "status",
+            label:"Trip Schedule Status",
+            fieldType: "checkbox",
+            errorMessage: 'Please Select Status'
         },
     ]
     return data

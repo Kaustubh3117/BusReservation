@@ -22,12 +22,16 @@ export const ConvertReponseData = (response) =>{
           })
         } else {
           if(key === 'trip_date'){
-            const [day, month, year] = value.split('/');
-            const result = [year, month, day].join('/');
-            resObj[key] = result
+            const validate_date = new Date(value)
+            if( validate_date instanceof Date && !isNaN(validate_date)){
+              resObj[key] = value
+            }else{
+              const [day, month, year] = value.split('/');
+              const result = [year, month, day].join('/');
+              resObj[key] = result
+            }
           }else{
             resObj[key] = value;
-
           }
         }
       });

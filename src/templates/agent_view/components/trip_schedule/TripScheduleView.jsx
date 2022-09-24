@@ -53,7 +53,12 @@ export const TripScheduleView = () => {
           setRefreshData(!refreshData);
         })
         .catch((error) => {
-          ToastMessage(ERROR, "Something went Wrong.");
+          if(error.response.status === 500){
+            ToastMessage(ERROR, "TripSchedule is active for this bus. Please close status and try again.");
+          }
+          else{
+            ToastMessage(ERROR, "Something went Wrong.");
+          }
         });
     }
   };
