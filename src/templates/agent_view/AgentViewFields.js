@@ -118,3 +118,67 @@ export const DroppingColumns = [{
     sortable: true
 }
 ]
+
+export const TicketColumns = [{
+    field: "id",
+    header: "Id",
+    sortable: true
+},
+{
+    field: "ticket_number",
+    header: "Ticket Number",
+    sortable: true
+},
+{
+    field: "total_amount",
+    header: "Total Amount",
+    sortable: true
+},
+{
+    field: "number_of_seats",
+    header: "Seats Booked",
+    sortable: true
+},
+{
+    field: "seat_no",
+    header: "Seat Number",
+    sortable: true
+},
+{
+    field: "booked",
+    header: "Booked",
+    sortable: true
+},
+{
+    field: "canceled",
+    header: "Cancelled",
+    sortable: true
+}
+]
+
+export const PasengerColumns = [{
+    field: "id",
+    header: "Id",
+    sortable: true
+},
+{
+    field: "name",
+    header: "Name",
+    sortable: true
+},
+{
+    field: "mobile_number",
+    header: "Mobile Number",
+    sortable: true
+},
+{
+    field: "ticket_number",
+    header: "Ticket Number",
+    sortable: true
+},
+{
+    field: "gender",
+    header: "Gender",
+    sortable: true
+}
+]

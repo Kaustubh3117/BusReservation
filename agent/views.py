@@ -12,7 +12,7 @@ from rest_framework import viewsets
 from accounts.models import UserAccount
 
 from core.serializers import BusSerializer, TripscheduleSerializer, TicketSerializer, BoardingPointSerializer, DroppingPointSerializer
-from core.models import Bus, Tripschedule, Ticket, BoardingPoint, DroppingPoint
+from core.models import Bus, PassengerInfo, Tripschedule, Ticket, BoardingPoint, DroppingPoint
 
 #get all data to dashboard
 class DashBoardView(APIView):
@@ -28,10 +28,14 @@ class DashBoardView(APIView):
             for schedule in trip_schedule_list:
                 boarding_point = BoardingPoint.objects.filter(trip_schedule_id = schedule['id']).values()
                 dropping_point = DroppingPoint.objects.filter(trip_schedule_id = schedule['id']).values()
-                ticket = Ticket.objects.filter(trip_schedule_id = schedule['id']).values()
                 schedule['boarding_point'] = list(boarding_point)
                 schedule['dropping_point'] = list(dropping_point)
-                schedule['ticket'] = list(ticket)
+                ticket = Ticket.objects.filter(trip_schedule_id = schedule['id']).values()
+                ticket_list =  list(ticket)
+                for ticket in ticket_list:
+                    passenget_data = PassengerInfo.objects.filter(ticket=ticket['id']).values()
+                    ticket['passenger_data'] = list(passenget_data)
+                schedule['ticket'] = ticket_list
             res.append(bus)
 
         return Response(res)

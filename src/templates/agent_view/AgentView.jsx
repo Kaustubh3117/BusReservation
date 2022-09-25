@@ -14,6 +14,8 @@ import {
   TripScheduleColumns,
   BoardingColumns,
   DroppingColumns,
+  TicketColumns,
+  PasengerColumns,
 } from "./AgentViewFields";
 
 export const AgentView = () => {
@@ -23,6 +25,8 @@ export const AgentView = () => {
   const [showPointsDialog, setShowPointsDialog] = useState(false);
   const [boardingPointData, setBoardingPointData] = useState(null);
   const [droppingPointData, setDroppingPointData] = useState(null);
+  const [showTicketDialog, setShowTicketDialog] = useState(false);
+  const [ticketData, setTicketData] = useState(false);
   const [expandedRows, setExpandedRows] = useState(null);
   const toast = useRef(null);
   const isMounted = useRef(false);
@@ -59,11 +63,6 @@ export const AgentView = () => {
     // setProducts(data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    setShowPointsDialog(true);
-    // setProducts(data);
-  }, [boardingPointData]);
-
   const onRowExpand = (event) => {
     // toast.current.show({
     //   severity: "info",
@@ -94,8 +93,10 @@ export const AgentView = () => {
   //   }
   const onHide = () => {
     setShowPointsDialog(false);
+    setShowTicketDialog(false)
   };
 
+  //footer for bp dp and ticket modals
   const renderFooter = () => {
     return (
       <div>
@@ -114,6 +115,7 @@ export const AgentView = () => {
       </div>
     );
   };
+   //end footer for bp dp and ticket modals
 
   // boaring dropping modal
   const showBpDpTemplate = () => {
@@ -167,6 +169,60 @@ export const AgentView = () => {
   };
   //!!!end boaring dropping modal
 
+  // Ticket modal
+  const ticketTemplate = () => {
+    return (
+      <div className="orders-subtable">
+        {/* <h5>Orders for {data.name}</h5> */}
+        <Dialog
+          header="Header"
+          visible={showTicketDialog}
+          style={{ width: "50vw" }}
+          footer={renderFooter()}
+          onHide={() => onHide()}
+        >
+          <h1>Tickets</h1>
+          <DataTable
+            value={ticketData}
+            responsiveLayout="scroll"
+            showGridlines
+          >
+            {TicketColumns.map((ele) => {
+              return (
+                <Column
+                  field={ele.field}
+                  header={ele.header}
+                  sortable
+                  headerStyle={{ width: "4rem" }}
+                ></Column>
+              );
+            })}
+          </DataTable>
+
+          <h4>Passenger Info</h4>
+          <DataTable
+            value={ticketData[0].passenger_data}
+            responsiveLayout="scroll"
+            showGridlines
+          >
+            {PasengerColumns.map((ele) => {
+              return (
+                <Column
+                  field={ele.field}
+                  header={ele.header}
+                  sortable
+                  headerStyle={{ width: "4rem" }}
+                ></Column>
+              );
+            })}
+          </DataTable>
+        </Dialog>
+      </div>
+    );
+  };
+  //!!!end ticket modal
+
+
   //shows button in tripSchedule expand row 
   const bpdpBodyTemplate = (data) => {
     return (
@@ -176,6 +232,7 @@ export const AgentView = () => {
         onClick={() => {
           setBoardingPointData(data.boarding_point);
           setDroppingPointData(data.dropping_point);
+          setShowPointsDialog(true)
         }}
       />
     );
@@ -184,7 +241,9 @@ export const AgentView = () => {
 
   // shows button in tripSchedule expand row 
   const ticketBodyTemplate = (data) => {
-    return <Button icon="pi pi-search" label="Views Tickets" />;
+    return <Button icon="pi pi-search" label="Views Tickets" onClick={() => {
+      setTicketData(data.ticket); setShowTicketDialog(true)
+    }} />;
   };
 //end shows button in tripSchedule expand row 
 
@@ -231,6 +290,7 @@ export const AgentView = () => {
           })}
         </DataTable>
         {showBpDpTemplate()}
+        {ticketTemplate()}
       </div>
     );
   };
