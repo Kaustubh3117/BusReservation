@@ -4,16 +4,25 @@ import { useNavigate } from "react-router-dom";
 import { SideBar } from "./assets/SideBar";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import { backendUrl } from "../../environment/development";
+import {
+  DashBoardColumns,
+  TripScheduleColumns,
+  BoardingColumns,
+  DroppingColumns,
+} from "./AgentViewFields";
 
 export const AgentView = () => {
   const isAgent = useSelector((state) => state?.auth?.user?.is_agent);
   const agentId = useSelector((state) => state?.auth?.user?.id);
   const [products, setProducts] = useState([]);
+  const [showPointsDialog, setShowPointsDialog] = useState(false);
+  const [boardingPointData, setBoardingPointData] = useState(null);
+  const [droppingPointData, setDroppingPointData] = useState(null);
   const [expandedRows, setExpandedRows] = useState(null);
   const toast = useRef(null);
   const isMounted = useRef(false);
@@ -24,48 +33,53 @@ export const AgentView = () => {
     }
 
     if (agentId) {
-        axios
-          .get(`${backendUrl}/agent_api/dash_board_view/${agentId}`)
-          .then(function (response) {
-            alert('data')
-            // setData(response.data);
-          });
-      }
+      axios
+        .get(`${backendUrl}/agent_api/dash_board_view/${agentId}`)
+        .then(function (response) {
+          alert("data");
+          setProducts(response.data);
+        });
+    }
   }, [isAgent]);
 
   useEffect(() => {
     if (isMounted.current) {
-      const summary =
-        expandedRows !== null ? "All Rows Expanded" : "All Rows Collapsed";
-      toast.current.show({
-        severity: "success",
-        summary: `${summary}`,
-        life: 3000,
-      });
+      // const summary =
+      //   expandedRows !== null ? "All Rows Expanded" : "All Rows Collapsed";
+      // toast.current.show({
+      //   severity: "success",
+      //   summary: `${summary}`,
+      //   life: 3000,
+      // });
     }
   }, [expandedRows]);
 
   useEffect(() => {
     isMounted.current = true;
-    setProducts(data);
+    // setProducts(data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    setShowPointsDialog(true);
+    // setProducts(data);
+  }, [boardingPointData]);
+
   const onRowExpand = (event) => {
-    toast.current.show({
-      severity: "info",
-      summary: "Product Expanded",
-      detail: event.data.name,
-      life: 3000,
-    });
+    // toast.current.show({
+    //   severity: "info",
+    //   summary: "Product Expanded",
+    //   detail: event.data.name,
+    //   life: 3000,
+    // });
   };
 
   const onRowCollapse = (event) => {
-    toast.current.show({
-      severity: "success",
-      summary: "Product Collapsed",
-      detail: event.data.name,
-      life: 3000,
-    });
+    // toast.current.show({
+    //   severity: "success",
+    //   summary: "Product Collapsed",
+    //   detail: event.data.name,
+    //   life: 3000,
+    // });
   };
 
   //   const expandAll = () => {
@@ -78,31 +92,101 @@ export const AgentView = () => {
   //   const collapseAll = () => {
   //       setExpandedRows(null);
   //   }
-
-  const formatCurrency = (value) => {
-    return value.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
+  const onHide = () => {
+    setShowPointsDialog(false);
   };
 
-  const amountBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.amount);
-  };
-
-  const statusOrderBodyTemplate = (rowData) => {
+  const renderFooter = () => {
     return (
-      <>
-        <span className={`order-badge order-${rowData.status.toLowerCase()}`}>
-          {rowData.status}
-        </span>
-      </>
+      <div>
+        <Button
+          label="No"
+          icon="pi pi-times"
+          onClick={() => onHide()}
+          className="p-button-text"
+        />
+        <Button
+          label="Yes"
+          icon="pi pi-check"
+          onClick={() => onHide()}
+          autoFocus
+        />
+      </div>
     );
   };
 
-  const searchBodyTemplate = () => {
-    return <Button icon="pi pi-search" />;
+  // boaring dropping modal
+  const showBpDpTemplate = () => {
+    return (
+      <div className="orders-subtable">
+        {/* <h5>Orders for {data.name}</h5> */}
+        <Dialog
+          header="Header"
+          visible={showPointsDialog}
+          style={{ width: "50vw" }}
+          footer={renderFooter()}
+          onHide={() => onHide()}
+        >
+          <h1>Boarding Points</h1>
+          <DataTable
+            value={boardingPointData}
+            responsiveLayout="scroll"
+            showGridlines
+          >
+            {BoardingColumns.map((ele) => {
+              return (
+                <Column
+                  field={ele.field}
+                  header={ele.header}
+                  sortable
+                  headerStyle={{ width: "4rem" }}
+                ></Column>
+              );
+            })}
+          </DataTable>
+          <h1>Dropping Point</h1>
+          <DataTable
+            value={droppingPointData}
+            responsiveLayout="scroll"
+            showGridlines
+          >
+            {DroppingColumns.map((ele) => {
+              return (
+                <Column
+                  field={ele.field}
+                  header={ele.header}
+                  sortable
+                  headerStyle={{ width: "4rem" }}
+                ></Column>
+              );
+            })}
+          </DataTable>
+        </Dialog>
+      </div>
+    );
   };
+  //!!!end boaring dropping modal
+
+  //shows button in tripSchedule expand row 
+  const bpdpBodyTemplate = (data) => {
+    return (
+      <Button
+        icon="pi pi-search"
+        label="View Points"
+        onClick={() => {
+          setBoardingPointData(data.boarding_point);
+          setDroppingPointData(data.dropping_point);
+        }}
+      />
+    );
+  };
+  //end shows button in tripSchedule expand row 
+
+  // shows button in tripSchedule expand row 
+  const ticketBodyTemplate = (data) => {
+    return <Button icon="pi pi-search" label="Views Tickets" />;
+  };
+//end shows button in tripSchedule expand row 
 
   const imageBodyTemplate = (rowData) => {
     return (
@@ -118,52 +202,39 @@ export const AgentView = () => {
     );
   };
 
-  const priceBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.price);
-  };
-
-  const ratingBodyTemplate = (rowData) => {
-    return <Rating value={rowData.rating} readOnly cancel={false} />;
-  };
-
-  const statusBodyTemplate = (rowData) => {
-    return (
-      <span
-        className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}
-      >
-        {rowData.inventoryStatus}
-      </span>
-    );
-  };
-
+  //expand row template
   const rowExpansionTemplate = (data) => {
     return (
       <div className="orders-subtable">
         <h5>Orders for {data.name}</h5>
-        <DataTable value={data.orders} responsiveLayout="scroll">
-          <Column field="id" header="Id" sortable></Column>
-          <Column field="customer" header="Customer" sortable></Column>
-          <Column field="date" header="Date" sortable></Column>
-          <Column
-            field="amount"
-            header="Amount"
-            body={amountBodyTemplate}
-            sortable
-          ></Column>
-          <Column
-            field="status"
-            header="Status"
-            body={statusOrderBodyTemplate}
-            sortable
-          ></Column>
-          <Column
-            headerStyle={{ width: "4rem" }}
-            body={searchBodyTemplate}
-          ></Column>
+        <DataTable
+          value={data.tripSchedule}
+          responsiveLayout="scroll"
+          showGridlines
+        >
+          {TripScheduleColumns.map((ele) => {
+            return (
+              <Column
+                field={ele.field}
+                header={ele.header}
+                body={
+                  ele.field === "bpdp_point"
+                    ? bpdpBodyTemplate
+                    : ele.field === "tickets"
+                    ? ticketBodyTemplate
+                    : ""
+                }
+                sortable
+                headerStyle={{ width: "4rem" }}
+              ></Column>
+            );
+          })}
         </DataTable>
+        {showBpDpTemplate()}
       </div>
     );
   };
+    //end expand row template
 
   //   const header = (
   //       <div className="table-header-container">
@@ -171,59 +242,6 @@ export const AgentView = () => {
   //           <Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} /> */}
   //       </div>
   //   );
-
-  const data = [
-    {
-      id: "1000",
-      code: "f230fh0g3",
-      name: "Bamboo Watch",
-      description: "Product Description",
-      image: "bamboo-watch.jpg",
-      price: 65,
-      category: "Accessories",
-      quantity: 24,
-      inventoryStatus: "INSTOCK",
-      rating: 5,
-      orders: [
-        {
-          id: "1000",
-          productCode: "f230fh0g3",
-          date: "2020-09-13",
-          amount: 65,
-          quantity: 1,
-          customer: "David James",
-          status: "PENDING",
-        },
-        {
-          id: "1001",
-          productCode: "f230fh0g3",
-          date: "2020-05-14",
-          amount: 130,
-          quantity: 2,
-          customer: "Leon Rodrigues",
-          status: "DELIVERED",
-        },
-        {
-          id: "1002",
-          productCode: "f230fh0g3",
-          date: "2019-01-04",
-          amount: 65,
-          quantity: 1,
-          customer: "Juan Alejandro",
-          status: "RETURNED",
-        },
-        {
-          id: "1003",
-          productCode: "f230fh0g3",
-          date: "2020-09-13",
-          amount: 195,
-          quantity: 3,
-          customer: "Claire Morrow",
-          status: "CANCELLED",
-        },
-      ],
-    },
-  ];
 
   return (
     <>
@@ -238,7 +256,7 @@ export const AgentView = () => {
 
               <div className="card">
                 <DataTable
-                  value={data}
+                  value={products}
                   expandedRows={expandedRows}
                   onRowToggle={(e) => setExpandedRows(e.data)}
                   onRowExpand={onRowExpand}
@@ -248,27 +266,16 @@ export const AgentView = () => {
                   dataKey="id"
                 >
                   <Column expander style={{ width: "3em" }} />
-                  <Column field="name" header="Name" sortable />
-                  <Column header="Image" body={imageBodyTemplate} />
-                  <Column
-                    field="price"
-                    header="Price"
-                    sortable
-                    body={priceBodyTemplate}
-                  />
-                  <Column field="category" header="Category" sortable />
-                  <Column
-                    field="rating"
-                    header="Reviews"
-                    sortable
-                    body={ratingBodyTemplate}
-                  />
-                  <Column
-                    field="inventoryStatus"
-                    header="Status"
-                    sortable
-                    body={statusBodyTemplate}
-                  />
+                  {DashBoardColumns.map((ele) => {
+                    return (
+                      <Column
+                        field={ele.field}
+                        header={ele.header}
+                        sortable
+                        body={ele.header === "Image" ? imageBodyTemplate : ""}
+                      />
+                    );
+                  })}
                 </DataTable>
               </div>
             </div>

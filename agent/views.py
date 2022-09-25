@@ -35,11 +35,6 @@ class DashBoardView(APIView):
             res.append(bus)
 
         return Response(res)
-        # return Response({
-        #     'cart': cart_serializer.data,
-        #     'another': another_serializer.data,
-        #     'yet_another_field': 'yet another value',
-        # })
 
 # bus
 class BusView(ListAPIView):
@@ -52,16 +47,13 @@ class BusView(ListAPIView):
 class BusCrudView(APIView):
     parser_classes = (MultiPartParser, FormParser)
     def post(self, request, format=None):
-        print("request data ******", request.data)
         serializer = BusSerializer(data=request.data)
-        print("serialkizer......", serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk, format=None):
-        print('pk***********', pk)
         snippet = Bus.objects.get(pk=pk)
         serializer = BusSerializer(snippet, data=request.data)
         if serializer.is_valid():
