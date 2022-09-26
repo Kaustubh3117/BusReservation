@@ -48,49 +48,17 @@ export const AgentView = () => {
 
   useEffect(() => {
     if (isMounted.current) {
-      // const summary =
-      //   expandedRows !== null ? "All Rows Expanded" : "All Rows Collapsed";
-      // toast.current.show({
-      //   severity: "success",
-      //   summary: `${summary}`,
-      //   life: 3000,
-      // });
     }
   }, [expandedRows]);
 
   useEffect(() => {
     isMounted.current = true;
-    // setProducts(data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onRowExpand = (event) => {
-    // toast.current.show({
-    //   severity: "info",
-    //   summary: "Product Expanded",
-    //   detail: event.data.name,
-    //   life: 3000,
-    // });
-  };
+  const onRowExpand = (event) => {};
 
-  const onRowCollapse = (event) => {
-    // toast.current.show({
-    //   severity: "success",
-    //   summary: "Product Collapsed",
-    //   detail: event.data.name,
-    //   life: 3000,
-    // });
-  };
+  const onRowCollapse = (event) => {};
 
-  //   const expandAll = () => {
-  //       let _expandedRows = {};
-  //       products.forEach(p => _expandedRows[`${p.id}`] = true);
-
-  //       setExpandedRows(_expandedRows);
-  //   }
-
-  //   const collapseAll = () => {
-  //       setExpandedRows(null);
-  //   }
   const onHide = () => {
     setShowPointsDialog(false);
     setShowTicketDialog(false)
@@ -172,7 +140,6 @@ export const AgentView = () => {
   const ticketTemplate = () => {
     return (
       <div className="orders-subtable">
-        <h3>Ticket Template</h3>
         <Dialog
           header=""
           visible={showTicketDialog}
