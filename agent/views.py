@@ -37,7 +37,6 @@ class DashBoardView(APIView):
                     ticket['passenger_data'] = list(passenget_data)
                 schedule['ticket'] = ticket_list
             res.append(bus)
-
         return Response(res)
 
 # bus
