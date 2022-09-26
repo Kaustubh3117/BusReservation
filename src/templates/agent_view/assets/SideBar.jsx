@@ -8,10 +8,10 @@ export const SideBar = () => {
       <ProSidebar style={{height:'100vh'}}>
         <Menu iconShape="square">
           <MenuItem>Dashboard  <Link to="/agentView" /></MenuItem>
+          <MenuItem>Bus status <Link to="/busStatus" /></MenuItem>
           <MenuItem>Bus<Link to="/busView" /></MenuItem>
           <MenuItem>Trip Schedule <Link to="/tripScheduleView" /></MenuItem>
           <MenuItem>Boarding Point and Dropping Point  <Link to="/boardingDroppingPoint" /></MenuItem>
-          <MenuItem>Bus status <Link to="/busStatus" /></MenuItem>
           <MenuItem>Help</MenuItem>
           <MenuItem>Terms and Conditions</MenuItem>
           <MenuItem>Contact Admin</MenuItem>

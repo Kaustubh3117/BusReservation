@@ -16,6 +16,8 @@ import { backendUrl } from "../../../../environment/development";
 import { Link } from "react-router-dom";
 import { FilterTripScheduleApi, OnFormSubmitHandler } from "./AvailableBusHelper";
 import { SeatView } from "../seat_selection/SeatView";
+import { ToastMessage } from "../../../../middleware/ToastMessage";
+import { WARNING } from "../../../../constants/common/CrudMessageEnum";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
@@ -51,8 +53,14 @@ export const AvailableBusses = () => {
 
 const onSubmit = (data, e) => {
   const filterArr = OnFormSubmitHandler(data, availableBusses)
-  setFilteredData(filterArr);
-  e.target.reset();
+  if(filterArr && filterArr.length > 0){
+    setFilteredData(filterArr);
+    e.target.reset();
+  }
+  else{
+    ToastMessage(WARNING, "No data found for the search.")
+  }
+ 
 };
 
 const renderHeader1 = () => {
@@ -73,6 +81,7 @@ const renderHeader1 = () => {
      
       />
       <Button
+      type='button'
         label="Clear Filter"
         icon="pi pi-times"
         onClick={() =>{setFilteredData([]); setValue('globalSearch', '')}}
@@ -81,6 +90,7 @@ const renderHeader1 = () => {
       />
       </form>
       <Button
+      type="button"
         label="Change Date"
         icon="pi pi-times"
         onClick={() =>navigate('/')}

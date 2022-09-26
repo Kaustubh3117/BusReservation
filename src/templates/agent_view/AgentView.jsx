@@ -121,9 +121,8 @@ export const AgentView = () => {
   const showBpDpTemplate = () => {
     return (
       <div className="orders-subtable">
-        {/* <h5>Orders for {data.name}</h5> */}
         <Dialog
-          header="Header"
+          header=""
           visible={showPointsDialog}
           style={{ width: "50vw" }}
           footer={renderFooter()}
@@ -173,9 +172,9 @@ export const AgentView = () => {
   const ticketTemplate = () => {
     return (
       <div className="orders-subtable">
-        {/* <h5>Orders for {data.name}</h5> */}
+        <h3>Ticket Template</h3>
         <Dialog
-          header="Header"
+          header=""
           visible={showTicketDialog}
           style={{ width: "50vw" }}
           footer={renderFooter()}
@@ -201,7 +200,7 @@ export const AgentView = () => {
 
           <h4>Passenger Info</h4>
           <DataTable
-            value={ticketData[0].passenger_data}
+            value={ticketData[0]?.passenger_data}
             responsiveLayout="scroll"
             showGridlines
           >
@@ -265,7 +264,7 @@ export const AgentView = () => {
   const rowExpansionTemplate = (data) => {
     return (
       <div className="orders-subtable">
-        <h5>Orders for {data.name}</h5>
+        <h3>Trip Schedule</h3>
         <DataTable
           value={data.tripSchedule}
           responsiveLayout="scroll"
@@ -313,7 +312,7 @@ export const AgentView = () => {
           <div className="mt-6">
             <div className="datatable-rowexpansion-demo">
               <Toast ref={toast} />
-
+              <h1>Agent Dashboard</h1>
               <div className="card">
                 <DataTable
                   value={products}
@@ -324,6 +323,7 @@ export const AgentView = () => {
                   responsiveLayout="scroll"
                   rowExpansionTemplate={rowExpansionTemplate}
                   dataKey="id"
+                  showGridlines
                 >
                   <Column expander style={{ width: "3em" }} />
                   {DashBoardColumns.map((ele) => {

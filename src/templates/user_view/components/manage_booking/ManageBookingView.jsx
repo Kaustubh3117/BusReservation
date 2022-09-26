@@ -5,7 +5,7 @@ import { backendUrl } from "../../../../environment/development";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
-import { SUCCESS } from "../../../../constants/common/CrudMessageEnum";
+import { SUCCESS, WARNING } from "../../../../constants/common/CrudMessageEnum";
 import { Badge } from "primereact/badge";
 import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
@@ -65,8 +65,14 @@ export const ManageBooking = () => {
 
   const onSubmit = (data, e) => {
     const filterArr = OnFormSubmitHandler(data, ticketData)
-    setFilteredData(filterArr);
-    e.target.reset();
+
+    if(filterArr && filterArr.length > 0){
+      setFilteredData(filterArr);
+      e.target.reset();
+    }
+    else{
+      ToastMessage(WARNING, "No data found for the search.")
+    }
   };
 
   const renderHeader1 = () => {
