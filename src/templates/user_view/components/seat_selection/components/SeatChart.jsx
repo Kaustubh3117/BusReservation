@@ -225,7 +225,7 @@ class SeatChart extends Component {
                     </div>
                   </div>
 
-                  <div className="card" style={{ width: "20rem" }}>
+                  <div className="card text-center" style={{ width: "20rem" }}>
                     {rows.length === 2 ? (
                       <>
                         <SelectButton
@@ -237,7 +237,7 @@ class SeatChart extends Component {
                         />
                         {rows.map((row, index) => {
                           return (
-                            <>
+                            <div className="mt-4">
                               {index === 0 &&
                               this.state.activeDeck === "Upper Deck" ? (
                                 <>
@@ -249,7 +249,7 @@ class SeatChart extends Component {
                                   {this.getSeatPicker(row, loading)}
                                 </div>
                               ) : null}
-                            </>
+                            </div>
                           );
                         })}
                       </>
