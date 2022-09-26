@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";
+import { InputText } from "primereact/inputtext";
 import { backendUrl } from "../../environment/development";
 import {
   DashBoardColumns,
@@ -28,6 +29,8 @@ export const AgentView = () => {
   const [showTicketDialog, setShowTicketDialog] = useState(false);
   const [ticketData, setTicketData] = useState(false);
   const [expandedRows, setExpandedRows] = useState(null);
+  const [globalFilter, setGlobalFilter] = useState(null);
+  const [globalScheduleFilter, setGlobalScheduleFilter] = useState(null);
   const toast = useRef(null);
   const isMounted = useRef(false);
   const navigate = useNavigate();
@@ -227,15 +230,37 @@ export const AgentView = () => {
     );
   };
 
+
+  const tripScheduleHeader = (
+    <div className="table-header-container">
+<div className="table-header">
+  <span className="p-input-icon-left">
+    <i className="pi pi-search" />
+    <InputText
+      type="search"
+      onInput={
+        (e) => {
+          setGlobalScheduleFilter(e.target.value)
+        }
+      }
+      placeholder="Search..."
+    />
+  </span>
+</div>
+    </div>
+);
+
   //expand row template
   const rowExpansionTemplate = (data) => {
     return (
-      <div className="orders-subtable">
+      <div className="orders-subtable bg-blue-100 px-4 py-4">
         <h3>Trip Schedule</h3>
         <DataTable
           value={data.tripSchedule}
           responsiveLayout="scroll"
           showGridlines
+          header={tripScheduleHeader}
+          globalFilter={globalScheduleFilter}
         >
           {TripScheduleColumns.map((ele) => {
             return (
@@ -262,12 +287,27 @@ export const AgentView = () => {
   };
     //end expand row template
 
-  //   const header = (
-  //       <div className="table-header-container">
-  //           {/* <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} className="mr-2" />
-  //           <Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} /> */}
-  //       </div>
-  //   );
+    const header = (
+        <div className="table-header-container">
+            {/* <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} className="mr-2" />
+            <Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} /> */}
+           
+    <div className="table-header">
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={
+            (e) => {
+              setGlobalFilter(e.target.value)
+            }
+          }
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+        </div>
+    );
 
   return (
     <>
@@ -284,6 +324,8 @@ export const AgentView = () => {
                 <DataTable
                   value={products}
                   expandedRows={expandedRows}
+                  header={header}
+                  globalFilter={globalFilter}
                   onRowToggle={(e) => setExpandedRows(e.data)}
                   onRowExpand={onRowExpand}
                   onRowCollapse={onRowCollapse}
@@ -291,6 +333,11 @@ export const AgentView = () => {
                   rowExpansionTemplate={rowExpansionTemplate}
                   dataKey="id"
                   showGridlines
+                  scrollable 
+                  scrollHeight="500px" 
+                  virtualScrollerOptions={{ itemSize: 46 }}
+                  resizableColumns 
+                  columnResizeMode="fit"
                 >
                   <Column expander style={{ width: "3em" }} />
                   {DashBoardColumns.map((ele) => {
