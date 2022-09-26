@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { GiSteeringWheel } from "react-icons/gi";
 import { Button } from "primereact/button";
+import { SelectButton } from "primereact/selectbutton";
 import { ToastMessage } from "../../../../../middleware/ToastMessage";
 import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
 import { BreadCrumbs } from "../../../../common/BreadCrumbs";
 import { Divider } from "primereact/divider";
-
 
 import {
   setReservedSeatData,
@@ -39,6 +39,7 @@ class SeatChart extends Component {
     reservedSeatData: null,
     seatChart: null,
     renderKey: false,
+    activeDeck: "Upper Deck",
   };
 
   componentDidMount() {
@@ -166,10 +167,31 @@ class SeatChart extends Component {
   closePassengerModal = () => {
     this.setState({ modalShow: false });
   };
+
+  getSeatPicker = (rows, loading) => {
+    return (
+      <>
+        <SeatPicker
+          addSeatCallback={this.addSeatCallbackContinousCase}
+          removeSeatCallback={this.removeSeatCallback}
+          rows={rows}
+          maxReservableSeats={6}
+          alpha
+          visible
+          selectedByDefault
+          loading={loading}
+          tooltipProps={{ multiline: true }}
+          continuous
+          key={this.state.renderKey ? rows.length + 1 : rows.length}
+        />
+      </>
+    );
+  };
+
   render() {
     const { isAuthenticated } = this.props;
     if (!isAuthenticated) {
-      this.props.navigate('/login')
+      this.props.navigate("/login");
     }
     //send bus types
     const rows = SeatTypeData(
@@ -181,6 +203,7 @@ class SeatChart extends Component {
       { label: "Available Busses", url: "/" },
       { label: "Seat Selection", url: "/" },
     ];
+    const options = ["Upper Deck", "Lower Deck"];
     return (
       <>
         {isAuthenticated ? (
@@ -205,61 +228,33 @@ class SeatChart extends Component {
                   <div className="card" style={{ width: "20rem" }}>
                     {rows.length === 2 ? (
                       <>
+                        <SelectButton
+                          value={this.state.activeDeck}
+                          options={options}
+                          onChange={(e) =>
+                            this.setState({ activeDeck: e.value })
+                          }
+                        />
                         {rows.map((row, index) => {
                           return (
                             <>
-                              <div className={index === 1 ? "mt-8" : ""}>
-                                {index === 0 ? (
-                                  <label className="text-center">
-                                    <b>Lower Deck</b>
-                                  </label>
-                                ) : (
-                                  <label className="text-center">
-                                    <b>Upper Deck</b>
-                                  </label>
-                                )}
-                                <SeatPicker
-                                  addSeatCallback={
-                                    this.addSeatCallbackContinousCase
-                                  }
-                                  removeSeatCallback={this.removeSeatCallback}
-                                  rows={row}
-                                  maxReservableSeats={6}
-                                  alpha
-                                  visible
-                                  selectedByDefault
-                                  loading={loading}
-                                  tooltipProps={{ multiline: true }}
-                                  continuous
-                                  key={
-                                    this.state.renderKey
-                                      ? rows.length + 1
-                                      : rows.length
-                                  }
-                                />
-                              </div>
+                              {index === 0 &&
+                              this.state.activeDeck === "Upper Deck" ? (
+                                <>
+                                  {this.getSeatPicker(row, loading)}
+                                </>
+                              ) : index === 1 &&
+                                this.state.activeDeck === "Lower Deck" ? (
+                                <div>
+                                  {this.getSeatPicker(row, loading)}
+                                </div>
+                              ) : null}
                             </>
                           );
                         })}
                       </>
                     ) : (
-                      <>
-                        <SeatPicker
-                          addSeatCallback={this.addSeatCallbackContinousCase}
-                          removeSeatCallback={this.removeSeatCallback}
-                          rows={rows}
-                          maxReservableSeats={6}
-                          alpha
-                          visible
-                          selectedByDefault
-                          loading={loading}
-                          tooltipProps={{ multiline: true }}
-                          continuous
-                          key={
-                            this.state.renderKey ? rows.length + 1 : rows.length
-                          }
-                        />
-                      </>
+                      <>{this.getSeatPicker(rows, loading)}</>
                     )}
                   </div>
                 </div>
@@ -340,7 +335,9 @@ class SeatChart extends Component {
               closePassengerModal={this.closePassengerModal}
             />
           </>
-        ) : <h2>Redirecting to login.....</h2>}
+        ) : (
+          <h2>Redirecting to login.....</h2>
+        )}
       </>
     );
   }
