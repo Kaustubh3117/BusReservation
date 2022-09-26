@@ -40,7 +40,6 @@ export const AgentView = () => {
       axios
         .get(`${backendUrl}/agent_api/dash_board_view/${agentId}`)
         .then(function (response) {
-          alert("data");
           setProducts(response.data);
         });
     }
@@ -216,13 +215,14 @@ export const AgentView = () => {
   const imageBodyTemplate = (rowData) => {
     return (
       <img
-        src={`images/product/${rowData.image}`}
+        src={`http://127.0.0.1:8000/media/${rowData.image}`}
         onError={(e) =>
           (e.target.src =
             "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
         }
         alt={rowData.image}
         className="product-image"
+        width='90px'
       />
     );
   };

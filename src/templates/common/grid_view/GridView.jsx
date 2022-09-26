@@ -1,23 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { classNames } from "primereact/utils";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Checkbox } from "primereact/checkbox";
 import { Badge } from "primereact/badge";
-// import { ProductService } from '../service/ProductService';
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
-// import { Rating } from 'primereact/rating';
 import { Toolbar } from "primereact/toolbar";
 import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-// import './DataTableDemo.css';
-import { backendUrl } from "../../../environment/development";
 
 // import from helper
 import { SetInitialValues } from "./GridViewHelper";
@@ -25,9 +19,6 @@ import { SetInitialValues } from "./GridViewHelper";
 export const GridView = (props) => {
   const initialValues = SetInitialValues(props.formFields);
   let emptyProduct = initialValues;
-  const [date, setDate] = useState(null);
-  const [time, setTime] = useState(null);
-  const [products, setProducts] = useState(null);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
@@ -40,7 +31,6 @@ export const GridView = (props) => {
   const dt = useRef(null);
 
   useEffect(() => {
-    setProducts(props.data);
     setSubmitted(false);
   }, [props.data]);
 
@@ -106,39 +96,6 @@ export const GridView = (props) => {
     setDeleteProductDialog(false);
   };
   // end delete single row
-  const importCSV = (e) => {
-    const file = e.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const csv = e.target.result;
-      const data = csv.split("\n");
-      // Prepare DataTable
-      const cols = data[0].replace(/['"]+/g, "").split(",");
-      data.shift();
-
-      const importedData = data.map((d) => {
-        d = d.split(",");
-        const processedData = cols.reduce((obj, c, i) => {
-          c =
-            c === "Status"
-              ? "inventoryStatus"
-              : c === "Reviews"
-              ? "rating"
-              : c.toLowerCase();
-          obj[c] = d[i].replace(/['"]+/g, "");
-          (c === "price" || c === "rating") && (obj[c] = parseFloat(obj[c]));
-          return obj;
-        }, {});
-        // processedData["id"] = createId();
-        return processedData;
-      });
-
-      const _products = [...products, ...importedData];
-
-      setProducts(_products);
-    };
-    reader.readAsText(file, "UTF-8");
-  };
 
   const exportCSV = () => {
     dt.current.exportCSV();
@@ -178,14 +135,12 @@ export const GridView = (props) => {
     let _product = { ...product };
     _product[`${name}`] = e.value;
     setProduct(_product);
-    setTime(e.value);
   };
 
   const onDateChange = (e, name) => {
     let _product = { ...product };
     _product[`${name}`] = e.value;
     setProduct(_product);
-    // setDate(null);
   };
 
   const onCheckboxChecked = (e, name) => {
@@ -213,21 +168,15 @@ export const GridView = (props) => {
             type="button"
             icon="pi pi-trash"
             onClick={confirmDeleteSelected}
-            className="p-button-success mr-2"
+            className="p-button-danger mr-2"
             data-pr-tooltip="XLS"
             disabled={selectedRowData ? false : true}
           />
           <Button
             type="button"
-            icon="pi pi-upload"
-            className="p-button-warning mr-2"
-            data-pr-tooltip="PDF"
-          />
-          <Button
-            type="button"
             icon="pi pi-file-excel"
             onClick={exportCSV}
-            className="p-button-info ml-auto"
+            className="p-button-warning ml-auto"
             data-pr-tooltip="Selection Only"
           />
         </div>
