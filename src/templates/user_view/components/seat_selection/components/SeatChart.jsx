@@ -232,7 +232,8 @@ class SeatChart extends Component {
                           value={this.state.activeDeck}
                           options={options}
                           onChange={(e) =>
-                            this.setState({ activeDeck: e.value })
+                            e.value !== null ?  this.setState({ activeDeck: e.value }) : null
+                           
                           }
                         />
                         {rows.map((row, index) => {
