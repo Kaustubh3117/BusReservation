@@ -85,11 +85,11 @@ export const CheckoutForm = (props) => {
           alert(res.data.status);
         }
       },
-      prefill: {
-        name: "John Doe",
-        email: "doejon@example.com",
-        contact: "9999999999",
-      },
+      // prefill: {
+      //   name: "John Doe",
+      //   email: "doejon@example.com",
+      //   contact: "9999999999",
+      // },
       theme: {
         color: "#61dafb",
       },

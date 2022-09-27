@@ -13,12 +13,12 @@ import axios from "axios";
 import { backendUrl } from "../../../environment/development";
 import { ToastMessage } from "../../../middleware/ToastMessage";
 import { SUCCESS, ERROR } from "../../../constants/common/CrudMessageEnum";
+import { LOADING } from "../../../constants/common/CommonConstants";
+import { setLoading } from "../../../templates/user_view/UserHelper";
 
 export const setBoardingPointData = () => async (dispatch) => {
   try {
     const res = await axios.get(`${backendUrl}/api/boarding_point/`);
-    console.log("res: ", res);
-
     if (res.data !== null) {
       dispatch({
         type: REQUEST_ADD_BOARDINGPOINT_DATA,
@@ -58,14 +58,17 @@ export const setPassengerData = (payload) => async (dispatch) => {
       });
 };
 
-export const savePassengerData = (payload) => async () => {
+export const savePassengerData = (payload) => async (dispatch) => {
   const body = JSON.stringify({ payload });
+  setLoading(dispatch, LOADING, true)
   try {
       const res = await axios.post(`${backendUrl}/api/passenger_data/`, body, config);
       if(res.status === 200){
+       setLoading(dispatch, LOADING, false)
         ToastMessage(SUCCESS, "Your booking is Successfull. we have sent email with booking details.");
       }
   } catch (err) {  
+    setLoading(dispatch, LOADING, false)
       ToastMessage(ERROR, 'Your booking was unsuccessfull please contact admin if you are having problem with booking')
   }
 };
@@ -95,3 +98,4 @@ export const removeSeatData = () => (dispatch) =>{
     type: REMOVE_SEAT_DATA
   });
 }
+

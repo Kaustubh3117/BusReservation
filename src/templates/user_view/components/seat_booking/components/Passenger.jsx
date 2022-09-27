@@ -33,10 +33,6 @@ export const Passenger = () => {
     { name: "Female", value: "2" },
   ];
 
-//   const showCheckoutForm=()=>{
-// <CheckoutForm/>
-//   }
-
   return (
     <>
       <form className="p-fluid" onSubmit={()=>{dispatch(setShowNextModdal(true))}}>

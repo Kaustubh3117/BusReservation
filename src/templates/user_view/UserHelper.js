@@ -38,3 +38,10 @@ export const removeDuplicateArrayObject = (arr, type)=>{
   return data
   }
 }
+
+export const setLoading = (dispatch, type, flag)=>{
+  dispatch({
+    type: type,
+    payload: flag
+  })
+}

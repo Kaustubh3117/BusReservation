@@ -24,6 +24,8 @@ import { backendUrl } from '../../../environment/development';
 import { ToastMessage } from '../../../middleware/ToastMessage';
 import { SUCCESS, ERROR, WARNING } from '../../../constants/common/CrudMessageEnum';
 import { config } from '../../../environment/service';
+import { setLoading } from '../../../templates/user_view/UserHelper';
+import { LOADING } from '../../../constants/common/CommonConstants';
 
 export const load_user = () => async dispatch => {
     if (localStorage.getItem('access')) {
@@ -158,22 +160,21 @@ export const checkAuthenticated = () => async dispatch => {
 
 export const login = (email, password) => async dispatch => {
     const body = JSON.stringify({ email, password });
-
+ setLoading(dispatch, LOADING, true)
     try {
         const res = await axios.post(`${backendUrl}/auth/jwt/create/`, body, config);
-
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
         });
-
         dispatch(load_user());
+        setLoading(dispatch, LOADING, false)
         ToastMessage(SUCCESS, 'You are logged in successfully')
     } catch (err) {
         dispatch({
             type: LOGIN_FAIL
         })
-        console.log('login error..', err)
+        setLoading(dispatch, LOADING, false)
         if(err.response.data.detail !== undefined){
             ToastMessage(ERROR, "Please check email and password are entered correctly or Please register first.")
         }
@@ -183,19 +184,21 @@ export const login = (email, password) => async dispatch => {
 
 export const signup = (email, password, re_password, is_agent, mobile_number,city, pancard_number,organization_name) => async dispatch => {
     const body = JSON.stringify({ email, password, re_password, is_agent, mobile_number, city, pancard_number, organization_name });
+    setLoading(dispatch, LOADING, true)
     try {
         const res = await axios.post(`${backendUrl}/auth/users/`, body, config);
-
         dispatch({
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
+        setLoading(dispatch, LOADING, false)
         ToastMessage(SUCCESS, "Verification url sent to your email, please check your email")
 
     } catch (err) {
         dispatch({
             type: SIGNUP_FAIL
         })
+        setLoading(dispatch, LOADING, false)
         if(err.response.data.detail === undefined &&  err.response.data.email !== undefined){
             ToastMessage(ERROR, err.response.data.email[0])
         }
@@ -207,15 +210,12 @@ export const signup = (email, password, re_password, is_agent, mobile_number,cit
 
 export const verify = (uid, token) => async dispatch => {
     const body = JSON.stringify({ uid, token });
-console.log('activation..', body)
     try {
         await axios.post(`${backendUrl}/auth/users/activation/`, body, config);
-
         dispatch({
             type: ACTIVATION_SUCCESS,
         });
         ToastMessage(SUCCESS, "Registration successfull")
-
     } catch (err) {
         dispatch({
             type: ACTIVATION_FAIL
@@ -226,7 +226,6 @@ console.log('activation..', body)
 
 export const reset_password = (email) => async dispatch => {
     const body = JSON.stringify({ email });
-
     try {
         await axios.post(`${backendUrl}/auth/users/reset_password/`, body, config);
 

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import "./App.css";
 import { Provider } from 'react-redux';
 import store from './stores/store';
-
 // prime react
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
@@ -66,6 +65,7 @@ const App = () => (
                 </Routes>
             </Layout>
         </Router>
+        
     </Provider>
 );
 
