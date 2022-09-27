@@ -421,6 +421,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                       <div className="grid">
                         <div className="col">
                           <Button
+                            type="button"
                             className="p-button-outlined p-button-secondary mt-3 shadow-2"
                             onClick={continueWithGoogle}
                             style={{ width: "100%" }}
@@ -431,6 +432,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                         </div>
                         <div className="col">
                           <Button
+                            type="button"
                             className="p-button-outlined p-button-secondary mt-3 shadow-2"
                             onClick={continueWithFacebook}
                             style={{ width: "100%" }}

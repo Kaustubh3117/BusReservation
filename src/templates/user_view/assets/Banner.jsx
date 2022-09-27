@@ -6,7 +6,10 @@ import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-import { changeKeysFromObject, removeDuplicateArrayObject } from "../UserHelper";
+import {
+  changeKeysFromObject,
+  removeDuplicateArrayObject,
+} from "../UserHelper";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -46,14 +49,20 @@ const Banner = () => {
     }
   }, [navigate, formData]);
 
-  useEffect(()=>{
-    const filteredBpArray = removeDuplicateArrayObject(boardingPoint, 'boarding_point')
-    const filteredDpArray = removeDuplicateArrayObject(droppingPoint, 'dropping_point')
-    const resBpData = changeKeysFromObject(filteredBpArray)
+  useEffect(() => {
+    const filteredBpArray = removeDuplicateArrayObject(
+      boardingPoint,
+      "boarding_point"
+    );
+    const filteredDpArray = removeDuplicateArrayObject(
+      droppingPoint,
+      "dropping_point"
+    );
+    const resBpData = changeKeysFromObject(filteredBpArray);
     setBoardingPointRes(resBpData);
     const resDpData = changeKeysFromObject(filteredDpArray);
     setDroppingPointRes(resDpData);
-  },[boardingPoint, droppingPoint]);
+  }, [boardingPoint, droppingPoint]);
 
   const getFormErrorMessage = (name) => {
     return (
@@ -67,14 +76,9 @@ const Banner = () => {
         <div className=" p-6 text-center">
           <section>
             <span className="block text-6xl font-bold mb-1">Giyobus</span>
-            <div className="text-6xl text-primary font-bold mb-3">
-              your visitors deserve to see
+            <div className="text-4xl text-primary font-bold mb-3">
+              Book bus online with Giyobus
             </div>
-            <p className="mt-0 mb-4 text-700 line-height-3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-
             <div className="card">
               <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                 <div className="my-5 mx-6 formgrid grid">
@@ -120,7 +124,7 @@ const Banner = () => {
                   </div>
                   <div className="field col-3 md:col-6 lg:col-3">
                     <span className="p-float-label p-input-icon-right">
-                      <i className="pi pi-arrow-down-right" />
+                      <i className="pi pi-arrow-down-right"/>
                       <Controller
                         name="end_location"
                         control={control}

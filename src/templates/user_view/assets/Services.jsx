@@ -2,8 +2,8 @@ export const Services = () => {
   return (
     <div className="surface-0 text-center mt-3">
       <div className="mb-3 font-bold text-2xl">
-        <span className="text-6xl">One Product, </span>
-        <span className="text-indigo-500 text-6xl">Many Solutions</span>
+        <span className="text-6xl">Why Booking with  </span>
+        <span className="text-indigo-500 text-6xl">Giyobus</span>
       </div>
       <div className="text-xl mb-6">
         Ac turpis egestas maecenas pharetra convallis posuere morbi leo urna.

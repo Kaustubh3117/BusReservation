@@ -77,7 +77,7 @@ export const TripScheduleColumns = [{
 },
 {
     field: "bpdp_point",
-    header: "Boarding/Dropping Point",
+    header: "View Points",
     sortable: true,
     body: ''
 },
@@ -145,15 +145,15 @@ export const TicketColumns = [{
     sortable: true
 },
 {
-    field: "booked",
-    header: "Booked",
+    field: "status",
+    header: "Status",
     sortable: true
 },
-{
-    field: "canceled",
-    header: "Cancelled",
-    sortable: true
-}
+// {
+//     field: "canceled",
+//     header: "Cancelled",
+//     sortable: true
+// }
 ]
 
 export const PasengerColumns = [{

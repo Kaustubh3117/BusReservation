@@ -7,6 +7,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Dialog } from "primereact/dialog";
+import { Badge } from "primereact/badge";
 import axios from "axios";
 import { InputText } from "primereact/inputtext";
 import { backendUrl } from "../../environment/development";
@@ -63,29 +64,29 @@ export const AgentView = () => {
 
   const onHide = () => {
     setShowPointsDialog(false);
-    setShowTicketDialog(false)
+    setShowTicketDialog(false);
   };
 
   //footer for bp dp and ticket modals
   const renderFooter = () => {
     return (
       <div>
-        <Button
+        {/* <Button
           label="No"
           icon="pi pi-times"
           onClick={() => onHide()}
           className="p-button-text"
-        />
+        /> */}
         <Button
-          label="Yes"
-          icon="pi pi-check"
+          label="Close"
+          // icon="pi pi-check"
           onClick={() => onHide()}
           autoFocus
         />
       </div>
     );
   };
-   //end footer for bp dp and ticket modals
+  //end footer for bp dp and ticket modals
 
   // boaring dropping modal
   const showBpDpTemplate = () => {
@@ -138,6 +139,18 @@ export const AgentView = () => {
   };
   //!!!end boaring dropping modal
 
+  // ticket status body
+const ticketStatusBody = (data) =>{
+  return(
+    <>
+    {
+      data.booked ? <><Badge value="Booked" severity="success" /></>:<>  <Badge value="Cancelled" severity="danger" /></>
+    }
+    </>
+  )
+}
+  //end ticket status bosy
+
   // Ticket modal
   const ticketTemplate = () => {
     return (
@@ -150,16 +163,13 @@ export const AgentView = () => {
           onHide={() => onHide()}
         >
           <h1>Tickets</h1>
-          <DataTable
-            value={ticketData}
-            responsiveLayout="scroll"
-            showGridlines
-          >
+          <DataTable value={ticketData} responsiveLayout="scroll" showGridlines>
             {TicketColumns.map((ele) => {
               return (
                 <Column
                   field={ele.field}
                   header={ele.header}
+                  body={ele.field === 'status' ? ticketStatusBody :''}
                   sortable
                   headerStyle={{ width: "4rem" }}
                 ></Column>
@@ -190,30 +200,48 @@ export const AgentView = () => {
   };
   //!!!end ticket modal
 
-
-  //shows button in tripSchedule expand row 
+  //shows button in tripSchedule expand row
   const bpdpBodyTemplate = (data) => {
     return (
       <Button
-        icon="pi pi-search"
+        className="p-button-link"
         label="View Points"
         onClick={() => {
           setBoardingPointData(data.boarding_point);
           setDroppingPointData(data.dropping_point);
-          setShowPointsDialog(true)
+          setShowPointsDialog(true);
         }}
       />
     );
   };
-  //end shows button in tripSchedule expand row 
+  //end shows button in tripSchedule expand row
 
-  // shows button in tripSchedule expand row 
+  // shows button in tripSchedule expand row
   const ticketBodyTemplate = (data) => {
-    return <Button icon="pi pi-search" label="Views Tickets" onClick={() => {
-      setTicketData(data.ticket); setShowTicketDialog(true)
-    }} />;
+    return (
+      <Button
+        className="p-button-link"
+        label="Views Tickets"
+        onClick={() => {
+          setTicketData(data.ticket);
+          setShowTicketDialog(true);
+        }}
+      />
+    );
   };
-//end shows button in tripSchedule expand row 
+  //end shows button in tripSchedule expand row
+  const ticketStatusTemplate = (data) => {
+   return(
+    <>
+    {
+      data.status?<><Badge value="Booked" severity="success" /></>:<>  <Badge value="Cancelled" severity="danger" /></>
+    }
+    </>
+   )
+  };
+  // trip schedule status
+
+  //end of tripscheudle status
 
   const imageBodyTemplate = (rowData) => {
     return (
@@ -225,35 +253,32 @@ export const AgentView = () => {
         }
         alt={rowData.image}
         className="product-image"
-        width='90px'
+        width="90px"
       />
     );
   };
 
-
   const tripScheduleHeader = (
     <div className="table-header-container">
-<div className="table-header">
-  <span className="p-input-icon-left">
-    <i className="pi pi-search" />
-    <InputText
-      type="search"
-      onInput={
-        (e) => {
-          setGlobalScheduleFilter(e.target.value)
-        }
-      }
-      placeholder="Search..."
-    />
-  </span>
-</div>
+      <div className="table-header">
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+            type="search"
+            onInput={(e) => {
+              setGlobalScheduleFilter(e.target.value);
+            }}
+            placeholder="Search..."
+          />
+        </span>
+      </div>
     </div>
-);
+  );
 
   //expand row template
   const rowExpansionTemplate = (data) => {
     return (
-      <div className="orders-subtable bg-blue-100 px-4 py-4">
+      <div className="orders-subtable">
         <h3>Trip Schedule</h3>
         <DataTable
           value={data.tripSchedule}
@@ -272,7 +297,8 @@ export const AgentView = () => {
                     ? bpdpBodyTemplate
                     : ele.field === "tickets"
                     ? ticketBodyTemplate
-                    : ""
+                    : ele.field === 'status' ?
+                    ticketStatusTemplate : ''
                 }
                 sortable
                 headerStyle={{ width: "4rem" }}
@@ -285,29 +311,27 @@ export const AgentView = () => {
       </div>
     );
   };
-    //end expand row template
+  //end expand row template
 
-    const header = (
-        <div className="table-header-container">
-            {/* <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} className="mr-2" />
+  const header = (
+    <div className="table-header-container">
+      {/* <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} className="mr-2" />
             <Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} /> */}
-           
-    <div className="table-header">
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <InputText
-          type="search"
-          onInput={
-            (e) => {
-              setGlobalFilter(e.target.value)
-            }
-          }
-          placeholder="Search..."
-        />
-      </span>
+
+      <div className="table-header">
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+            type="search"
+            onInput={(e) => {
+              setGlobalFilter(e.target.value);
+            }}
+            placeholder="Search..."
+          />
+        </span>
+      </div>
     </div>
-        </div>
-    );
+  );
 
   return (
     <>
@@ -333,10 +357,10 @@ export const AgentView = () => {
                   rowExpansionTemplate={rowExpansionTemplate}
                   dataKey="id"
                   showGridlines
-                  scrollable 
-                  scrollHeight="500px" 
-                  virtualScrollerOptions={{ itemSize: 46 }}
-                  resizableColumns 
+                  // scrollable
+                  // scrollHeight="500px"
+                  // virtualScrollerOptions={{ itemSize: 46 }}
+                  resizableColumns
                   columnResizeMode="fit"
                 >
                   <Column expander style={{ width: "3em" }} />
