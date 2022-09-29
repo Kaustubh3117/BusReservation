@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { GiSteeringWheel } from "react-icons/gi";
 import { Button } from "primereact/button";
-import { SelectButton } from "primereact/selectbutton";
 import { ToastMessage } from "../../../../../middleware/ToastMessage";
 import { ERROR } from "../../../../../constants/common/CrudMessageEnum";
 import { BreadCrumbs } from "../../../../common/BreadCrumbs";
@@ -39,7 +38,6 @@ class SeatChart extends Component {
     reservedSeatData: null,
     seatChart: null,
     renderKey: false,
-    activeDeck: "Upper Deck",
   };
 
   componentDidMount() {
@@ -203,7 +201,6 @@ class SeatChart extends Component {
       { label: "Available Busses", url: "/" },
       { label: "Seat Selection", url: "/" },
     ];
-    const options = ["Upper Deck", "Lower Deck"];
     return (
       <>
         {isAuthenticated ? (
@@ -212,7 +209,7 @@ class SeatChart extends Component {
             <BreadCrumbs items={breadCrumbItems} />
             <div className="grid flex justify-content-center">
               <div
-                className="col-4 shadow-3"
+                className="col-4 shadow-3 px-6"
                 style={{ marginTop: "100px", border: "1px solid black" }}
               >
                 <div style={{ marginTop: "30px" }}>
@@ -228,28 +225,17 @@ class SeatChart extends Component {
                   <div className="card text-center" style={{ width: "20rem" }}>
                     {rows.length === 2 ? (
                       <>
-                        <SelectButton
-                          value={this.state.activeDeck}
-                          options={options}
-                          onChange={(e) =>
-                            e.value !== null ?  this.setState({ activeDeck: e.value }) : null
-                           
-                          }
-                        />
                         {rows.map((row, index) => {
                           return (
-                            <div className="mt-4">
-                              {index === 0 &&
-                              this.state.activeDeck === "Upper Deck" ? (
-                                <>
-                                  {this.getSeatPicker(row, loading)}
-                                </>
-                              ) : index === 1 &&
-                                this.state.activeDeck === "Lower Deck" ? (
-                                <div>
-                                  {this.getSeatPicker(row, loading)}
+                            <div className={index === 1 ? "mt-4" : ""}>
+                              {index === 0 ? (
+                                  <div className="border-500 border-2 py-2 px-2 bg-indigo-100"><b>Lower Deck</b></div>
+                                ) : (
+                                    <div className="border-500 border-2 py-2 px-2 bg-indigo-100"><b>Upper Deck</b></div>
+                                )}
+                                <div className="border-500 border-2 py-2 px-2 mt-2">
+                                {this.getSeatPicker(row, loading)}
                                 </div>
-                              ) : null}
                             </div>
                           );
                         })}
