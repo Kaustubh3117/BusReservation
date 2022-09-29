@@ -214,11 +214,11 @@ class SeatChart extends Component {
               >
                 <div style={{ marginTop: "30px" }}>
                   <div className="grid">
+                    <div className="col-6">
+                    <SeatColorDetails />
+                    </div>
                     <div className="col-4">
                       <GiSteeringWheel size={40} className="steeringWheel" />
-                    </div>
-                    <div className="col-6">
-                      <SeatColorDetails />
                     </div>
                   </div>
 
