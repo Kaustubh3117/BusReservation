@@ -16,6 +16,7 @@ import {
   ManageDeletePayload,
   ConvertToDropDownFormat,
 } from "./BoardingDroppingPointHelper";
+import { cloneDeep, merge } from "lodash";
 
 export const BoardingDroppingPointView = () => {
   const agentId = useSelector((state) => state?.auth?.user?.id);
@@ -23,29 +24,58 @@ export const BoardingDroppingPointView = () => {
   const [droppingPoint, setDroppingPoint] = useState([]);
   const [refreshData, setRefreshData] = useState(false);
   const [tripScheduleList, setTripScheduleList] = useState(null);
+  const [tripScheduleDropDown, setTripScheduleDropDown] = useState(null);
+
+  useEffect(() => {
+    if (agentId) {
+      axios
+        .get(`${backendUrl}/agent_api/tripschedule/${agentId}`)
+        .then(function (response) {
+          const tripScheduleDropDown = ConvertToDropDownFormat(response);
+          setTripScheduleList(response.data);
+          setTripScheduleDropDown(tripScheduleDropDown)
+        });
+    }
+  }, [refreshData]);
 
   useEffect(() => {
     if (agentId) {
       axios
         .get(`${backendUrl}/agent_api/boading_point/${agentId}`)
         .then(function (response) {
-          setBoardingPoint(response.data);
+          const data = mergeTripSchedule(response.data)
+          setBoardingPoint(data);
         });
+    }
+  }, [tripScheduleList]);
 
+  useEffect(() => {
+    if (agentId) {
       axios
         .get(`${backendUrl}/agent_api/dropping_point/${agentId}`)
         .then(function (response) {
-          setDroppingPoint(response.data);
-        });
-
-      axios
-        .get(`${backendUrl}/agent_api/tripschedule/${agentId}`)
-        .then(function (response) {
-          const resDataArr = ConvertToDropDownFormat(response);
-          setTripScheduleList(resDataArr);
+          const data = mergeTripSchedule(response.data)
+          setDroppingPoint(data);
         });
     }
-  }, [refreshData]);
+  }, [tripScheduleList]);
+
+  const mergeTripSchedule = (points)=>{
+    const data = cloneDeep(points)
+    tripScheduleList?.map((schedule)=>{
+      data.map((point)=>{
+        if(point.trip_schedule_id === schedule.id){
+          point['bus_name'] = schedule.bus_id.bus_name
+          point['bus_type'] = schedule.bus_id.bus_type
+          point['bus_no'] = schedule.bus_id.bus_no
+          point['trip_date'] = schedule.trip_date
+          point['arrival_time'] = schedule.arrival_time
+          point['departure_time'] = schedule.departure_time
+        }
+      })
+    })
+    return data
+  }
 
   const onFormSubmitHandler = (values, id) => {
     let bpFlag = false;
@@ -60,7 +90,7 @@ export const BoardingDroppingPointView = () => {
           .put(`${backendUrl}/agent_api/boading_point_crud/${id}`, values)
           .then((response) => {
             setRefreshData(!refreshData);
-            ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
+            ToastMessage(SUCCESS, "Boarding Point added Successfully.");
           })
           .catch((error) => {
             ToastMessage(ERROR, "Something went Wrong.");
@@ -70,7 +100,7 @@ export const BoardingDroppingPointView = () => {
           .post(`${backendUrl}/agent_api/boading_point_crud/`, values)
           .then((response) => {
             setRefreshData(!refreshData);
-            ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
+            ToastMessage(SUCCESS, "Boarding point added Successfully.");
           })
           .catch((error) => {
             ToastMessage(ERROR, "Something went Wrong.");
@@ -82,7 +112,7 @@ export const BoardingDroppingPointView = () => {
           .put(`${backendUrl}/agent_api/dropping_point_crud/${id}`, values)
           .then((response) => {
             setRefreshData(!refreshData);
-            ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
+            ToastMessage(SUCCESS, "Dropping point updated Successfully.");
           })
           .catch((error) => {
             ToastMessage(ERROR, "Something went Wrong.");
@@ -92,7 +122,7 @@ export const BoardingDroppingPointView = () => {
           .post(`${backendUrl}/agent_api/dropping_point_crud/`, values)
           .then((response) => {
             setRefreshData(!refreshData);
-            ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
+            ToastMessage(SUCCESS, "Dropping point updated Successfully.");
           })
           .catch((error) => {
             ToastMessage(ERROR, "Something went Wrong.");
@@ -123,7 +153,7 @@ export const BoardingDroppingPointView = () => {
         .post(`${backendUrl}/agent_api/delete_dropping_points/`, payload)
         .then((response) => {
           setRefreshData(!refreshData);
-          ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
+          ToastMessage(SUCCESS, "Dropping point deleted Successfully.");
         })
         .catch((err) => {
           ToastMessage(ERROR, "Something went Wrong.");
@@ -133,7 +163,7 @@ export const BoardingDroppingPointView = () => {
         .post(`${backendUrl}/agent_api/delete_boarding_points/`, payload)
         .then((response) => {
           setRefreshData(!refreshData);
-          ToastMessage(SUCCESS, "Trip Schedule deleted Successfully.");
+          ToastMessage(SUCCESS, "Boarding point deleted Successfully.");
         })
         .catch((err) => {
           ToastMessage(ERROR, "Something went Wrong.");
@@ -148,7 +178,7 @@ export const BoardingDroppingPointView = () => {
           <GridView
             columns={boardingDataTableColums}
             data={boardingPoint}
-            formFields={boardingPointFields(tripScheduleList)}
+            formFields={boardingPointFields(tripScheduleDropDown)}
             onFormSubmitHandler={onFormSubmitHandler}
             onDeleteClickHandler={deleteClickHandler}
           />
@@ -157,7 +187,7 @@ export const BoardingDroppingPointView = () => {
           <GridView
             columns={droppingDataTableColums}
             data={droppingPoint}
-            formFields={droppingPointFields(tripScheduleList)}
+            formFields={droppingPointFields(tripScheduleDropDown)}
             onFormSubmitHandler={onFormSubmitHandler}
             onDeleteClickHandler={deleteClickHandler}
           />
