@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <div className="bg-indigo-500 grid absolute" style={{ width: "100%", marginBottom:'0px' }}>
+    <div className="bg-indigo-500 grid" style={{ width: "100%" }}>
       <div className="flex mx-5 my-5">
         <div className="col-3">
           <ul style={{ listStyleType: "none" }}>

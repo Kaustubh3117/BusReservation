@@ -21,6 +21,7 @@ import { useForm, Controller } from "react-hook-form";
 
 import { USER } from "../../constants/accounts/account_constants";
 import { AGENT } from "../../constants/accounts/account_constants";
+import { Footer } from "../user_view/assets/Footer";
 
 const Signup = ({ signup, isAuthenticated }) => {
   const navigate = useNavigate();
@@ -462,6 +463,8 @@ const Signup = ({ signup, isAuthenticated }) => {
           </div>
         </div>
       </div>
+      <br/>
+      <Footer />
     </>
   );
 };

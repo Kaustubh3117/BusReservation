@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 import { CancelBookingValidation, ManageBookingApiCall, OnFormSubmitHandler } from "./ManageBookingHelper";
+import { Footer } from "../../assets/Footer";
 
 export const ManageBooking = () => {
   const navigate = useNavigate();
@@ -119,10 +120,10 @@ export const ManageBooking = () => {
                 <div className="grid">
                   <div className="col-2">
                     <img
-                      src=""
+                      src={data.ticketData.trip_schedule_id.bus_id.image}
                       className="mobile_image"
-                      height="100px"
-                      width="100px"
+                      // height="100px"
+                      width="200px"
                       alt="img"
                     />
                   </div>
@@ -261,6 +262,9 @@ export const ManageBooking = () => {
         />
       ) : null}
       </>: <h2>You are logged out please login</h2> }
+
+      <br/>
+      <Footer/>
     </>
   );
 };

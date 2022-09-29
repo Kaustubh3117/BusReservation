@@ -133,7 +133,7 @@ export const ManageTicketView = (props) => {
             <div className="grid">
               <div className="col-2">
                 <img
-                  src=""
+                  src={ticketData[0].ticketData.trip_schedule_id.bus_id.image}
                   className="mobile_image"
                   height="100px"
                   width="100px"

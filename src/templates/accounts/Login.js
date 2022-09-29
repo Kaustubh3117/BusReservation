@@ -16,6 +16,8 @@ import { Card } from "primereact/card";
 import { useForm, Controller } from "react-hook-form";
 import { USER } from "../../constants/accounts/account_constants";
 
+import { Footer } from "../user_view/assets/Footer";
+
 const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -82,7 +84,7 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
           <div className="grid">
             <div className="col-4"></div>
             <div className="col-4">
-              <Card className="shadow-4">
+            <div className="sign-up shadow-4">
                 <div className="my-5 mx-6">
                   <h1>Login</h1>
                   <span className="text-600 font-medium line-height-3">
@@ -184,12 +186,14 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
                     </div>
                   </form>
                 </div>
-              </Card>
+              </div>
             </div>
             <div className="col-4"></div>
           </div>
         </div>
       </div>
+      <br/>
+      <Footer />
     </>
   );
 };

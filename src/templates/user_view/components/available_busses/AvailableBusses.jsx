@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {BusDetailsCard} from "./components/BusDetailsCard"
 import { useLocation } from "react-router-dom";
 // import { MenuItems } from "./components/MenuItems";
@@ -18,10 +18,13 @@ import { FilterTripScheduleApi, OnFormSubmitHandler } from "./AvailableBusHelper
 import { SeatView } from "../seat_selection/SeatView";
 import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { WARNING } from "../../../../constants/common/CrudMessageEnum";
+import { Footer } from "../../assets/Footer";
+import { removeSeatData } from "../../../../stores/users/actions/UserAction";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [displayBasic, setDisplayBasic] = useState(false);
   const { start_location, end_location, date } = state;
   const [availableBusses, setAvailableBusses] = useState(null);
@@ -101,24 +104,15 @@ const renderHeader1 = () => {
   );
 };
 
-const onHide = (name) => {
+const onHide = () => {
+  dispatch(removeSeatData());
 setDisplayBasic(false)
 }
-
-// const renderFooter = (name) => {
-//   return (
-//       <div>
-//           <Button label="No" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
-//           <Button label="Yes" icon="pi pi-check" onClick={() => onHide(name)} autoFocus />
-//       </div>
-//   );
-// }
 
 const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Array.isArray(availableBusses) && availableBusses.length > 0?  availableBusses : Array.isArray(filteredData) && filteredData.length > 0 ?  filteredData : []
 
   return (
     <>
-   
       <BreadCrumbs items={breadCrumbItems} />
       {renderHeader1()}
       <div className="my-5 mx-5">
@@ -138,12 +132,6 @@ const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Arr
                   return (
                     <>
                       <BusDetailsCard data={data} />
-                      {/* <Link
-                        to={`/seat/${data.id}`}
-                        className="p-button availableBusButton"
-                      >
-                        View Seat
-                      </Link> */}
                       <Button label="View Seat" onClick={() => {setDisplayBasic(true); setViewSeatId(data.id)}} className="p-button availableBusButton" />
                     </>
                   );
@@ -154,9 +142,11 @@ const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Arr
       </div>
 
       <div className="col-12"></div>
-      <Dialog header="Seat View" visible={displayBasic} style={{ width: '70vw' }} onHide={() => onHide('displayBasic')}>
+      <Dialog header="Seat View" visible={displayBasic} style={{ width: '70vw' }} onHide={() => onHide()}>
     <SeatView id={viewSeatId}/>
 </Dialog>
+<br/>
+      <Footer/>
     </>
   );
 };

@@ -7,7 +7,7 @@ import { classNames } from "primereact/utils";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { useForm, Controller } from "react-hook-form";
-
+import {Footer} from '../user_view/assets/Footer'
 const ResetPassword = ({ reset_password }) => {
   const [requestSent, setRequestSent] = useState(false);
   const [formData, setFormData] = useState({});
@@ -99,6 +99,8 @@ const ResetPassword = ({ reset_password }) => {
           </div>
         </div>
       </div>
+      <br/>
+      <Footer />
     </>
   );
 };
