@@ -65,7 +65,7 @@ const NavigationBar = ({ logout }) => {
             }
         }
 
-        if(!isAgent){
+        // if(!isAgent){
             const manageBooking = {
                 label: 'Manage Booking',
                 icon: 'pi pi-fw pi-ticket',
@@ -87,7 +87,7 @@ const NavigationBar = ({ logout }) => {
                 ]
             }
             items.push(manageBooking)
-        }
+        // }
        
         items.push(email)
         items.push(authItems)
