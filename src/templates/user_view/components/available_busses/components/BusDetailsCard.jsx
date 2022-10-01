@@ -8,12 +8,12 @@ export const BusDetailsCard = (props) => {
     <>
       <Card className="shadow-5 mt-4" style={{ width: "100%" }}>
         <div className="grid">
-          <div className="col-2">
+          <div className="sm:col-6 md:col-2 lg:col-2">
             <Image src={props.data.bus_id.image} template="Preview Content" alt="Image Text" width="250" />
           </div>
           <div className="col-10">
             <div className="grid">
-              <div className="col-3">
+              <div className="sm:col-6 md:col-6 lg:col-3">
                 <ul style={{ listStyleType: "none" }}>
                   <li className="text-xl font-medium">{props.data.bus_id.bus_name}</li>
                   <li><b>From:</b> {props.data.fromLocation}</li>
@@ -21,7 +21,7 @@ export const BusDetailsCard = (props) => {
                 </ul>
               </div>
 
-              <div className="col-3">
+              <div className="sm:col-6 md:col-6 lg:col-3">
                 <ul style={{ listStyleType: "none" }}>
                 <li><b>Date:</b> {props.data.trip_date}</li>
                   <li><b>Departure time:</b> {props.data.departure_time}</li>
@@ -30,14 +30,14 @@ export const BusDetailsCard = (props) => {
                 </ul>
               </div>
 
-              <div className="col-3">
+              <div className="sm:col-6 md:col-6 lg:col-3">
                 <ul style={{ listStyleType: "none" }}>
                   <li><b>Bus No:</b>{props.data.bus_id.bus_no}</li>
                   <li><b>Bus Type:</b> {props.data.bus_id.bus_type}</li>
                   <li><b>Available Seats: </b>{props.data.available_seat}</li>
                 </ul>
               </div>
-              <div className="col-3">
+              <div className="sm:col-6 md:col-6 lg:col-3">
               <ul style={{ listStyleType: "none" }}>
               <li><b>INR:</b> {props.data.price}</li>
               <br/>

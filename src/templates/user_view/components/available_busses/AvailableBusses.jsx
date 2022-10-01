@@ -81,7 +81,6 @@ const renderHeader1 = () => {
         label="Search"
        type='submit'
        className="ml-2"
-     
       />
       <Button
       type='button'
