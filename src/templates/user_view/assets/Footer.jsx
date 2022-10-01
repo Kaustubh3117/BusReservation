@@ -1,40 +1,42 @@
 export const Footer = () => {
+  const data = [
+    {
+      title: "About Giyobus",
+      subTitle1: "From : Karad",
+      subTitle2: "From : Karad",
+      subTitle3: "From : Karad",
+    },
+    {
+      title: "About Giyobus",
+      subTitle1: "From : Karad",
+      subTitle2: "From : Karad",
+      subTitle3: "From : Karad",
+    },
+    {
+      title: "About Giyobus",
+      subTitle1: "From : Karad",
+      subTitle2: "From : Karad",
+      subTitle3: "From : Karad",
+    },
+    {
+      title: "About Giyobus",
+      subTitle1: "From : Karad",
+      subTitle2: "From : Karad",
+      subTitle3: "From : Karad",
+    },
+  ];
   return (
-    <div className="bg-indigo-500 grid mt-4" style={{ width: "100%" }}>
-      <div className="grid flex mx-5 my-5">
-        <div className="col-3">
-          <ul style={{ listStyleType: "none" }}>
-            <li className="text-xl font-medium">About Giyobus</li>
-            <li>From : Karad</li>
-            <li>A/C Sleeper</li>
-            <li>Amenities</li>
-          </ul>
-        </div>
-        <div className="col-3">
-          <ul style={{ listStyleType: "none" }}>
-            <li className="text-xl font-medium">Ganesh Travels</li>
-            <li>From : Karad</li>
-            <li>A/C Sleeper</li>
-            <li>Amenities</li>
-          </ul>
-        </div>
-        <div className="col-3">
-          <ul style={{ listStyleType: "none" }}>
-            <li className="text-xl font-medium">Ganesh Travels</li>
-            <li>From : Karad</li>
-            <li>A/C Sleeper</li>
-            <li>Amenities</li>
-          </ul>
-        </div>
-        <div className="col-3">
-          <ul style={{ listStyleType: "none" }}>
-            <li className="text-xl font-medium">Description</li>
-            <li>From : Karad</li>
-            <li>Phone: </li>
-            <li>Email: </li>
-          </ul>
-        </div>
-      </div>
+    <div className="grid surface-500 py-3">
+        {data.map((ele) => {
+          return(
+            <div className="sm:col-12 md:col-12 lg:col-3">
+              <div className="text-xl font-medium">{ele.title}</div>
+              <div>{ele.subTitle1}</div>
+              <div>{ele.subTitle2}</div>
+              <div>{ele.subTitle3}</div>
+            </div>
+          )
+        })}
     </div>
   );
 };

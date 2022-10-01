@@ -129,3 +129,12 @@ margin-top: 8px;
     z-index: 1;
 }
 /* END LOADING ANIMATION */
+
+/* Home page */
+.amenities{}
+@media screen and (max-width: 640px) {
+    .amenities{
+        width: 100%;
+    }
+}
+/* end home page */

@@ -40,7 +40,7 @@ export const Amenities = () => {
       <div className="grid">
         {data.map((ele) => {
           return (
-            <div className="sm:col-6 lg:col-3 mt-4 md:col-6" style={{width:'100%'}}>
+            <div className="sm:col-6 lg:col-3 mt-3 md:col-6 amenities">
               <div className="surface-card shadow-2 p-3 border-round">
                 <div className="flex justify-content-between mb-3">
                   <div>
