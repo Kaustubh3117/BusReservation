@@ -1,7 +1,7 @@
 export const Footer = () => {
   return (
-    <div className="bg-indigo-500 grid" style={{ width: "100%" }}>
-      <div className="flex mx-5 my-5">
+    <div className="bg-indigo-500 grid mt-4" style={{ width: "100%" }}>
+      <div className="grid flex mx-5 my-5">
         <div className="col-3">
           <ul style={{ listStyleType: "none" }}>
             <li className="text-xl font-medium">About Giyobus</li>

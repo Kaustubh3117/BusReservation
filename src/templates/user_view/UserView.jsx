@@ -12,7 +12,6 @@ const UserView = () => {
       <Services/>
       <SmallBanner/>
       <Amenities/>
-      <br/>
       <Footer />
     </>
   );
