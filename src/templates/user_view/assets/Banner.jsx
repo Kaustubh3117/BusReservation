@@ -82,7 +82,7 @@ const Banner = () => {
             <div className="card">
               <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                 <div className="lg:my-5 lg:mx-6 formgrid grid">
-                  <div className="field sm:col-6 md:col-6 lg:col-3">
+                  <div className="field sm:col-6 md:col-6 lg:col-3 bannerFields">
                     <span className="p-float-label p-input-icon-right">
                       <i className="pi pi-arrow-up-right" />
                       <Controller
@@ -122,7 +122,7 @@ const Banner = () => {
                     </span>
                     {getFormErrorMessage("start_location")}
                   </div>
-                  <div className="field sm:col-6 md:col-6 lg:col-3">
+                  <div className="field sm:col-6 md:col-6 lg:col-3 bannerFields">
                     <span className="p-float-label p-input-icon-right">
                       <i className="pi pi-arrow-down-right"/>
                       <Controller
@@ -156,7 +156,7 @@ const Banner = () => {
                     </span>
                     {getFormErrorMessage("end_location")}
                   </div>
-                  <div className="field sm:w-100 sm:col-6 md:col-6 lg:col-3">
+                  <div className="field sm:w-100 sm:col-6 md:col-6 lg:col-3 bannerFields">
                     <span className="p-float-label">
                       <Controller
                         name="date"
@@ -185,7 +185,7 @@ const Banner = () => {
                     </span>
                     {getFormErrorMessage("date")}
                   </div>
-                  <div className="sm:col-6 md:col-6 lg:col-3">
+                  <div className="sm:col-6 md:col-6 lg:col-3 bannerFields">
                     <Button type="submit" label="Check Availability" />
                   </div>
                 </div>

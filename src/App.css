@@ -132,8 +132,12 @@ margin-top: 8px;
 
 /* Home page */
 .amenities{}
+.bannerFields{}
 @media screen and (max-width: 640px) {
     .amenities{
+        width: 100%;
+    }
+    .bannerFields{
         width: 100%;
     }
 }
