@@ -130,15 +130,20 @@ margin-top: 8px;
 }
 /* END LOADING ANIMATION */
 
-/* Home page */
+/* Home page and available busses*/
 .amenities{}
 .bannerFields{}
+.availableBussesButtons{}
 @media screen and (max-width: 640px) {
     .amenities{
         width: 100%;
     }
     .bannerFields{
         width: 100%;
+    }
+    .availableBussesButtons{
+        width: 100%;
+        margin-top: 6px;
     }
 }
 /* end home page */
