@@ -5,7 +5,7 @@ import { login } from "../../stores/accounts/actions/AuthActions";
 import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 // prime React
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -18,10 +18,10 @@ import { USER } from "../../constants/accounts/account_constants";
 
 import { Footer } from "../user_view/assets/Footer";
 
-const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
+const Login = ({ login, isAuthenticated, isAgent, loadUser }) => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
-  
+
   const defaultValues = {
     email: "",
     password: "",
@@ -49,7 +49,7 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
       );
 
       window.location.replace(res.data.authorization_url);
-    } catch (err) { }
+    } catch (err) {}
   };
 
   const continueWithFacebook = async () => {
@@ -59,17 +59,20 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
       );
 
       window.location.replace(res.data.authorization_url);
-    } catch (err) { }
+    } catch (err) {}
   };
- useEffect(()=>{
-  if (isAuthenticated && isAgent !== undefined && isAgent !== null && isAgent ) {
-    navigate('/agentView');
-  }
-  else if(isAuthenticated){
-    navigate('/');
-  }
- }, [loadUser])
-  
+  useEffect(() => {
+    if (
+      isAuthenticated &&
+      isAgent !== undefined &&
+      isAgent !== null &&
+      isAgent
+    ) {
+      navigate("/agentView");
+    } else if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [loadUser]);
 
   const getFormErrorMessage = (name) => {
     return (
@@ -83,13 +86,18 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
         <div className="text-center">
           <div className="grid">
             <div className="col-4"></div>
-            <div className="col-4">
-            <div className="sign-up shadow-4">
+            <div className="sm:col-6 lg:col-4">
+              <div className="sign-up shadow-4">
                 <div className="my-5 mx-6">
                   <h1>Login</h1>
                   <span className="text-600 font-medium line-height-3">
-                    Don't have an account?<Button type="button" label="Create today!" className="p-button-link" onClick={()=>navigate(`/signup/${USER}`)}/>
-
+                    Don't have an account?
+                    <Button
+                      type="button"
+                      label="Create today!"
+                      className="p-button-link"
+                      onClick={() => navigate(`/signup/${USER}`)}
+                    />
                   </span>
                   <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                     <div className="field mt-4">
@@ -188,11 +196,11 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
                 </div>
               </div>
             </div>
-            <div className="col-4"></div>
+            <div className="sm:col-6 lg:col-4"></div>
           </div>
         </div>
       </div>
-      <br/>
+      <br />
       <Footer />
     </>
   );
@@ -201,7 +209,7 @@ const Login = ({ login, isAuthenticated, isAgent,loadUser }) => {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   isAgent: state?.auth?.user?.is_agent,
-  loadUser: state?.auth?.user
+  loadUser: state?.auth?.user,
 });
 
 export default connect(mapStateToProps, { login })(Login);

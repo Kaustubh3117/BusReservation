@@ -132,7 +132,7 @@ const Signup = ({ signup, isAuthenticated }) => {
         <div className=" text-center">
           <div className="grid">
             <div className="col-4"></div>
-            <div className="col-4">
+            <div className="sm:col-6 lg:col-4">
               <div className="sign-up shadow-4">
                 <div className="my-5 mx-6">
                   {userType === "AGENT" ? (
@@ -459,7 +459,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                 </div>
               </div>
             </div>
-            <div className="col-4"></div>
+            <div className="sm:col-6 lg:col-4"></div>
           </div>
         </div>
       </div>

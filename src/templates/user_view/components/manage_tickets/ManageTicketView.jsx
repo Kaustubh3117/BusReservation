@@ -122,7 +122,7 @@ export const ManageTicketView = (props) => {
       <Dialog
         header={ticketData !== null && ticketData.length > 0 ? ticketData[0].ticketData.trip_schedule_id.bus_id.bus_name : ''}
         visible={props.showDialog}
-        style={{ width: "70vw" }}
+        className='seatChartDialog'
         footer={
           ticketData !== null && ticketData.length > 0 ? renderFooter() : null
         }
@@ -131,7 +131,7 @@ export const ManageTicketView = (props) => {
         {ticketData !== null && ticketData.length > 0 ? (
           <>
             <div className="grid">
-              <div className="col-2">
+              <div className="sm:col-6 lg:col-2">
                 <img
                   src={ticketData[0].ticketData.trip_schedule_id.bus_id.image}
                   className="mobile_image"
@@ -142,7 +142,7 @@ export const ManageTicketView = (props) => {
               </div>
               <div className="col-10">
                 <div className="grid">
-                  <div className="col-3">
+                  <div className="sm:col-6 lg:col-3">
                     <ul style={{ listStyleType: "none" }}>
                       {/* <li className="text-xl font-medium">
                         {
@@ -165,7 +165,7 @@ export const ManageTicketView = (props) => {
                     </ul>
                   </div>
 
-                  <div className="col-3">
+                  <div className="sm:col-6 lg:col-3">
                     <ul style={{ listStyleType: "none" }}>
                       <li>
                         <b>Date:</b>{" "}
@@ -187,7 +187,7 @@ export const ManageTicketView = (props) => {
                     </ul>
                   </div>
 
-                  <div className="col-3">
+                  <div className="sm:col-6 lg:col-3">
                     <ul style={{ listStyleType: "none" }}>
                       <li>
                         <b>Bus No:</b>{" "}
