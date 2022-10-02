@@ -170,8 +170,9 @@ export const AvailableBusses = () => {
       <Dialog
         header="Seat View"
         visible={displayBasic}
-        style={{ width: "70vw" }}
+        // style={{ width: "70vw" }}
         onHide={() => onHide()}
+        className='seatChartDialog'
       >
         <SeatView id={viewSeatId} />
       </Dialog>

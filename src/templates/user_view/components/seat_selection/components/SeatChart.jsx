@@ -209,7 +209,7 @@ class SeatChart extends Component {
             <BreadCrumbs items={breadCrumbItems} />
             <div className="grid flex justify-content-center">
               <div
-                className="col-4 shadow-3 px-6"
+                className="sm:col-6 lg:col-4 shadow-3 px-6"
                 style={{ marginTop: "100px", border: "1px solid black" }}
               >
                 <div style={{ marginTop: "30px" }}>
@@ -247,7 +247,7 @@ class SeatChart extends Component {
                 </div>
               </div>
 
-              <div className="col-4">
+              <div className="sm:col-6 lg:col-4 priceSection">
                 <div className="seatPriceSection shadow-3">
                   <>
                     {/* pricing and booking */}
