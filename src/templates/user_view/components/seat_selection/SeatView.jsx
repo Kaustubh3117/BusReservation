@@ -7,9 +7,13 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { getTripScheduleBpDpArray } from "./SeatHelper";
 import { changeKeysNamesFromObjectForRadio } from "./SeatHelper";
+import { setLoading } from "../../UserHelper";
+import { useDispatch } from "react-redux";
+import { LOADING } from "../../../../constants/common/CommonConstants";
 
 export const SeatView = (props) => {
   // const { id } = useParams();
+  const dispatch =useDispatch()
   const navigate = useNavigate();
   const tripSheduleId = parseInt(props.id);
   const [tripSchedule, setTripSchedule] = useState(null);
@@ -28,8 +32,10 @@ export const SeatView = (props) => {
   };
 
   useEffect(() => {
+    setLoading(dispatch, LOADING, true)
     axios.get(`${backendUrl}/api/view_seat/${props.id}`).then(function (response) {
       setTripSchedule(response.data);
+      setLoading(dispatch, LOADING, false)
     });
   }, []);
 

@@ -164,3 +164,11 @@ margin-top: 8px;
     }
 }
 /* end home page */
+
+.loadingStyle{
+    background: rgba(255,255,255,0.7);
+    position: fixed;
+    z-index: 2;
+    height: 100% !important;
+    width: 100% !important;
+}

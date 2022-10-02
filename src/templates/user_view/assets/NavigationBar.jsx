@@ -148,7 +148,7 @@ const NavigationBar = ({ logout }) => {
     const end = null
     return (
         <>
-            <Menubar model={items} start={start} end={end} />
+            <Menubar model={items} start={start} end={end} className='z-3'/>
             {isAuthenticated && userEmail !== null && showTicketDialog && !displayTicketDetialsModal ? getTicketModal() : null}
             {isAuthenticated && userEmail !== null && !showTicketDialog && displayTicketDetialsModal ? getTicketDetailsModal() : null}
         </>

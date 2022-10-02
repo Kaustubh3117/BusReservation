@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { backendUrl } from "../../../../environment/development";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
@@ -14,9 +14,12 @@ import { useNavigate } from 'react-router-dom';
 import { ManageTicketView } from "../manage_tickets/ManageTicketView";
 import { CancelBookingValidation, ManageBookingApiCall, OnFormSubmitHandler } from "./ManageBookingHelper";
 import { Footer } from "../../assets/Footer";
+import { setLoading } from "../../UserHelper";
+import { LOADING } from "../../../../constants/common/CommonConstants";
 
 export const ManageBooking = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const AuthenticatedUserId = useSelector((state) =>
     state.auth.user !== null ? state.auth.user.id : null
@@ -46,10 +49,12 @@ export const ManageBooking = () => {
   }, [AuthenticatedUserId, isAuthenticated, cancelBookingStatus]);
 
   const onCancelBookingClick = (ticket_id) => {
+    setLoading(dispatch, LOADING, true)
     axios
       .post(`${backendUrl}/api/cancel_booking_view/${ticket_id}`)
       .then(function (response) {
         if (response.status === 200) {
+          setLoading(dispatch, LOADING, false)
           ToastMessage(SUCCESS, "Booking Cancelled Successfully");
           setCancelBookingStatus(true);
         }

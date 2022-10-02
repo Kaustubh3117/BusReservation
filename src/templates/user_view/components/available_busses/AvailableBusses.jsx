@@ -23,6 +23,8 @@ import { ToastMessage } from "../../../../middleware/ToastMessage";
 import { WARNING } from "../../../../constants/common/CrudMessageEnum";
 import { Footer } from "../../assets/Footer";
 import { removeSeatData } from "../../../../stores/users/actions/UserAction";
+import { setLoading } from "../../UserHelper";
+import { LOADING } from "../../../../constants/common/CommonConstants";
 
 export const AvailableBusses = () => {
   const { state } = useLocation();
@@ -39,6 +41,7 @@ export const AvailableBusses = () => {
 
   useEffect(() => {
     const dateChanged = changeDateFormat(date);
+    setLoading(dispatch, LOADING, true)
     axios
       .get(
         `${backendUrl}/api/filter_trip_schedule/${start_location}/${end_location}/${dateChanged}`
@@ -50,6 +53,7 @@ export const AvailableBusses = () => {
           droppingPoint
         );
         setAvailableBusses(filterTripScheduleResData);
+        setLoading(dispatch, LOADING, false)
       });
   }, []);
 
