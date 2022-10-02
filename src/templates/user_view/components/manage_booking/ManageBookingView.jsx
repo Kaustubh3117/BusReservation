@@ -78,30 +78,48 @@ export const ManageBooking = () => {
 
   const renderHeader1 = () => {
     return (
-      <div className="flex justify-content-between manageBookingFilter">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText
-           placeholder="Keyword Search"
-           {...register("globalSearch")}
-          />
-        </span>
+      <Card className="shadow-4 mt-3">
+      <div className="grid manageBookingFilter">
+        <div className="sm:col-6 lg:col-3">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <span className="p-input-icon-left">
+              <i className="pi pi-search" />
+              <InputText
+                placeholder="Keyword Search"
+                {...register("globalSearch")}
+              />
+            </span>
+            <Button
+              type="submit"
+              icon="pi pi-search"
+              className="p-button ml-2 p-button-secondary"
+              aria-label="search"
+            />
+            <Button
+            type="button"
+              icon="pi pi-times"
+              onClick={() => {
+                setFilteredData([]);
+                setValue("globalSearch", "");
+              }}
+              className="p-button ml-2 p-button-secondary"
+              aria-label="clearfilter"
+            />
+          </form>
+        </div>
+        <div className="sm:col-6 lg:col-2 availableBussesButtons">
           <Button
-          label="Search"
-         type='submit'
-         className="ml-2"
-       
-        />
-        <Button
-          label="Clear Filter"
-          icon="pi pi-times"
-          onClick={() =>{setFilteredData([]); setValue('globalSearch', '')}}
-          className="p-button-warning ml-4"
-          autoFocus
-        />
-        </form>
+            type="button"
+            label="Change Date"
+            icon="pi pi-calendar"
+            onClick={() => navigate("/")}
+            className="p-button availableBussesButtons"
+            autoFocus
+          />
+        </div>
+        <div className="lg:col-7"></div>
       </div>
+    </Card>
     );
   };
   const cardData = Array.isArray(filteredData) && filteredData.length === 0 && Array.isArray(ticketData) && ticketData.length > 0?  ticketData : Array.isArray(filteredData) && filteredData.length > 0 ?  filteredData : []
@@ -118,7 +136,7 @@ export const ManageBooking = () => {
             <div className="flex justify-content-center">
               <Card className="shadow-5 mt-4" style={{ width: "90%" }}>
                 <div className="grid">
-                  <div className="col-2">
+                  <div className="sm:col-6 lg:col-2">
                     <img
                       src={data.ticketData.trip_schedule_id.bus_id.image}
                       className="mobile_image"
@@ -129,7 +147,7 @@ export const ManageBooking = () => {
                   </div>
                   <div className="col-10">
                     <div className="grid">
-                      <div className="col-3">
+                      <div className="sm:col-6 lg:col-3">
                         <ul style={{ listStyleType: "none" }}>
                           <li className="text-xl font-medium">
                             {data.ticketData.trip_schedule_id.bus_id.bus_name}
@@ -146,7 +164,7 @@ export const ManageBooking = () => {
                         </ul>
                       </div>
 
-                      <div className="col-3">
+                      <div className="sm:col-6 lg:col-3">
                         <ul style={{ listStyleType: "none" }}>
                           <li>
                             <b>Date:</b>{" "}
@@ -167,7 +185,7 @@ export const ManageBooking = () => {
                         </ul>
                       </div>
 
-                      <div className="col-3">
+                      <div className="sm:col-6 lg:col-3">
                         <ul style={{ listStyleType: "none" }}>
                           <li>
                             <b>Bus No:</b>{" "}
@@ -187,7 +205,7 @@ export const ManageBooking = () => {
                           </li>
                         </ul>
                       </div>
-                      <div className="col-3">
+                      <div className="sm:col-6 lg:col-3">
                         <ul style={{ listStyleType: "none" }}>
                           <li>
                             <b>INR:</b>{" "}
@@ -243,14 +261,13 @@ export const ManageBooking = () => {
         })
       ) : Array.isArray(ticketData) && ticketData.length === 0 ? (
         <div className="text-center mt-8">
-          <span className="flex justify-content-center  text-8xl">
-            No Ticket
-          </span>
+          <p className="flex justify-content-center">
+            <span className="sm:text-4xl md:text-4xl lg:text-8xl">
+            No Ticket Available
+            </span>
+          </p>
           <div id="info">
-            <h3 className="flex justify-content-center ">
-              No Ticket Available.
-            </h3>
-            <a href="/">Please Book your seat</a>
+            <a href="#">Please Book your seat</a>
           </div>
         </div>
       ) : null}

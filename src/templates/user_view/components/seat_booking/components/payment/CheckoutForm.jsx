@@ -48,7 +48,6 @@ export const CheckoutForm = (props) => {
     });
 
     const { amount, currency, order_id } = paymentData.data;
-
     const options = {
       key: "rzp_test_0byzGAVeUBt6CU", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
@@ -85,11 +84,11 @@ export const CheckoutForm = (props) => {
           alert(res.data.status);
         }
       },
-      // prefill: {
-      //   name: "John Doe",
-      //   email: "doejon@example.com",
-      //   contact: "9999999999",
-      // },
+      prefill: {
+        name: "John Doe",
+        email: "doejon@example.com",
+        contact: "9999999999",
+      },
       theme: {
         color: "#61dafb",
       },

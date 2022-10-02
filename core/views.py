@@ -160,7 +160,8 @@ class PaymentView(APIView):
         global client
         client = razorpay.Client(auth=("rzp_test_0byzGAVeUBt6CU", "N6J9PAxwcQIDlxID0CwCL4K5"))
         res_total_price = request.data['amount']
-        data = {"amount" : float(res_total_price), "currency" : "INR"}
+        razorpay_converted_amount = float(res_total_price) * 100
+        data = {"amount" : razorpay_converted_amount, "currency" : "INR"}
         payment = client.order.create(data=data)
         return_res_data = {'order_id': payment['id'], 'amount': payment['amount'], 'currency':payment['currency']}
         return Response(return_res_data, status=HTTP_200_OK)
