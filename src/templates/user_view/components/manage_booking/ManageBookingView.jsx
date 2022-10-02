@@ -38,12 +38,14 @@ export const ManageBooking = () => {
 
   useEffect(() => {
     if (AuthenticatedUserId !== null) {
+      setLoading(dispatch, LOADING, true)
       axios
         .get(`${backendUrl}/api/manage_booking/${AuthenticatedUserId}`)
         .then(function (response) {
           const data = response.data;
           const responseData = ManageBookingApiCall(data)
           setTicketData(responseData);
+          setLoading(dispatch, LOADING, false)
         });
     }
   }, [AuthenticatedUserId, isAuthenticated, cancelBookingStatus]);
@@ -111,16 +113,6 @@ export const ManageBooking = () => {
               aria-label="clearfilter"
             />
           </form>
-        </div>
-        <div className="sm:col-6 lg:col-2 availableBussesButtons">
-          <Button
-            type="button"
-            label="Change Date"
-            icon="pi pi-calendar"
-            onClick={() => navigate("/")}
-            className="p-button availableBussesButtons"
-            autoFocus
-          />
         </div>
         <div className="lg:col-7"></div>
       </div>
