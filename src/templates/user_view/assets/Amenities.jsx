@@ -28,7 +28,7 @@ export const Amenities = () => {
   ];
 
   return (
-    <div className="surface-ground px-4 py-5 md:px-6 lg:px-8">
+    <div className="px-4 py-5 md:px-6 lg:px-8">
       <div className="mb-3  text-center">
         <span className="text-6xl font-bold text-2xl">Amenities</span>
         {/* <span className="text-indigo-500 text-6xl">Amenities we provide</span> */}
