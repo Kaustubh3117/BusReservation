@@ -4,15 +4,21 @@ import { Footer } from "./assets/Footer";
 import {Services} from "./assets/Services";
 import { Amenities } from "./assets/Amenities";
 import { SmallBanner } from "./assets/SmallBanner";
+import { InfoSection } from "./assets/InfoSection";
+import { SmallFooter } from "./assets/SmallFooter";
+
 const UserView = () => {
   return (
     <>
       <Banner />
-      <Carousels />
       <Services/>
-      <SmallBanner/>
+      <Carousels />
+      <InfoSection/>
       <Amenities/>
+      <SmallBanner/>
+      <SmallFooter/>
       <Footer />
+      <SmallFooter/>
     </>
   );
 };

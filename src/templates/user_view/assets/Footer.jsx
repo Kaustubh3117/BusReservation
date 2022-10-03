@@ -26,7 +26,7 @@ export const Footer = () => {
     },
   ];
   return (
-    <div className="grid bg-cyan-50 py-3">
+    <div className="grid flex align-items-between justify-content-between bg-primary py-3">
         {data.map((ele) => {
           return(
             <div className="sm:col-12 md:col-12 lg:col-3">

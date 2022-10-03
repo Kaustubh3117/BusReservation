@@ -72,14 +72,14 @@ const Banner = () => {
 
   return (
     <>
-      <div className="bg-indigo-200 surface-0 text-800">
+      <div className="banner surface-0 text-800">
         <div className=" p-6 text-center">
           <section>
             <span className="block text-6xl font-bold mb-1">Giyobus</span>
             <div className="lg:text-4xl sm:text-3xl text-primary font-bold mb-3">
               Book bus online with Giyobus
             </div>
-            <div className="card">
+            <div className="search_containers">
               <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                 <div className="lg:my-5 lg:mx-6 formgrid grid">
                   <div className="field sm:col-6 md:col-6 lg:col-3 bannerFields">

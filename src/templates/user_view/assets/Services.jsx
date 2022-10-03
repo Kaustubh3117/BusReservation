@@ -1,6 +1,7 @@
 import { FaTicketAlt, FaHeadphones, FaBus } from "react-icons/fa";
 import { AiFillCreditCard } from "react-icons/ai";
 import { GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi";
+import { Card } from 'primereact/card';
 
 export const Services = () => {
   const gridData1 = [
@@ -9,7 +10,7 @@ export const Services = () => {
       description: "You can book ticket online from anywhere.",
       icon: "ticket",
       iconSize: "80px",
-      iconColor: "text-blue-500",
+      iconColor: "text-pink-600",
     },
     {
       title: "Online Payment",
@@ -23,7 +24,7 @@ export const Services = () => {
       description: "we provide you customer support.",
       icon: "customer",
       iconSize: "80px",
-      iconColor: "text-blue-500",
+      iconColor: "text-purple-500",
     },
   ];
 
@@ -33,14 +34,14 @@ export const Services = () => {
       description: "Refund available if anything goes wrong.",
       icon: "refund",
       iconSize: "80px",
-      iconColor: "text-blue-500",
+      iconColor: "text-yellow-600",
     },
     {
       title: "Low Rates",
       description: "Online Bus Ticket Booking at Lowest Price",
       icon: "money",
       iconSize: "80px",
-      iconColor: "text-blue-500",
+      iconColor: "text-teal-600",
     },
     {
       title: "Asured travel",
@@ -48,16 +49,16 @@ export const Services = () => {
         "Insure journey with Giyobus. We provide bus cancellation and refunds.",
       icon: "bus",
       iconSize: "80px",
-      iconColor: "text-blue-500",
+      iconColor: "text-orange-500",
     },
   ];
 
   const getCards = (ele) => {
     return (
       <>
-        <div className="sm:col-6 lg:col-4 md:col-4 mb-4 px-5">
+        <Card className="sm:col-6 shadow-4 lg:col-3 md:col-4 mb-4 px-5 ml-3 mr-3 serviceCard">
           <span
-            className="p-3 shadow-2 mb-3 inline-block"
+            className="p-3 mb-3 inline-block"
             style={{ borderRadius: "10px" }}
           >
             <i className={`${ele.icon} text-4xl ${ele.iconColor}`}></i>
@@ -79,7 +80,7 @@ export const Services = () => {
           <span className="text-lg text-sm line-height-3">
             {ele.description}
           </span>
-        </div>
+        </Card>
       </>
     );
   };
@@ -95,12 +96,12 @@ export const Services = () => {
       <div className="text-xl mb-6">
         Ac turpis egestas maecenas pharetra convallis posuere morbi leo urna.
       </div>
-      <div className="grid">
+      <div className="grid flex justify-content-center">
         {gridData1.map((ele) => {
           return <>{getCards(ele)}</>;
         })}
       </div>
-      <div className="grid">
+      <div className="grid flex justify-content-center">
         {gridData2.map((ele) => {
           return <>{getCards(ele)}</>;
         })}

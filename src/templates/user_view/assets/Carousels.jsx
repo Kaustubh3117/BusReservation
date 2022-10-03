@@ -1,4 +1,5 @@
 import { Carousel } from "primereact/carousel";
+import carousal from '../../../img/carousal.jpg'
 
 const template = (product) => {
   return (
@@ -6,18 +7,18 @@ const template = (product) => {
       <div className="product-item-content">
         <div className="mb-3">
           <img
-            src={`images/product/${product.image}`}
+            src={carousal}
             onError={(e) =>
               (e.target.src =
                 "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
             }
             alt={product.name}
             className="product-image"
+            width='240px'
           />
         </div>
         <div>
           <h4 className="mb-1">{product.name}</h4>
-          <h6 className="mt-0 mb-3">${product.price}</h6>
           <span
             className={`product-badge status-${product.inventoryStatus.toLowerCase()}`}
           >
@@ -54,7 +55,6 @@ export const Carousels = () => {
       name: "Bamboo Watch",
       description: "Product Description",
       image: "bamboo-watch.jpg",
-      price: 65,
       category: "Accessories",
       quantity: 24,
       inventoryStatus: "INSTOCK",
@@ -66,7 +66,6 @@ export const Carousels = () => {
       name: "Black Watch",
       description: "Product Description",
       image: "black-watch.jpg",
-      price: 72,
       category: "Accessories",
       quantity: 61,
       inventoryStatus: "INSTOCK",
@@ -78,7 +77,6 @@ export const Carousels = () => {
       name: "Blue Band",
       description: "Product Description",
       image: "blue-band.jpg",
-      price: 79,
       category: "Fitness",
       quantity: 2,
       inventoryStatus: "LOWSTOCK",
@@ -90,7 +88,6 @@ export const Carousels = () => {
       name: "Blue T-Shirt",
       description: "Product Description",
       image: "blue-t-shirt.jpg",
-      price: 29,
       category: "Clothing",
       quantity: 25,
       inventoryStatus: "INSTOCK",
@@ -102,7 +99,6 @@ export const Carousels = () => {
       name: "Bracelet",
       description: "Product Description",
       image: "bracelet.jpg",
-      price: 15,
       category: "Accessories",
       quantity: 73,
       inventoryStatus: "INSTOCK",
@@ -114,7 +110,6 @@ export const Carousels = () => {
       name: "Brown Purse",
       description: "Product Description",
       image: "brown-purse.jpg",
-      price: 120,
       category: "Accessories",
       quantity: 0,
       inventoryStatus: "OUTOFSTOCK",
@@ -122,7 +117,7 @@ export const Carousels = () => {
     },
   ];
   return (
-    <div className="bg-cyan-50 mt-5 text-center">
+    <div className="section_background text-center">
       <div className="">
         <div className="mb-3">
           <span className="md:text-6xl sm:text-6xl lg:text-6xl font-bold">

@@ -138,7 +138,7 @@ export const ManageBooking = () => {
                       src={data.ticketData.trip_schedule_id.bus_id.image}
                       className="mobile_image"
                       // height="100px"
-                      width="200px"
+                      width="150px"
                       alt="img"
                     />
                   </div>

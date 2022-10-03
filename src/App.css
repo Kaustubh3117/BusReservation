@@ -133,12 +133,34 @@ margin-top: 8px;
 /* END LOADING ANIMATION */
 
 /* Home page and available busses*/
+.banner{
+    background-image: url('../src/img/banner.jpg');
+    height: 500px;
+    width: 100%;
+}
+.search_containers {
+    width: 1224px;
+    height: 152px;
+    padding: 15px 0px 0px 0px;
+    background: rgba(11, 13, 24, 0.6);
+    margin: 265px auto;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -o-border-radius: 10px;
+    -ms-border-radius: 10px;
+    margin-top: 30px;
+}
+.section_background {
+    background-color: #f5f8fe;
+}
 .amenities{}
 .bannerFields{}
 .availableBussesButtons{}
 .seatChartDialog{
     width: 70vw;
 }
+
 .availableBusButton{
     float: right;
     margin-top: -49px !important; 
@@ -161,6 +183,15 @@ margin-top: 8px;
     }
     .availableBusButton{
         width: 99%;
+    }
+    .search_containers {
+        width: 124%;
+        height: 295px;
+        margin-left: -34px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
     }
 }
 /* end home page */

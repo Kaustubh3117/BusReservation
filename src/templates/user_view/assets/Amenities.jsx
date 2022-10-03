@@ -1,29 +1,76 @@
+import { RiBattery2ChargeLine, RiHammerFill, RiLightbulbFlashFill } from "react-icons/ri";
+import { FaPhotoVideo, FaWifi } from "react-icons/fa";
+import { AiOutlineFire } from "react-icons/ai";
+import {HiLocationMarker} from 'react-icons/hi';
+import {MdOutlineAir} from 'react-icons/md';
+
 export const Amenities = () => {
   const data = [
     {
-      title: "Orders",
+      title: "Charging Port",
       description: "aasdadasdasd asdasda dasd asdas",
       icon: "pi pi-shopping-cart",
-      iconColor: "text-blue-500",
+      iconColor: "text-yellow-500",
+      bgColor: "section_background",
+      iconSize: "40px",
     },
     {
-      title: "Revenue",
+      title: "Hammer",
       description:
         "asdas asdasdasd asdasdasd asdsadasdasdasdasd  asdassdas a asdasdasdsa",
       icon: "pi pi-shopping-cart",
       iconColor: "text-blue-500",
+      bgColor: "section_background",
+      iconSize: "40px",
     },
     {
-      title: "Revenue",
+      title: "Entertainment",
       description: "asdsadasdasad",
       icon: "pi pi-shopping-cart",
       iconColor: "text-indigo-500",
+      bgColor: "section_background",
+      iconSize: "40px",
     },
     {
-      title: "Revenue",
+      title: "Fire Extinguisher",
       description: "asdasdasdasdasdsadsdas asdasd asdasd asdasdas",
       icon: "pi pi-shopping-cart",
-      iconColor: "text-red-500",
+      iconColor: "text-pink-500",
+      bgColor: "section_background",
+      iconSize: "40px",
+    },
+  ];
+
+  const data1 = [
+    {
+      title: "Free Pickup",
+      description: "aasdadasdasd asdasda dasd asdas",
+      icon: "pi pi-shopping-cart",
+      iconColor: "text-blue-400",
+      bgColor: "section_background",
+      iconSize: "40px",
+    },
+    {
+      title: "Air Conditioner",
+      description:
+        "asdas asdasdasd asdasdasd asdsadasdasdasdasd  asdassdas a asdasdasdsa",
+      iconColor: "text-orange-400",
+      bgColor: "section_background",
+      iconSize: "40px",
+    },
+    {
+      title: "Reading Light",
+      description: "asdsadasdasad",
+      iconColor: "text-cyan-500",
+      bgColor: "section_background",
+      iconSize: "40px",
+    },
+    {
+      title: "Wifi",
+      description: "asdasdasdasdasdsadsdas asdasd asdasd asdasdas",
+      iconColor: "text-blue-500",
+      bgColor: "section_background",
+      iconSize: "40px",
     },
   ];
 
@@ -36,28 +83,97 @@ export const Amenities = () => {
           Ac turpis egestas maecenas pharetra convallis posuere morbi leo urna.
         </div>
       </div>
-     
+
       <div className="grid">
         {data.map((ele) => {
           return (
             <div className="sm:col-6 lg:col-3 mt-3 md:col-6 amenities">
-              <div className="surface-card shadow-2 p-3 border-round">
+              <div className={`${ele.bgColor} shadow-2 p-3 border-round`}>
                 <div className="flex justify-content-between mb-3">
-                  <div>
-                    <span className="block text-500 font-medium m-b-3">
-                      {ele.title}
-                    </span>
-                    {/* <div className="text-900 font-medium text-xl">152</div> */}
-                  </div>
-                  <div
-                    className="flex align-items-center justify-content-center bg-blue-100 border-round"
-                    style={{ width: "2.5rem", height: "2.5rem" }}
-                  >
-                    <i className={`${ele.icon} ${ele.iconColor} text-xl`}></i>
+                <div className="grid">
+                    <div className="col-6 flex align-items-center justify-content-center">
+                      {ele.title === "Charging Port" ? (
+                        <RiBattery2ChargeLine
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.title === "Hammer" ? (
+                        <RiHammerFill
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.title === "Entertainment" ? (
+                        <FaPhotoVideo
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.title === "Fire Extinguisher" ? (
+                        <AiOutlineFire
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.icon === "money" ? (
+                        <RiBattery2ChargeLine
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.icon === "bus" ? (
+                        <RiBattery2ChargeLine
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : null}
+                    </div>
+                    <div className="col-6 flex align-items-center justify-content-center">
+                      <span className="block text-500 font-bold m-b-3">
+                        {ele.title}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                {/* <span className="text-green-500 font-medium">24 new </span> */}
-                <span className="text-500">{ele.description}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="grid">
+        {data1.map((ele) => {
+          return (
+            <div className="sm:col-6 lg:col-3 mt-3 md:col-6 amenities">
+              <div className={`${ele.bgColor} shadow-2 p-3 border-round`}>
+                <div className="flex justify-content-between mb-3">
+                  <div className="grid">
+                    <div className="col-6 flex align-items-center justify-content-center">
+                      {ele.title === "Free Pickup" ? (
+                        <HiLocationMarker
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.title === "Air Conditioner" ? (
+                        <MdOutlineAir
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.title === "Reading Light" ? (
+                        <RiLightbulbFlashFill
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : ele.title === "Wifi" ? (
+                        <FaWifi
+                          fontSize={ele.iconSize}
+                          className={ele.iconColor}
+                        />
+                      ) : null}
+                    </div>
+                    <div className="col-6 flex align-items-center justify-content-center">
+                      <span className="block text-500 font-bold m-b-3">
+                        {ele.title}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           );
