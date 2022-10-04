@@ -81,22 +81,22 @@ const Signup = ({ signup, isAuthenticated }) => {
   const continueWithGoogle = async () => {
     try {
       const res = await axios.get(
-        `${backendUrl}/auth/o/google-oauth2/?redirect_uri=${process.env.REACT_APP_API_URL}/google`
+        `http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google`
       );
 
       window.location.replace(res.data.authorization_url);
     } catch (err) {}
   };
 
-  const continueWithFacebook = async () => {
-    try {
-      const res = await axios.get(
-        `${backendUrl}/auth/o/facebook/?redirect_uri=${process.env.REACT_APP_API_URL}/facebook`
-      );
+  // const continueWithFacebook = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `${backendUrl}/auth/o/facebook/?redirect_uri=${process.env.REACT_APP_API_URL}/facebook`
+  //     );
 
-      window.location.replace(res.data.authorization_url);
-    } catch (err) {}
-  };
+  //     window.location.replace(res.data.authorization_url);
+  //   } catch (err) {}
+  // };
 
   if (isAuthenticated) {
     navigate("/");
@@ -431,7 +431,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                             <span className="ml-3">Google</span>
                           </Button>
                         </div>
-                        <div className="col">
+                        {/* <div className="col">
                           <Button
                             type="button"
                             className="p-button-outlined p-button-secondary mt-3 shadow-2"
@@ -441,7 +441,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                             <BsFacebook size={20} />
                             <span className="ml-3">Facebook</span>
                           </Button>
-                        </div>
+                        </div> */}
                       </div>
                     ) : null}
                     {userType === "AGENT" ? (

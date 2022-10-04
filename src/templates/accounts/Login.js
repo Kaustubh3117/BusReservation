@@ -52,15 +52,15 @@ const Login = ({ login, isAuthenticated, isAgent, loadUser }) => {
     } catch (err) {}
   };
 
-  const continueWithFacebook = async () => {
-    try {
-      const res = await axios.get(
-        `http://127.0.0.1:8000/auth/o/facebook/?redirect_uri=http://localhost:3000/facebook`
-      );
+  // const continueWithFacebook = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `http://127.0.0.1:8000/auth/o/facebook/?redirect_uri=http://localhost:3000/facebook`
+  //     );
 
-      window.location.replace(res.data.authorization_url);
-    } catch (err) {}
-  };
+  //     window.location.replace(res.data.authorization_url);
+  //   } catch (err) {}
+  // };
   useEffect(() => {
     if (
       isAuthenticated &&
@@ -177,7 +177,7 @@ const Login = ({ login, isAuthenticated, isAgent, loadUser }) => {
                           <span className="ml-3">Google</span>
                         </Button>
                       </div>
-                      <div className="col">
+                      {/* <div className="col">
                         <Button
                           className="p-button-outlined p-button-secondary mt-3 shadow-2"
                           onClick={continueWithFacebook}
@@ -186,7 +186,7 @@ const Login = ({ login, isAuthenticated, isAgent, loadUser }) => {
                           <BsFacebook size={20} />
                           <span className="ml-3">Facebook</span>
                         </Button>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="mt-3">
                       Forgot your Password?

@@ -156,6 +156,7 @@ margin-top: 8px;
     background-color: #f5f8fe;
 }
 .amenities{}
+.bus_details_image{}
 .bannerFields{}
 .availableBussesButtons{}
 .small_banner{}
@@ -201,6 +202,9 @@ margin-top: 8px;
     }
     .small_banner_image{
         margin-left: 53px;
+    }
+    .bus_details_image{
+        margin-left: 69px;
     }
 }
 /* end home page */
