@@ -16,7 +16,7 @@ const UserView = () => {
       <Carousels />
       <Amenities />
       <InfoSection />
-      <SmallFooter />
+      {/* <SmallFooter /> */}
       <Footer />
       <SmallFooter />
     </>

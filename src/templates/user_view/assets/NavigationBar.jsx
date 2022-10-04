@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../stores/accounts/actions/AuthActions";
 import { USER } from '../../../constants/accounts/account_constants';
 import { ManageTicketView } from '../components/manage_tickets/ManageTicketView';
+import logo from '../../../img/logo.jpg'
 
 const NavigationBar = ({ logout }) => {
     const navigate = useNavigate();
@@ -144,7 +145,7 @@ const NavigationBar = ({ logout }) => {
     }
     // // end of ticket modal code
 
-    const start = <img alt="logo" src="showcase/images/logo.png" onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} height="40" className="mr-2"></img>;
+    const start = <img alt="logo" src={logo} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} height="40" className="mr-2"></img>;
     const end = null
     return (
         <>

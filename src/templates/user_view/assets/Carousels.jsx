@@ -1,5 +1,8 @@
 import { Carousel } from "primereact/carousel";
 import carousal from '../../../img/carousal.jpg'
+import cr1 from '../../../img/carousal1.jpg'
+import cr2 from '../../../img/carousal2.jpg'
+import cr3 from '../../../img/carousal3.jpg'
 
 const template = (product) => {
   return (
@@ -7,7 +10,7 @@ const template = (product) => {
       <div className="product-item-content">
         <div className="mb-3">
           <img
-            src={carousal}
+            src={product.image}
             onError={(e) =>
               (e.target.src =
                 "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
@@ -19,11 +22,11 @@ const template = (product) => {
         </div>
         <div>
           <h4 className="mb-1">{product.name}</h4>
-          <span
+          {/* <span
             className={`product-badge status-${product.inventoryStatus.toLowerCase()}`}
-          >
-            {product.inventoryStatus}
-          </span>
+          > */}
+            {/* {product.inventoryStatus}
+          </span> */}
         </div>
       </div>
     </div>
@@ -51,69 +54,35 @@ export const Carousels = () => {
   const data = [
     {
       id: "1000",
-      code: "f230fh0g3",
       name: "Bamboo Watch",
-      description: "Product Description",
-      image: "bamboo-watch.jpg",
-      category: "Accessories",
-      quantity: 24,
-      inventoryStatus: "INSTOCK",
-      rating: 5,
+      image: cr1,
+     
     },
     {
       id: "1001",
-      code: "nvklal433",
       name: "Black Watch",
-      description: "Product Description",
-      image: "black-watch.jpg",
-      category: "Accessories",
-      quantity: 61,
-      inventoryStatus: "INSTOCK",
-      rating: 4,
+      image: cr2,
     },
     {
       id: "1002",
-      code: "zz21cz3c1",
       name: "Blue Band",
       description: "Product Description",
-      image: "blue-band.jpg",
-      category: "Fitness",
-      quantity: 2,
-      inventoryStatus: "LOWSTOCK",
-      rating: 3,
+      image: cr3,
     },
     {
       id: "1003",
-      code: "244wgerg2",
       name: "Blue T-Shirt",
-      description: "Product Description",
-      image: "blue-t-shirt.jpg",
-      category: "Clothing",
-      quantity: 25,
-      inventoryStatus: "INSTOCK",
-      rating: 5,
+      image: cr1,
     },
     {
       id: "1004",
       code: "h456wer53",
-      name: "Bracelet",
-      description: "Product Description",
-      image: "bracelet.jpg",
-      category: "Accessories",
-      quantity: 73,
-      inventoryStatus: "INSTOCK",
-      rating: 4,
+      image: cr2,
     },
     {
       id: "1005",
       code: "av2231fwg",
-      name: "Brown Purse",
-      description: "Product Description",
-      image: "brown-purse.jpg",
-      category: "Accessories",
-      quantity: 0,
-      inventoryStatus: "OUTOFSTOCK",
-      rating: 4,
+      image: cr3,
     },
   ];
   return (
