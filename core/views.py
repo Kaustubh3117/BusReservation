@@ -122,9 +122,13 @@ class PassengerView(APIView):
             boarding_point_res_data = request.data['payload']['seat_data']['point']['boardingPointRadio']['name']
             dropping_point_res_data = request.data['payload']['seat_data']['point']['droppingPointRadio']['name']
 
-            #save ticket data
-            get_user_data = UserAccount.objects.get(pk=res_user_id)
+            #seat count
             get_trip_schedule = Tripschedule.objects.get(pk=res_trip_schedule_id)
+            get_trip_schedule.available_seat = get_trip_schedule.available_seat - res_no_of_seat
+            get_trip_schedule.save()
+
+            #save ticket data
+            get_user_data = UserAccount.objects.get(pk=res_user_id)            
             ticket_serializer = Ticket(ticket_number = ticket_number, total_amount = res_ticket_price, number_of_seats = res_no_of_seat, seat_no = c_str, boarding_point = boarding_point_res_data, dropping_point = dropping_point_res_data, trip_schedule_id = get_trip_schedule, user = get_user_data, booked = res_booking_status)
             ticket_serializer.save()
 
