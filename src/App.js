@@ -7,7 +7,7 @@ import store from './stores/store';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";   
-import "primeflex/primeflex.min.css"
+import "primeflex/primeflex.min.css";
 
 // user import
 import UserView from './templates/user_view/UserView';

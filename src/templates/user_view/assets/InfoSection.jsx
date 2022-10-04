@@ -2,9 +2,9 @@ import { Card } from "primereact/card";
 export const InfoSection = () => {
   return (
     <>
-      <div className="flex text-center align-items-center mt-4 justify-content-center">
+      <div className="flex align-items-center mt-4 justify-content-center">
         <Card style={{ width: "90%" }}>
-          <h1>The Best Way to Book Bus Ticket</h1>
+          <h1 className="text-center">The Best Way to Book Bus Ticket</h1>
           <p>
             Do you want to know the best way to book tickets online securely and
             how to book tickets in advance? Giyobus.com is the best online
@@ -29,7 +29,7 @@ export const InfoSection = () => {
           </p>
 
           {/* dection 2 */}
-          <h1>Online Bus Booking Services</h1>
+          <h1 className="text-center">Online Bus Booking Services</h1>
           <p>
             Giyobus is India’s leading online bus ticket booking service
             provider. Check out our great offers and amazing discount coupons to
@@ -47,7 +47,7 @@ export const InfoSection = () => {
             filters to accommodate a reliable and comfortable journey as per
             your scheduled travel plan needs.
           </p>
-          <h1>Why Choose Giyobus for Bus Ticket Booking?</h1>
+          <h1 className="text-center">Why Choose Giyobus for Bus Ticket Booking?</h1>
           <p>
             Giyobus is India’s fastest growing online ticket booking platform
             offering bus ticket booking, train ticket booking and bus rental
@@ -64,6 +64,40 @@ export const InfoSection = () => {
             online directly through Giyobus. All these buses currently cover
             more than 100,000 bus routes with reliable transportation in India.
           </p>
+          <h1 className="text-center">Benefits of Booking Bus Tickets Online</h1>
+          <p>
+            In this day and age of technology, offline modes of bus ticket
+            booking are no more a preference. Online ticket booking is easy,
+            fast and hassle-free. Giyobus ticks off all three with our easy app
+            and website navigation.
+          </p>
+          <p>
+            Booking bus tickets online with Giyobus has solved many problems
+            that people face while booking their tickets at offline counters or
+            travel agents. Download the Giyobus App to see the benefits of
+            making a bus ticket booking online.
+          </p>
+          <p>
+            Here's listing all the benefits of booking bus tickets online on
+            Giyobus
+          </p>
+          <ul>
+            <li>
+              Avoid standing in long queues at offline bus ticket counters.
+            </li>
+            <li>No more hassle of approaching travel agents.</li>
+            <li>Choose from multiple bus services.</li>
+            <li>Book both Private and SRTC bus tickets online.</li>
+            <li>Check bus ticket availability online.</li>
+            <li>
+              Get bus timings, ticket price, boarding &amp; dropping point
+              details online.
+            </li>
+            <li>Access to payment partner discounts and cashback offers.</li>
+            <li>Free cancellation feature.</li>
+            <li>24/7 customer support.</li>
+            <li>Each and every transaction is simple, safe and secure.</li>
+          </ul>
         </Card>
       </div>
     </>

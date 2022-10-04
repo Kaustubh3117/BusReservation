@@ -15,7 +15,7 @@ export const BusDetailsCard = (props) => {
             <div className="grid">
               <div className="sm:col-6 md:col-6 lg:col-3">
                 <ul style={{ listStyleType: "none" }}>
-                  <li className="text-xl font-medium">{props.data.bus_id.bus_name}</li>
+                  <li className="text-xl font-medium text-primary"><b>{props.data.bus_id.bus_name}</b></li>
                   <li><b>From:</b> {props.data.fromLocation}</li>
                   <li><b>To:</b> {props.data.toLocation}</li>
                 </ul>
@@ -34,12 +34,12 @@ export const BusDetailsCard = (props) => {
                 <ul style={{ listStyleType: "none" }}>
                   <li><b>Bus No:</b>{props.data.bus_id.bus_no}</li>
                   <li><b>Bus Type:</b> {props.data.bus_id.bus_type}</li>
-                  <li><b>Available Seats: </b>{props.data.available_seat}</li>
+                  <li><b>Available Seats: </b> <span className="text-pink-400">{props.data.available_seat} seats left</span></li>
                 </ul>
               </div>
               <div className="sm:col-6 md:col-6 lg:col-3">
               <ul style={{ listStyleType: "none" }}>
-              <li><b>INR:</b> {props.data.price}</li>
+              <li className="text-primary"><b>INR: {props.data.price}</b></li>
               <br/>
               <li><b>Amenities: <FaLightbulb color="yellow" /> <FaBriefcaseMedical color="blue"/> <FaPhoneVolume color="red"/> <RiBattery2ChargeFill color="green"/></b></li>
                 </ul>

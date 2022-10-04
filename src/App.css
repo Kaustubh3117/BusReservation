@@ -134,8 +134,9 @@ margin-top: 8px;
 
 /* Home page and available busses*/
 .banner{
-    background-image: url('../src/img/banner.jpg');
-    height: 500px;
+    /* background-image: url('../src/img/banner.jpg'); */
+    background-color: #e5e5e5;
+    height: 400px;
     width: 100%;
 }
 .search_containers {
@@ -157,6 +158,8 @@ margin-top: 8px;
 .amenities{}
 .bannerFields{}
 .availableBussesButtons{}
+.small_banner{}
+.small_banner_image{}
 .seatChartDialog{
     width: 70vw;
 }
@@ -192,6 +195,12 @@ margin-top: 8px;
         padding-right: 30px;
         padding-top: 30px;
         padding-bottom: 30px;
+    }
+    .small_banner{
+        margin-top: 90px !important;
+    }
+    .small_banner_image{
+        margin-left: 53px;
     }
 }
 /* end home page */

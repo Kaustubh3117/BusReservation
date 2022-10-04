@@ -1,25 +1,38 @@
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
+import { Image } from "primereact/image";
+import offer from "../../../img/offer.png";
+
 export const SmallBanner = () => {
   return (
-    <Card className="mb-4">
-      <div className="text-700 text-center mt-3 mb-3">
-        {/* <div className="text-blue-600 font-bold mb-3">
-         Contact Us
-        </div> */}
-        <div className="sm:text-900 font-bold sm:text-4xl md:text-5xl lg:text-6xl mb-3">
-        Contact Us
+    <div className="mb-4 flex justify-content-center shadow-4 small_banner section_background">
+      <div className="grid mt-4 mb-4">
+        <div className="sm:col-6 lg:col-4 md:col-6">
+          <Image
+            src={offer}
+            template="Preview Content"
+            alt="Image Text"
+            width="300"
+            className="small_banner_image"
+          />
         </div>
-      
-        <div className="text-xl mb-6">
-        If you have any Queries. Feel free to ask.
+        <div className="sm:col-6 lg:col-4 md:col-6">
+          <Image
+            src={offer}
+            template="Preview Content"
+            alt="Image Text"
+            width="300"
+            className="small_banner_image"
+          />
         </div>
-       
-        <Button
-          label="Join Now"
-          className="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap bg-pink-400 border-pink-400"
-        />
+        <div className="sm:col-6 lg:col-4 md:col-6">
+          <Image
+            src={offer}
+            template="Preview Content"
+            alt="Image Text"
+            width="300"
+            className="small_banner_image"
+          />
+        </div>
       </div>
-    </Card>
+    </div>
   );
 };
