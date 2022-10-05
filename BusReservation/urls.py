@@ -3,8 +3,15 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import render
+
+def render_react(request):
+    return render(request, "index.html")
+    
 
 urlpatterns = [
+    path('', render_react),
+    path('/', render_react),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),

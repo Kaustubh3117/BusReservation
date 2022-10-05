@@ -31,7 +31,7 @@ export const InfoSection = () => {
           {/* dection 2 */}
           <h1 className="text-center">Online Bus Booking Services</h1>
           <p>
-            Giyobus is India’s leading online bus ticket booking service
+            Giyobus is online bus ticket booking service
             provider. Check out our great offers and amazing discount coupons to
             book bus tickets at the lowest price with us. You can check the bus
             schedules, compare prices, and find all the information you need to
@@ -49,7 +49,7 @@ export const InfoSection = () => {
           </p>
           <h1 className="text-center">Why Choose Giyobus for Bus Ticket Booking?</h1>
           <p>
-            Giyobus is India’s fastest growing online ticket booking platform
+            Giyobus is fastest growing online ticket booking platform
             offering bus ticket booking, train ticket booking and bus rental
             services. Giyobus is the official ticketing partner of several State
             Road Transport Corporation (SRTC) operators, and you can also book
@@ -58,11 +58,10 @@ export const InfoSection = () => {
             hassle-free services on Giyobus.
           </p>
           <p>
-            Giyobus has an inventory of over 2,500+ bus service partners
-            operating scheduled buses in India. Travellers can easily view their
+            With Giyobus travellers can easily view their
             bus schedules, compare their ticket prices, and book bus tickets
             online directly through Giyobus. All these buses currently cover
-            more than 100,000 bus routes with reliable transportation in India.
+            more than 100 bus routes with reliable transportation in Mumbai.
           </p>
           <h1 className="text-center">Benefits of Booking Bus Tickets Online</h1>
           <p>
