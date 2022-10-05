@@ -164,7 +164,7 @@ margin-top: 8px;
 .seatChartDialog{
     width: 70vw;
 }
-
+.footertext{}
 .availableBusButton{
     float: right;
     margin-top: -49px !important; 
@@ -205,6 +205,9 @@ margin-top: 8px;
     }
     .bus_details_image{
         margin-left: 69px;
+    }
+    .footertext{
+        width: 227px !important;
     }
 }
 /* end home page */

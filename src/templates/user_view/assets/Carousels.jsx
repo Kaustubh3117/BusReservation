@@ -1,8 +1,9 @@
 import { Carousel } from "primereact/carousel";
-import carousal from '../../../img/carousal.jpg'
-import cr1 from '../../../img/carousal1.jpg'
-import cr2 from '../../../img/carousal2.jpg'
-import cr3 from '../../../img/carousal3.jpg'
+import cr1 from '../../../img/carousal/carousal1.jpg'
+import cr2 from '../../../img/carousal/carousal2.jpg'
+import cr3 from '../../../img/carousal/carousal3.jpg'
+import cr4 from '../../../img/carousal/carousal4.jpg'
+import cr5 from '../../../img/carousal/carousal5.jpg'
 
 const template = (product) => {
   return (
@@ -22,11 +23,6 @@ const template = (product) => {
         </div>
         <div>
           <h4 className="mb-1">{product.name}</h4>
-          {/* <span
-            className={`product-badge status-${product.inventoryStatus.toLowerCase()}`}
-          > */}
-            {/* {product.inventoryStatus}
-          </span> */}
         </div>
       </div>
     </div>
@@ -54,35 +50,34 @@ export const Carousels = () => {
   const data = [
     {
       id: "1000",
-      name: "Bamboo Watch",
+      name: "Bandra-Worli Sea link",
       image: cr1,
      
     },
     {
       id: "1001",
-      name: "Black Watch",
+      name: "Gate Way of India",
       image: cr2,
     },
     {
       id: "1002",
-      name: "Blue Band",
-      description: "Product Description",
+      name: "Beach",
       image: cr3,
     },
     {
       id: "1003",
-      name: "Blue T-Shirt",
-      image: cr1,
+      name: "Marine Drive",
+      image: cr4,
     },
     {
       id: "1004",
-      code: "h456wer53",
-      image: cr2,
+      name: "SiddhiVinayak Temple",
+      image: cr5,
     },
     {
       id: "1005",
-      code: "av2231fwg",
-      image: cr3,
+      name: "Bandra-Worli Sea link",
+      image: cr1,
     },
   ];
   return (
@@ -92,10 +87,9 @@ export const Carousels = () => {
           <span className="md:text-6xl sm:text-6xl lg:text-6xl font-bold">
             Gallery
           </span>
-          {/* <span className="text-indigo-500 lg:text-6xl sm:text-4xl font-bold"></span> */}
         </div>
         <div className="text-xl mb-6">
-          Ac turpis egestas maecenas pharetra convallis posuere morbi leo urna.
+         Some of the places from Mumbai.
         </div>
         <Carousel
           value={data}

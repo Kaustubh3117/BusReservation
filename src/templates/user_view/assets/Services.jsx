@@ -94,7 +94,7 @@ export const Services = () => {
         {/* <span className="text-indigo-500 lg:text-6xl sm:text-4xl font-bold"></span> */}
       </div>
       <div className="text-xl mb-6">
-        Ac turpis egestas maecenas pharetra convallis posuere morbi leo urna.
+        Reasons why you should with us.
       </div>
       <div className="grid flex justify-content-center">
         {gridData1.map((ele) => {

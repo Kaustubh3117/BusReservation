@@ -80,7 +80,7 @@ export const Amenities = () => {
         <span className="text-6xl font-bold text-2xl">Amenities</span>
         {/* <span className="text-indigo-500 text-6xl">Amenities we provide</span> */}
         <div className="text-xl mb-6">
-          Ac turpis egestas maecenas pharetra convallis posuere morbi leo urna.
+          Amenities Provide by us.
         </div>
       </div>
 
