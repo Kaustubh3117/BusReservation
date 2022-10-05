@@ -4,6 +4,7 @@ import { savePassengerData, removeSeatData } from "../../../../../../stores/user
 import { setShowNextModdal } from "../../../../../../stores/users/actions/UserAction";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { backendUrl } from "../../../../../../environment/development";
 
 export const CheckoutForm = (props) => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ export const CheckoutForm = (props) => {
       return;
     }
 
-    const paymentData = await axios.post("http://127.0.0.1:8000/api/payment/", {
+    const paymentData = await axios.post(`${backendUrl}/api/payment/`, {
       amount: seatData["seatData"]["totalPrice"],
     });
 
@@ -62,7 +63,7 @@ export const CheckoutForm = (props) => {
         const razorpay_signature = response.razorpay_signature;
 
         const res = await axios.post(
-          "http://127.0.0.1:8000/api/verifySignature/",
+          `${backendUrl}/api/verifySignature/`,
           {
             razorpay_paymentId,
             razorpay_orderId,

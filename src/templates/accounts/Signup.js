@@ -81,7 +81,7 @@ const Signup = ({ signup, isAuthenticated }) => {
   const continueWithGoogle = async () => {
     try {
       const res = await axios.get(
-        `http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google`
+        `${backendUrl}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google`
       );
 
       window.location.replace(res.data.authorization_url);

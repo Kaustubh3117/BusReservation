@@ -246,7 +246,7 @@ const ticketStatusBody = (data) =>{
   const imageBodyTemplate = (rowData) => {
     return (
       <img
-        src={`http://127.0.0.1:8000/media/${rowData.image}`}
+        src={`${backendUrl}/media/${rowData.image}`}
         onError={(e) =>
           (e.target.src =
             "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")

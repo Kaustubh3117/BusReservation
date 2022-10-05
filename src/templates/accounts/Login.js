@@ -17,6 +17,7 @@ import { useForm, Controller } from "react-hook-form";
 import { USER } from "../../constants/accounts/account_constants";
 
 import { Footer } from "../user_view/assets/Footer";
+import { backendUrl } from "../../environment/development";
 
 const Login = ({ login, isAuthenticated, isAgent, loadUser }) => {
   const [formData, setFormData] = useState({});
@@ -45,7 +46,7 @@ const Login = ({ login, isAuthenticated, isAgent, loadUser }) => {
   const continueWithGoogle = async () => {
     try {
       const res = await axios.get(
-        `http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google`
+        `${backendUrl}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google`
       );
 
       window.location.replace(res.data.authorization_url);
