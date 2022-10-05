@@ -215,7 +215,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                             Mobile Number*
                           </label>
                         </span>
-                        {getFormErrorMessage("email")}
+                        {getFormErrorMessage("mobileNumber")}
                       </div>
                     ) : null}
                     <div className="field mt-5">
@@ -312,7 +312,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                             Organization Name*
                           </label>
                         </span>
-                        {getFormErrorMessage("email")}
+                        {getFormErrorMessage("organizationName")}
                       </div>
                     ) : null}
                     {userType === "AGENT" ? (
@@ -343,7 +343,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                             City*
                           </label>
                         </span>
-                        {getFormErrorMessage("email")}
+                        {getFormErrorMessage("city")}
                       </div>
                     ) : null}
                     {userType === "AGENT" ? (
@@ -376,7 +376,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                             Pancard Number*
                           </label>
                         </span>
-                        {getFormErrorMessage("email")}
+                        {getFormErrorMessage("pancardNumber")}
                       </div>
                     ) : null}
                     {userType === "AGENT" ? (
@@ -431,17 +431,6 @@ const Signup = ({ signup, isAuthenticated }) => {
                             <span className="ml-3">Google</span>
                           </Button>
                         </div>
-                        {/* <div className="col">
-                          <Button
-                            type="button"
-                            className="p-button-outlined p-button-secondary mt-3 shadow-2"
-                            onClick={continueWithFacebook}
-                            style={{ width: "100%" }}
-                          >
-                            <BsFacebook size={20} />
-                            <span className="ml-3">Facebook</span>
-                          </Button>
-                        </div> */}
                       </div>
                     ) : null}
                     {userType === "AGENT" ? (
