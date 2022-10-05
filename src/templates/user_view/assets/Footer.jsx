@@ -46,7 +46,7 @@ export const Footer = () => {
             <div className="sm:col-3 lg:col-4 mx-auto mb-4">
               <h6 className="text-3xl font-bold  mb-4">Giyobus</h6>
               <p>
-                Giyobus provide userfriendly UI which enables you to book
+                Giyobus provide user friendly UI which enables you to book
                 tickets with ease. You can pay online with various payment
                 methods.
               </p>
