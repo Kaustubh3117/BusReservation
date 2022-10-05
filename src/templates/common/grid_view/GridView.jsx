@@ -273,7 +273,6 @@ export const GridView = (props) => {
       d.setHours(newArr[0], newArr[1], 0);
       return d;
     }
-    console.log("time", time);
   };
 
   //make it dynamic should work for all select options
