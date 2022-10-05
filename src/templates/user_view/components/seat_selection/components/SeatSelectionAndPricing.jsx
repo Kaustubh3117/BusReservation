@@ -1,5 +1,4 @@
 export const SeatSelectionAndPricing = (props) =>{
-  console.log("props: ", props);
     return(
         <>
          <div className="mx-3 my-3 text-lg font-medium">

@@ -33,7 +33,6 @@ const NavigationBar = ({ logout }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data) => {
-        console.log(data)
         setDisplayTicketDetialsModal(true);
         setShowTicketDialog(false)
         setTicketNumber(data.ticketNumber)

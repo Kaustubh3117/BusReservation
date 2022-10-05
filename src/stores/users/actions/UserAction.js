@@ -82,7 +82,7 @@ export const setReservedSeatData = (busId) =>async (dispatch) => {
       });
 
   } catch (err) {  
-      console.log(err.data)
+    ToastMessage(ERROR, 'Something went wrong please try again')
   }
 };
 

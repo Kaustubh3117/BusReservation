@@ -8,8 +8,6 @@ import { Button } from "primereact/button";
 const Activate = ({ verify, match }) => {
     const [verified, setVerified] = useState(false);
     const { uid, token } = useParams();
-    console.log("uid..", uid)
-    console.log("token..", token)
     const verify_account = e => {
         verify(uid, token);
         setVerified(true);
