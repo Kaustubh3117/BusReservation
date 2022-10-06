@@ -148,7 +148,7 @@ class PassengerView(APIView):
             save_payment_details.save()
             #send email
             subject = 'Giyobus Booking successfull'
-            message = 'Your booking was successfull.'+'Ticket Details:' + ticket_number +'.' + 'Bus:' + get_bus_instance.bus_name+'.'+'Boarding Point'+boarding_point_res_data +'Dropping Point:'+dropping_point_res_data
+            message = 'Your booking was successfull.'+ '\n' +'Ticket Number:' + ticket_number +'.' + ' ' + 'Bus:' + get_bus_instance.bus_name+'.'+ ' ' + 'Price:' +str(res_ticket_price) + ' ' +'Boarding Point:'+boarding_point_res_data + ' ' +'Dropping Point:'+dropping_point_res_data
             from_email = settings.EMAIL_HOST_USER
             user_email = get_last_saved_ticket.user
             recipient_list =  [user_email, 'kaustubh3117@gmail.com']
